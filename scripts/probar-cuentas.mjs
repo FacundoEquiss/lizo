@@ -839,7 +839,10 @@ async function pasoCerrado() {
 function refAntes() {
   try {
     const c = execFileSync('git', ['log', '-n1', '--diff-filter=A', '--format=%H', '--', 'supabase/migrations/20261204090000_cuentas.sql'], { cwd: RAIZ, encoding: 'utf8' }).trim()
-    return c ? `${c}~1` : 'HEAD'
+    if (!c) return 'HEAD'
+    // En una copia sin historia (el repo público) no existe el commit anterior: el paso se saltea.
+    execFileSync('git', ['rev-parse', '--verify', '--quiet', `${c}~1`], { cwd: RAIZ, stdio: 'ignore' })
+    return `${c}~1`
   } catch {
     return null
   }
@@ -848,7 +851,7 @@ function refAntes() {
 async function pasoBaseVieja() {
   titulo('1. Una base de antes de la migración queda toda de «dueno»')
   const ref = refAntes()
-  if (!ref) return ok(true, '(sin git: salteado)')
+  if (!ref) return ok(true, '(sin git o sin historia anterior: salteado)')
   const viejo = carpeta('codigo-viejo')
   execFileSync('sh', ['-c', `git archive ${ref} | tar -x -C "${viejo}"`], { cwd: RAIZ })
   symlinkSync(path.join(RAIZ, 'node_modules'), path.join(viejo, 'node_modules'))
