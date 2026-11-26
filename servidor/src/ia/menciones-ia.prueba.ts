@@ -402,7 +402,7 @@ test('F.4 · tarjeta_nueva: una tarjeta que entra a la lista elegida crea UN tra
   assert.equal((await trabajosDeTarjeta(t.clave)).length, 1, 'no se repite')
   await corrida()
   const r = (await comentarios(t.clave)).find((c) => c.trabajo_id === trs[0]!.id)!
-  assert.match(r.cuerpo, /^\*\*Revisado 25\/11:\*\*/)
+  assert.match(r.cuerpo, /^\*\*Revisado \d{1,2}\/\d{1,2}:\*\*/)
   assert.equal(r.respuesta_a, null, 'una revisión no responde a nadie')
   const noti = await e.db.consulta(`select titulo from notificaciones where tipo = 'respuesta' and trabajo_id = $1`, [trs[0]!.id])
   assert.match(noti[0]!.titulo, /Claude revisó PR-\d+/)

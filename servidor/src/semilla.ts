@@ -8,14 +8,13 @@ export async function sembrar(servicio: Servicio, log: (m: string) => void): Pro
   const [{ n } = { n: 0 }] = await servicio.db.consulta<{ n: number }>(`select count(*)::int as n from proyectos`)
   if (n > 0) return null
 
-  await servicio.crearMiembro({ nombre: process.env.TABLERO_USUARIO || 'Facundo', tipo: 'humano', color: 'naranja', esYo: true })
+  await servicio.crearMiembro({ nombre: process.env.TABLERO_USUARIO || 'Yo', tipo: 'humano', color: 'naranja', esYo: true })
   await servicio.asegurarMiembroIA('Claude')
 
   const proyecto = await servicio.crearProyecto(ACTOR_SEMILLA, {
     nombre: 'Restaurant City',
     prefijo: 'RC',
     color: 'naranja',
-    repoGithub: '<usuario>/<repo-del-juego>',
     descripcion: 'Recrear Restaurant City (Playfish, 2009) lo más fiel posible.',
     conTablero: false,
   })

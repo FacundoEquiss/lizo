@@ -1,0 +1,103 @@
+# Pruebas obligatorias (SRV-7): compilar y correr las pruebas que no necesitan internet ni claves, en cada pull request y en cada cambio a main.
+# Cada trabajo es un «check» que se puede exigir para unir un pull request (Settings → Branches → «Require status checks»).
+# Las pruebas con navegador (Playwright) y las que llaman a servicios reales quedan afuera: se corren a mano (tabla de AGENTS.md).
+name: Pruebas
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pruebas-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compila:
+    name: Compila
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+
+  rapidas:
+    name: Pruebas rápidas
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Cada paso se corre aunque falle el anterior, así el pull request muestra TODO lo que está roto de una vez.
+      - { name: Conexión a la base (TLS), if: success() || failure(), run: npm run tls:probar }
+      - { name: Copia de base, if: success() || failure(), run: npm run copia:probar }
+      - { name: Licencias, if: success() || failure(), run: npm run licencias:probar }
+      - { name: Tablas y gráficos, if: success() || failure(), run: npm run tabla:probar }
+      - { name: Menciones, if: success() || failure(), run: npm run menciones:probar }
+      - { name: Archivo de Hecho, if: success() || failure(), run: npm run hecho:probar }
+      - { name: Vistas de un tablero, if: success() || failure(), run: npm run vistas:probar }
+      # Las migraciones se aplican de cero y dos veces seguidas dentro de estas pruebas (base vacía en memoria).
+      - { name: Migraciones de la IA, if: success() || failure(), run: npm run ia:probar-migracion }
+      - { name: Amigos e invitaciones, if: success() || failure(), run: npm run amigos:probar }
+      - { name: Recuperar la contraseña, if: success() || failure(), run: npm run recuperacion:probar }
+      - { name: Crear cuenta con aprobación, if: success() || failure(), run: npm run solicitudes:probar }
+      - { name: Bóveda de claves de la IA, if: success() || failure(), run: npm run ia:probar-boveda }
+      - { name: Agentes de la IA, if: success() || failure(), run: npm run ia:probar-agentes }
+      - { name: Código de GitHub para la IA, if: success() || failure(), run: npm run ia:probar-codigo }
+      - { name: Precios y proveedores de la IA, if: success() || failure(), run: 'npm run ia:probar-precios && npm run ia:probar-contratos' }
+      - { name: Ciclo de los trabajos de la IA, if: success() || failure(), run: npm run ia:probar-servidor }
+      - { name: Diseño (saneado), if: success() || failure(), run: npm run diseno:probar-sanear }
+
+  oauth:
+    name: OAuth (ChatGPT y claude.ai)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run oauth:probar
+
+  ia:
+    name: IA integrada (menciones y trabajos)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run ia:probar
+
+  cuentas:
+    name: Aislamiento entre cuentas
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Verifica que ninguna cuenta vea ni toque lo de otra, y que cada ruta nueva tenga su caso.
+      - run: npm run cuentas:probar

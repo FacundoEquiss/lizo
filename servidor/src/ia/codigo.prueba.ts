@@ -73,8 +73,8 @@ test('las cuatro herramientas existen, con su esquema, y cada frase y título la
 })
 
 test('normalizarRepo acepta dueño/repo, direcciones y .git, y rechaza lo que no es un repo', () => {
-  assert.equal(normalizarRepo('<usuario>/<repo-del-juego>'), '<usuario>/<repo-del-juego>')
-  assert.equal(normalizarRepo('https://github.com/<usuario>/<repo-del-juego>'), '<usuario>/<repo-del-juego>')
+  assert.equal(normalizarRepo('acme/juego'), 'acme/juego')
+  assert.equal(normalizarRepo('https://github.com/acme/juego'), 'acme/juego')
   assert.equal(normalizarRepo('https://github.com/a/b.git'), 'a/b')
   assert.equal(normalizarRepo('git@github.com:a/b.git'), 'a/b')
   assert.equal(normalizarRepo('https://github.com/a/b/tree/rama/x'), 'a/b')
@@ -91,7 +91,7 @@ test('esRutaSecreta: .env*, *.pem, id_rsa*, *.key, credentials* y carpetas de cl
 test('pistasDeRutas saca las rutas de archivo de un texto y deja afuera direcciones, secretos y repetidas', () => {
   const t =
     'Falla en juego3d/ui/barrio.js:120 al abrir. Mirá también `package.json`, servidor/src/api.ts#L10-L20 y ./web/src/App.tsx.\n' +
-    'Evidencia: https://github.com/<usuario>/<repo-del-juego>/blob/RC-12/juego3d/ui/menu.js#L5 y https://ejemplo.com/pagina/index.html.\n' +
+    'Evidencia: https://github.com/acme/juego/blob/RC-12/juego3d/ui/menu.js#L5 y https://ejemplo.com/pagina/index.html.\n' +
     'No va: .env, config/server.pem, ejemplo.com/pagina.html, Node.js, v1.2/3.4, y/o, juego3d/ui/barrio.js otra vez.'
   const p = pistasDeRutas(t)
   for (const esperada of ['juego3d/ui/barrio.js', 'package.json', 'servidor/src/api.ts', 'web/src/App.tsx', 'juego3d/ui/menu.js']) assert.ok(p.includes(esperada), `falta ${esperada}: ${p}`)

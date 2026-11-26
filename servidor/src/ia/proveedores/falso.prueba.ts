@@ -215,7 +215,7 @@ describe('falso · los guiones de 15.2', () => {
     const pasos = await correr(proveedor, 'guion:triage', { texto: 'Tarjeta nueva RC-105 en Bandeja (Discord).' })
     assert.deepEqual(herramientasDe(pasos), ['leer_tarjeta'])
     const texto = textoFinal(pasos)
-    assert.match(texto, /^\*\*Revisado 25\/11:\*\*/)
+    assert.match(texto, /^\*\*Revisado \d{1,2}\/\d{1,2}:\*\*/)
     assert.match(texto, /RC-105/)
     assert.match(texto, /\*\*Recomendación:\*\*/)
     assert.match(texto, /\*\*Respuesta para Discord\*\*/)

@@ -371,11 +371,11 @@ test('los disparadores: las listas y el tablero tienen que ser de la cuenta; el 
 })
 
 test('ajustes: tope de la cuenta, pausa, opciones de IA de afuera y repos de código (normalizados)', async () => {
-  const a = await ia().guardarAjustes({ topeMesUsd: 40, pausada: true, confirmarMcp: true, externasDisparan: true, reposCodigo: ['https://github.com/<usuario>/<repo-del-juego>', '<usuario>/<repo-del-juego>', 'otro/repo.git'] })
-  assert.deepEqual(a, { topeMesUsd: 40, gastoMesUsd: 0, pausada: true, confirmarMcp: true, externasDisparan: true, reposCodigo: ['<usuario>/<repo-del-juego>', 'otro/repo'] })
+  const a = await ia().guardarAjustes({ topeMesUsd: 40, pausada: true, confirmarMcp: true, externasDisparan: true, reposCodigo: ['https://github.com/acme/juego', 'acme/juego', 'otro/repo.git'] })
+  assert.deepEqual(a, { topeMesUsd: 40, gastoMesUsd: 0, pausada: true, confirmarMcp: true, externasDisparan: true, reposCodigo: ['acme/juego', 'otro/repo'] })
   const b = await ia().guardarAjustes({ pausada: false })
   assert.equal(b.topeMesUsd, 40, 'lo que no vino quedó')
-  assert.deepEqual(b.reposCodigo, ['<usuario>/<repo-del-juego>', 'otro/repo'])
+  assert.deepEqual(b.reposCodigo, ['acme/juego', 'otro/repo'])
   await rechaza(() => ia().guardarAjustes({ topeMesUsd: 0 }), 400, /monto en dólares/)
   await rechaza(() => ia().guardarAjustes({ pausada: 'si' as any }), 400, /sí o no/)
   await rechaza(() => ia().guardarAjustes({ reposCodigo: ['no es un repo'] }), 400, /dueño\/repo/)
