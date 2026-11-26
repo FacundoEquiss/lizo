@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Reportar una falla de seguridad (en privado)
+    url: https://github.com/FacundoEquiss/lizo/security/advisories/new
+    about: No abras un issue público con fallas de seguridad. Usá este reporte privado.

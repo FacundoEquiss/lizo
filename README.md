@@ -245,8 +245,8 @@ del juego** del dueño (mail y contraseña, o un código por mail; solo las de `
 nada de otra cuenta. La cuenta del juego y la clave del MCP son la cuenta `dueno`, con todo lo de antes. Detalle, inventario
 de qué se chequea en cada ruta y herramienta, y lo que queda (mail para recuperar la contraseña): [`docs/cuentas.md`](docs/cuentas.md).
 
-- **Base:** el proyecto de Supabase del juego, en su propio esquema `tablero` (21 tablas). Gratis: no suma un proyecto.
-  Entra con su propio usuario de base, `tablero_app`, dueño del esquema, que no ve nada del juego. Las migraciones de
+- **Base:** desde el 26/11/2026, un proyecto de Supabase propio («Lizo», plan Free, São Paulo), con el esquema `tablero` (49 tablas) y su
+  usuario de base `tablero_app`, dueño del esquema. La app lo toma de `TABLERO_DB_URL_NUEVA`; el esquema viejo, en el proyecto del juego, queda de respaldo. Las migraciones de
   `supabase/migrations` NO corren solas online: se aplican con ese usuario como dueño (`set role tablero_app;
   set search_path = tablero;` y el SQL), y se anotan en `tablero.tablero_migraciones`.
 - **Pasar a la 0.2:** antes de publicarla, aplicar su migración en el editor SQL de Supabase. Solo agrega (la foto y el

@@ -1,0 +1,65 @@
+# Escaneo automático de seguridad (SRV-8): licencias, dependencias con fallas conocidas, claves escritas en el código y, en cada
+# pull request, qué dependencias suma o cambia. Corre en cada pull request, en cada cambio a main y una vez por semana.
+name: Seguridad
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 6 * * 1' # los lunes, para enterarse de fallas nuevas en librerías que no se tocaron
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seguridad-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  licencias:
+    name: Licencias compatibles con la AGPL-3.0
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run licencias:probar
+      - run: npm run licencias:revisar
+
+  dependencias:
+    name: Librerías con fallas conocidas (npm audit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Solo lo que viaja en lo que se publica, y solo fallas altas o críticas: lo demás avisa Dependabot sin frenar un pull request.
+      - run: npm audit --omit=dev --audit-level=high
+
+  cambios-en-dependencias:
+    name: Dependencias que suma este pull request
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+          # Licencias que no se pueden combinar con la AGPL-3.0 o que no son de código abierto.
+          deny-licenses: GPL-2.0-only, SSPL-1.0, BUSL-1.1, Elastic-2.0, CC-BY-NC-4.0, CC-BY-NC-SA-4.0, CC-BY-NC-ND-4.0
+
+  claves:
+    name: Claves o secretos escritos en el código
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_COMMENTS: 'false'

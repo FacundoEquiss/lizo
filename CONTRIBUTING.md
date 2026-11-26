@@ -1,6 +1,6 @@
 # Cómo colaborar
 
-Gracias por querer ayudar. Antes de empezar leé `AGENTS.md` (las reglas del proyecto y cómo correr y probar) y `docs/criterio/`.
+Gracias por querer ayudar. Antes de empezar leé `AGENTS.md` (las reglas del proyecto y cómo correr y probar) y `docs/criterio/`. Al participar aceptás el `CODE_OF_CONDUCT.md`.
 
 - Un tema por pull request, con una descripción corta de qué cambia y por qué.
 - Corré `npm run typecheck`, `npm run build` y las pruebas que correspondan (la tabla está en `AGENTS.md`). Si tocás el servidor, una ruta o una

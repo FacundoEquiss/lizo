@@ -1,0 +1,25 @@
+name: Una idea o mejora
+description: Algo nuevo que te gustaría que haga, o algo que se podría hacer mejor.
+labels: ["idea"]
+body:
+  - type: textarea
+    id: problema
+    attributes:
+      label: ¿Qué problema querés resolver?
+      description: Primero el problema, después la solución. Contá qué intentabas hacer y qué te lo impide.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: ¿Cómo te imaginás que sería?
+  - type: textarea
+    id: alternativas
+    attributes:
+      label: ¿Qué hacés hoy para arreglártelas?
+  - type: checkboxes
+    id: ayuda
+    attributes:
+      label: ¿Querés ayudar?
+      options:
+        - label: Me gustaría armarlo yo y mandar un pull request

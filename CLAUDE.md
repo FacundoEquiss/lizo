@@ -11,9 +11,11 @@ todos sus proyectos; el primero es Restaurant City (repo `<usuario>/<repo-del-ju
 ## Dónde vive
 - **Web y servidor:** proyecto `telar` de Vercel → https://telarapp.vercel.app. Se publica con
   `npm run build:vercel` y `npx vercel deploy --prebuilt --prod` (token de Vercel del entorno). No depende de GitHub.
-- **Base:** el proyecto de Supabase **del juego** (`<ID-DEL-PROYECTO-SUPABASE>`), solo en el esquema `tablero`, con el usuario
-  `tablero_app` (dueño del esquema; no ve nada del juego). **Nunca tocar otros esquemas ni perjudicar al juego** (dueño, 24/11).
-  Las migraciones de `supabase/migrations` se aplican a mano con ese usuario como dueño (ver README, "Online").
+- **Base:** desde el 26/11/2026, un proyecto de Supabase **propio de Telar**, «Lizo» (`<ID-DEL-PROYECTO-SUPABASE-DE-TELAR>`, organización «Facundo Aranda»,
+  plan Free, São Paulo), con el esquema `tablero` y el usuario `tablero_app` (dueño del esquema). La app lo toma de `TABLERO_DB_URL_NUEVA`
+  (manda sobre `TABLERO_DB_URL`) y verifica el certificado TLS. **El esquema `tablero` viejo, en el proyecto del juego (`<ID-DEL-PROYECTO-SUPABASE>`),
+  queda intacto como respaldo hasta 30 días después de la migración: no se toca ni se borra sin el sí del dueño. Nunca tocar otros esquemas ni
+  perjudicar al juego** (dueño, 24/11). Las migraciones de `supabase/migrations` se aplican a mano con `tablero_app` como dueño (ver README, "Online").
 - **Entrar:** con una cuenta de Telar (mail, nombre y contraseña propios: «Crear cuenta» está siempre a la vista y la cuenta queda **pendiente**
   hasta que el dueño la aprueba en Configuración → Amigos → Solicitudes; con un enlace de invitación que el dueño genera ahí entra aprobada al
   instante; no hace falta cargar variables ni publicar, y el código de `TABLERO_INVITACION` sigue andando si existe)

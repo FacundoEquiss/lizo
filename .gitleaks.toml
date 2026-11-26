@@ -1,0 +1,18 @@
+# Configuración de gitleaks (SRV-8): las reglas de siempre, más lo que NO es un secreto de verdad.
+title = "Telar"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Claves de mentira que usan las pruebas, y archivos que no son código"
+paths = [
+  '''package-lock\.json$''',
+  '''scripts/github-falso\.mjs$''',
+  '''.*\.prueba\.(ts|mjs|cjs)$''',
+  '''scripts/probar-.*''',
+  '''docs/capturas/.*''',
+]
+regexes = [
+  '''(?i)(PRUEBA|prueba|ejemplo|no-es-real|NoEsUnTokenReal|EscritoEnElCodigo|EnElEnvDelRepo|0123456789abcdef)''',
+]
