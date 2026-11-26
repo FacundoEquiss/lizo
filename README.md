@@ -354,6 +354,8 @@ la computadora**: el proveedor falso de las pruebas; nunca en Vercel), `TABLERO_
 pruebas del falso), `TABLERO_GITHUB_API` (solo para probar la lectura de código contra un GitHub de mentira), `TABLERO_IA_FALLA=<punto>` (corta el proceso a propósito en `despues-de-guardar-asistente`, `en-medio-de-herramienta`,
 `despues-de-herramientas`, `antes-de-cerrar` o `despues-de-responder`, una vez, para probar que un corte no repite nada).
 
+La conexión a la base **verifica el certificado** (con la raíz pública de Supabase, incluida en `servidor/src/datos/supabase-ca.ts`). Para otra base con otro certificado, `TABLERO_DB_CA` suma una raíz (PEM); si el certificado no verifica, **no conecta** (no hay plan B); `TABLERO_DB_TLS=sin-verificar` cifra sin verificar, solo como excepción.
+
 Variables opcionales: `TABLERO_PUERTO` (4318), `TABLERO_PUERTO_WEB` (4317), `TABLERO_DATOS`, `TABLERO_DB_URL`, `TABLERO_CLAVE`, `TABLERO_USUARIO` (tu nombre en la app), `TABLERO_SEMILLA_DISCORD` (`no` para no importar nada la primera vez).
 
 ## Licencia

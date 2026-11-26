@@ -20,6 +20,8 @@
     "amigos:probar": "tsx servidor/src/amigos.prueba.ts",
     "recuperacion:probar": "tsx servidor/src/recuperacion.prueba.ts",
     "solicitudes:probar": "tsx servidor/src/solicitudes.prueba.ts",
+    "copia:probar": "tsx --test servidor/src/datos/copiar-base.prueba.ts",
+    "tls:probar": "tsx --test servidor/src/datos/tls.prueba.ts",
     "hecho:probar": "tsx servidor/src/dominio/archivo-hecho.prueba.ts",
     "vistas:probar": "tsx servidor/src/dominio/vistas.prueba.ts",
     "tabla:probar": "tsx compartido/tabla.prueba.ts",

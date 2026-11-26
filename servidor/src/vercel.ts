@@ -24,7 +24,9 @@ export function crearAppOnline() {
   let arranque: Promise<void> | null = null
   const arrancar = () =>
     (arranque ??= (async () => {
-      const url = process.env.TABLERO_DB_URL
+      // Desde la migración a la base propia (SRV-2) la que manda es TABLERO_DB_URL_NUEVA; TABLERO_DB_URL (la del juego) queda de respaldo
+      // y se borra cuando se confirme que todo anda. NO se cae sola a la vieja si la nueva falla: partiría los datos en dos.
+      const url = process.env.TABLERO_DB_URL_NUEVA || process.env.TABLERO_DB_URL
       if (!url) throw new Error('Falta TABLERO_DB_URL.')
       const db = await abrirConexion({ urlPostgres: url, carpetaPglite: '' })
       const bus = new BusEventos(db)

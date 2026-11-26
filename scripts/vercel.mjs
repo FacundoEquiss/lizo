@@ -64,7 +64,7 @@ function configurarFuncion(fn, o) {
         shouldAddHelpers: false,
         supportsResponseStreaming: true,
         maxDuration: 60,
-        regions: ['iad1'], // al lado de la base (Supabase us-east-1)
+        regions: ['gru1'], // al lado de la base (Supabase sa-east-1, São Paulo) y de quienes la usan (Argentina)
         ...o,
       },
       null,
