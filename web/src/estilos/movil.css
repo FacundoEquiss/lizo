@@ -1,0 +1,3031 @@
+/* ═══════════════ Telar en el celular (plan v0.2 del celular) ═══════════════
+   Todas las reglas empiezan con html[data-movil] (la app del teléfono) o html[data-tactil] (cualquier pantalla táctil,
+   también la tablet, que usa la app de escritorio con estos ajustes). Sin esos atributos ninguna regla aplica: en la
+   computadora no se mueve ni un píxel. Colores: solo los tokens de tokens.css (este archivo no define ninguno). */
+
+/* ───────── Medidas ───────── */
+
+html[data-movil] {
+  --m-barra-sup: 52px; /* alto de la barra superior (40 en horizontal) */
+  --m-barra-inf: 56px; /* alto de la barra inferior (ancho del riel en horizontal) */
+  --m-tira: 44px; /* alto de la tira de listas */
+  --m-toque: 44px; /* zona táctil mínima */
+  --m-margen: 16px; /* margen lateral del contenido */
+  --toque: 44px; /* el token de escritorio (32 px) que usan las piezas compartidas: en el teléfono, 44 */
+  --sa-t: env(safe-area-inset-top, 0px);
+  --sa-r: env(safe-area-inset-right, 0px);
+  --sa-b: env(safe-area-inset-bottom, 0px);
+  --sa-l: env(safe-area-inset-left, 0px);
+  --teclado: 0px; /* lo pone teclado.ts (iOS); en Android la página se achica sola */
+}
+
+/* Letra base de 15 px en el teléfono (escritorio 14): a 30 cm de la cara y con el pulgar encima, 13,75 cansa. */
+html[data-movil] body {
+  font-size: 15px;
+}
+
+html[data-movil][data-apaisado] {
+  --m-barra-sup: 40px;
+}
+
+/* ───────── Base táctil (3.2) ───────── */
+
+html[data-tactil] * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Estado apretado propio: en táctil no hay hover que avise que algo se toca. Una capa interior oscurece sin pisar el
+   color del botón. Las tarjetas y las cabeceras de lista tienen el suyo (se arrastran). */
+html[data-tactil] :is(button, [role='button'], .fila-tactil):not(:disabled, .ordenable, .lista__cabecera, .react-flow *) {
+  transition:
+    box-shadow 160ms var(--curva),
+    transform 160ms var(--curva),
+    background 160ms var(--curva),
+    color 160ms var(--curva);
+}
+
+html[data-tactil] :is(button, [role='button'], .fila-tactil):not(:disabled, .ordenable, .lista__cabecera, .react-flow *):active {
+  box-shadow: inset 0 0 0 100vmax var(--c-activo);
+  transform: scale(0.97);
+  transition-duration: 80ms;
+}
+
+html[data-tactil] .ordenable:active .tarjeta {
+  transform: scale(0.985);
+}
+
+/* Mantener apretado es el gesto de arrastrar: no abre la lupa ni el menú de copiar. Lo escrito sí se copia. */
+html[data-tactil] body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+html[data-tactil] :is(.md, .descripcion, .comentario__texto, .porque__valor, input, textarea, [contenteditable], .mono) {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+
+/* Sin "tirar para recargar" ni rebote de toda la página: cada zona con scroll rebota sola. */
+html[data-tactil],
+html[data-tactil] body {
+  overscroll-behavior: none;
+}
+
+/* Solo en el eje en que se desplazan: un deslizamiento horizontal sobre una lista tiene que llegar al paginado. */
+html[data-tactil] :is(.lista__tarjetas, .hoja__marco, .panel__lista, .paleta__lista, .selector__lista, .menu__lista, .dialogo) {
+  overscroll-behavior-y: contain;
+}
+
+/* Sin zoom por doble toque ni por pellizco de la página (el lienzo hace su propio zoom: React Flow pone touch-action: none). */
+html[data-tactil] #app {
+  touch-action: pan-x pan-y;
+}
+
+/* Lo que aparece "al pasar el mouse" no existe con el dedo. */
+html[data-tactil] [data-tip]:hover::after {
+  display: none;
+}
+
+html[data-tactil] :is(.lista__agregar-tecla, .kbd, .alta__ayuda, .editor-md__ayuda, .comentar__ayuda, .aviso-herramienta__tecla, .composer-lienzo__ayuda) {
+  display: none;
+}
+
+html[data-tactil] .lista__cabecera {
+  touch-action: manipulation;
+}
+
+/* Que mantener apretado una portada arrastre la tarjeta en vez de abrir "Guardar imagen". */
+html[data-tactil] img {
+  -webkit-user-drag: none;
+}
+
+html[data-tactil] .tarjeta img {
+  pointer-events: none;
+}
+
+/* ───────── Zonas táctiles (3.2): 44 px como mínimo, 48 donde hay lugar ───────── */
+
+html[data-tactil] .boton-icono {
+  width: 44px;
+  height: 44px;
+}
+
+html[data-tactil] .boton-icono > svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* El chico se ve de 32 pero su zona táctil llega a 44. */
+html[data-tactil] .boton-icono.boton-icono--chico {
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+html[data-tactil] .boton-icono.boton-icono--chico::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
+html[data-tactil] .boton-icono.boton-icono--chico > svg {
+  width: 16px;
+  height: 16px;
+}
+
+html[data-tactil] :is(.menu__item, .selector__item) {
+  min-height: 48px;
+  gap: 12px;
+  font-size: 16px;
+}
+
+html[data-tactil] .pildora {
+  height: 40px;
+  font-size: 15px;
+}
+
+html[data-tactil] .boton {
+  min-height: 44px;
+}
+
+html[data-tactil] .boton.boton--chico {
+  min-height: 40px;
+}
+
+/* En el teléfono, 44 (en la tablet alcanza con 40: hay más lugar y el dedo llega mejor). */
+html[data-movil] .pildora {
+  height: 44px;
+}
+
+html[data-movil] .boton.boton--chico {
+  min-height: 44px;
+}
+
+/* La cruz de los avisos: se ve de 26 y se toca en 44. */
+html[data-movil] .aviso__cerrar {
+  position: relative;
+}
+
+html[data-movil] .aviso__cerrar::before {
+  content: '';
+  position: absolute;
+  inset: -9px;
+}
+
+/* Colores (de un proyecto, de una portada): 40 a la vista, 44 al tocar, 8 entre zonas. */
+html[data-movil] .portadas {
+  gap: 12px;
+  padding: 4px 2px;
+}
+
+html[data-movil] .portadas__color {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+}
+
+html[data-movil] .portadas__color::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+}
+
+/* Las claves de la actividad (RC-12) son links de una línea: se tocan en 44 de alto. */
+html[data-movil] .actividad .enlace {
+  position: relative;
+  z-index: 1; /* su zona va por encima del renglón de al lado */
+}
+
+html[data-movil] .actividad .enlace::before {
+  content: '';
+  position: absolute;
+  inset: -14px -6px;
+}
+
+html[data-tactil] .lista__agregar {
+  height: 48px;
+}
+
+html[data-tactil] .lista__cabecera {
+  min-height: 52px;
+}
+
+/* Los botones redondos del encabezado de la lista («+» y «⋯»): 36 a la vista, 44 al tocar y 8 entre zonas (36 + 8 = 44
+   de centro a centro, así que las zonas no se pisan). */
+html[data-tactil] .lista__botones {
+  gap: 8px;
+}
+
+html[data-tactil] .lista__boton {
+  width: 36px;
+  height: 36px;
+}
+
+html[data-tactil] .lista__boton::before {
+  inset: -4px;
+}
+
+html[data-tactil] .lista__boton > svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ───────── Campos: nunca menos de 16 px (3.3) ─────────
+   Safari de iOS agranda la página al enfocar un campo de menos de 16 px y no la devuelve. Los del lienzo quedan
+   afuera (están escalados con el zoom; ahí iOS recibe maximum-scale=1 desde index.html). */
+
+html[data-tactil] :is(input, textarea, select, [contenteditable='true']):not(.react-flow *, .hoja__titulo) {
+  font-size: 16px;
+}
+
+/* ───────── Alto de la app ───────── */
+
+html[data-movil] #app {
+  height: 100%;
+  height: 100dvh;
+}
+
+/* ───────── Hoja inferior (2.4) ───────── */
+
+html[data-movil] .hoja-inferior__capa {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+html[data-movil] .hoja-inferior__velo {
+  position: absolute;
+  inset: 0;
+  background: var(--velo);
+  pointer-events: auto;
+  touch-action: none;
+}
+
+html[data-movil] .hoja-inferior {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: calc(100dvh - var(--teclado, 0px) - var(--sa-t, 0px) - 24px);
+  margin-bottom: var(--teclado, 0px);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  background: var(--c-elevada);
+  box-shadow: var(--sombra-hoja);
+  pointer-events: auto;
+  outline: none;
+  overflow: hidden;
+}
+
+html[data-movil] .hoja-inferior--completa {
+  height: calc(100dvh - var(--teclado, 0px) - var(--sa-t, 0px) - 12px);
+  max-height: none;
+}
+
+html[data-movil] .hoja-inferior__agarre {
+  flex-shrink: 0;
+  touch-action: none;
+  cursor: grab;
+}
+
+html[data-movil] .hoja-inferior__barrita {
+  display: block;
+  width: 36px;
+  height: 4px;
+  margin: 10px auto;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--c-texto-3) 40%, transparent);
+}
+
+html[data-movil] .hoja-inferior__titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: -6px;
+  padding: 0 8px 4px 20px;
+}
+
+html[data-movil] .hoja-inferior__titulo h2 {
+  flex: 1;
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html[data-movil] .hoja-inferior__cerrar {
+  width: 44px;
+  height: 44px;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .hoja-inferior__cabecera {
+  flex-shrink: 0;
+  padding: 0 var(--m-margen, 16px) 8px;
+}
+
+html[data-movil] .hoja-inferior__contenido {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: max(12px, var(--sa-b, 0px));
+}
+
+html[data-movil] .hoja-inferior__pie {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px var(--m-margen, 16px) max(12px, var(--sa-b, 0px));
+  background: var(--c-elevada);
+  box-shadow: 0 -1px 0 var(--c-hover-fuerte);
+}
+
+html[data-movil] .hoja-inferior:has(.hoja-inferior__pie) .hoja-inferior__contenido {
+  padding-bottom: 12px;
+}
+
+/* En horizontal: panel a la derecha, de alto completo. */
+html[data-movil] .hoja-inferior__capa[data-apaisado] {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+html[data-movil] .hoja-inferior__capa[data-apaisado] .hoja-inferior {
+  width: min(420px, 60vw);
+  height: 100%;
+  max-height: none;
+  margin-bottom: 0;
+  border-radius: var(--r-xl) 0 0 var(--r-xl);
+  padding-top: var(--sa-t, 0px);
+  padding-right: var(--sa-r, 0px);
+}
+
+html[data-movil] .hoja-inferior__capa[data-apaisado] .hoja-inferior__contenido {
+  padding-bottom: calc(max(12px, var(--sa-b, 0px)) + var(--teclado, 0px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-movil] .hoja-inferior__agarre {
+    cursor: default;
+  }
+}
+
+/* ═══════════════ Marco de la app (4.1) ═══════════════
+   Una columna: barra superior, escena y barra inferior. Las barras son parte de la columna (no position: fixed): la
+   escena mide exactamente lo que queda, sin rellenos sumados a mano ni peleas con el teclado. */
+
+html[data-movil] .app-movil {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--c-fondo);
+}
+
+html[data-movil] .escena-movil {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+}
+
+html[data-movil] .escena-movil__vista {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  animation: aparecer-escena 160ms var(--curva) both;
+}
+
+@keyframes aparecer-escena {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ───────── Barra superior ───────── */
+
+html[data-movil] .barra-movil {
+  position: relative;
+  z-index: 30;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: calc(var(--m-barra-sup) + var(--sa-t));
+  padding: var(--sa-t) max(8px, var(--sa-r)) 0 max(8px, var(--sa-l));
+  background: var(--c-fondo);
+}
+
+html[data-movil] .barra-movil__titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  max-width: 70%;
+  min-height: 44px;
+  padding: 0 8px 0 4px;
+  border-radius: var(--r-m);
+  text-align: left;
+}
+
+html[data-movil] .barra-movil__nombre {
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-movil] .barra-movil__flecha {
+  flex-shrink: 0;
+  margin-left: -6px;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .barra-movil__espacio {
+  flex: 1;
+}
+
+html[data-movil] .barra-movil__estado {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+html[data-movil] .barra-movil__punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c-texto-3);
+}
+
+html[data-movil] .barra-movil__estado--vivo .barra-movil__punto {
+  background: var(--c-ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-ok) 18%, transparent);
+}
+
+html[data-movil] .barra-movil__estado--ia .barra-movil__punto {
+  background: var(--c-ia);
+  animation: latir-ia 1.6s ease-out infinite;
+}
+
+@keyframes latir-ia {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--c-ia) 50%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+html[data-movil] .barra-movil__accion {
+  position: relative;
+  color: var(--c-texto-2);
+}
+
+/* El menú (⋮): siempre en el borde derecho, al lado del punto de conexión. */
+html[data-movil] .barra-movil__menu {
+  position: relative;
+  flex-shrink: 0;
+  color: var(--c-texto-2);
+}
+
+/* Los botones de la cabecera son redondos (como la zona del punto) y con el dedo no se quedan "pasados" después de
+   tocarlos: el hover del mouse queda pegado en táctil. Lo apretado se ve igual (base táctil). */
+html[data-movil] .barra-movil :is(.barra-movil__accion, .barra-movil__menu) {
+  border-radius: 50%;
+}
+
+html[data-tactil][data-movil] .barra-movil :is(.barra-movil__accion, .barra-movil__menu):hover:not([data-abierto='true']) {
+  background: transparent;
+}
+
+html[data-tactil][data-movil] .barra-movil :is(.barra-movil__menu, .barra-movil__accion:not(.barra-movil__accion--activa)):hover {
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .barra-movil__menu > svg {
+  width: 22px;
+  height: 22px;
+}
+
+html[data-movil] .barra-movil__accion--activa {
+  color: var(--c-acento-fuerte);
+}
+
+html[data-movil] .barra-movil__marca {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-acento);
+  box-shadow: 0 0 0 2px var(--c-fondo);
+}
+
+/* La IA trabajando: pastilla debajo de la barra, encima de la escena (no empuja nada). */
+html[data-movil] .barra-movil__ia {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  translate: -50% 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--c-ia-suave);
+  color: var(--c-ia);
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+  box-shadow: var(--sombra-2);
+  pointer-events: none;
+}
+
+html[data-movil] .barra-movil__ranura {
+  flex: 1;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+html[data-movil][data-apaisado] .barra-movil__titulo {
+  max-width: 200px;
+  min-height: 40px;
+}
+
+/* ───────── Barra inferior ───────── */
+
+/* Cinco lugares de igual ancho: Kanban, Lienzo, Agregar (en el medio exacto), Diseño y Buscar. Todos los íconos de 24 px
+   con el mismo trazo, los rótulos de 11,5 px en una sola línea y el bloque ícono + rótulo centrado en el alto de la barra,
+   igual que el botón de agregar: así las cinco piezas quedan alineadas. */
+html[data-movil] .barra-inferior {
+  position: relative;
+  z-index: 30;
+  flex-shrink: 0;
+  display: grid;
+  /* Los lugares que tiene el tablero abierto (BarraInferior: un diagrama trae menos que uno completo). */
+  grid-template-columns: repeat(var(--n-lugares, 5), minmax(0, 1fr));
+  align-items: center;
+  height: calc(var(--m-barra-inf) + var(--sa-b));
+  padding: 0 max(4px, var(--sa-r)) var(--sa-b) max(4px, var(--sa-l));
+  background: var(--c-lateral);
+}
+
+/* Con el teclado abierto quedan unos 350 px útiles: la barra se esconde. */
+html[data-movil][data-teclado] .barra-inferior {
+  display: none;
+}
+
+html[data-movil] .barra-inferior__lugar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+  height: var(--m-barra-inf);
+  /* texto-2 y no texto-3: el rótulo chico tiene que llegar a 4,5:1 contra el fondo en los dos temas (10.2). */
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .barra-inferior__lugar--activo {
+  color: var(--c-texto);
+}
+
+/* Apretado: se marca la pastilla del ícono (no el rectángulo entero del lugar). */
+html[data-tactil][data-movil] .barra-inferior__lugar:not(.barra-inferior__lugar--agregar):active {
+  box-shadow: none;
+  transform: none;
+}
+
+html[data-movil] .barra-inferior__icono {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 30px;
+  border-radius: 999px;
+  transition: background 160ms var(--curva), scale 160ms var(--curva);
+}
+
+html[data-tactil][data-movil] .barra-inferior__lugar:active .barra-inferior__icono {
+  background: var(--c-activo);
+  scale: 0.94;
+  transition-duration: 80ms;
+}
+
+html[data-movil] .barra-inferior__icono svg {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+html[data-movil] .barra-inferior__fondo {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--c-activo);
+}
+
+html[data-movil] .barra-inferior__texto {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.005em;
+}
+
+html[data-movil] .barra-inferior__lugar--agregar {
+  gap: 0;
+}
+
+/* El botón principal: en el medio exacto de la barra, a la altura del bloque ícono + rótulo de los demás. */
+html[data-movil] .barra-inferior__agregar {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 42px;
+  border-radius: 15px;
+  background: var(--c-acento-solido, var(--c-acento));
+  color: var(--c-sobre-acento, var(--c-texto-inv));
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--c-acento) 30%, transparent),
+    0 4px 12px -4px color-mix(in srgb, var(--c-acento) 70%, transparent);
+}
+
+/* ───────── Horizontal: riel a la izquierda, barra superior de 40 px ───────── */
+
+html[data-movil] .app-movil--apaisado {
+  display: grid;
+  grid-template-columns: calc(var(--m-barra-inf) + var(--sa-l)) minmax(0, 1fr);
+  /* barra superior, franja de sin conexión (0 si no está) y escena */
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+html[data-movil] .app-movil--apaisado .barra-movil {
+  grid-column: 2;
+  grid-row: 1;
+  padding-left: 6px;
+}
+
+html[data-movil] .app-movil--apaisado .escena-movil {
+  grid-column: 2;
+  grid-row: 3;
+  padding-right: var(--sa-r);
+}
+
+html[data-movil] .app-movil--apaisado .barra-inferior {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  grid-template-columns: none;
+  grid-template-rows: repeat(var(--n-lugares, 5), 56px);
+  align-content: center;
+  height: auto;
+  padding: var(--sa-t) 0 var(--sa-b) var(--sa-l);
+}
+
+html[data-movil] .app-movil--apaisado .barra-inferior__lugar {
+  height: 56px;
+}
+
+html[data-movil] .app-movil--apaisado .barra-inferior__agregar {
+  width: 44px;
+  height: 44px;
+}
+
+/* ───────── Filas táctiles ───────── */
+
+html[data-movil] .fila-tactil {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 56px;
+  padding: 6px var(--m-margen);
+  text-align: left;
+  color: var(--c-texto);
+  font-size: 16px;
+}
+
+html[data-movil] .fila-tactil--48 {
+  min-height: 48px;
+}
+
+html[data-movil] .fila-tactil--60 {
+  min-height: 60px;
+}
+
+html[data-movil] .fila-tactil__icono {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  flex-shrink: 0;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .fila-tactil__texto {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+html[data-movil] .fila-tactil__principal {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 540;
+}
+
+html[data-movil] .fila-tactil__bajada {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .fila-tactil__detalle {
+  display: inline-flex;
+  align-items: center;
+  color: var(--c-texto-3);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-movil] .fila-tactil__flecha {
+  flex-shrink: 0;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .fila-tactil--peligro,
+html[data-movil] .fila-tactil--peligro .fila-tactil__icono {
+  color: var(--c-peligro);
+}
+
+html[data-movil] .sello-movil {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+/* Textos chicos de piezas de escritorio que en el teléfono se leen a 30 cm y al sol: un tono más firme (4,5:1). */
+html[data-movil] .tarjeta__clave span {
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .lista__cuenta {
+  color: var(--c-texto);
+}
+
+html[data-movil] .pildora.pildora--elegida {
+  background: var(--c-acento-tinte);
+  color: var(--c-acento-fuerte);
+}
+
+html[data-movil] .interruptor {
+  position: relative;
+  flex-shrink: 0;
+  width: 46px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--c-hundido-2);
+  transition: background 160ms var(--curva);
+}
+
+html[data-movil] .interruptor::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+  transition: translate 220ms var(--curva-resorte);
+}
+
+html[data-movil] .interruptor--si {
+  background: var(--c-ok);
+}
+
+html[data-movil] .interruptor--si::after {
+  translate: 18px 0;
+}
+
+/* ───────── Selector de proyectos y tableros (4.2) ───────── */
+
+html[data-movil] .selector-tablero__cabecera {
+  gap: 12px;
+}
+
+html[data-movil] .selector-tablero__nombre {
+  font-size: 16px;
+  font-weight: 650;
+}
+
+html[data-movil] .selector-tablero__flecha {
+  flex-shrink: 0;
+  color: var(--c-texto-3);
+  rotate: -90deg;
+  transition: rotate 200ms var(--curva);
+}
+
+html[data-movil] .selector-tablero__flecha--abierta {
+  rotate: 0deg;
+}
+
+html[data-movil] .selector-tablero__tableros {
+  overflow: hidden;
+  padding: 0 12px 6px 46px;
+}
+
+html[data-movil] .selector-tablero__tablero {
+  padding: 0 16px;
+  border-radius: var(--r-m);
+}
+
+html[data-movil] .selector-tablero__tablero--actual {
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+}
+
+html[data-movil] .selector-tablero__tablero--actual .fila-tactil__principal {
+  font-weight: 650;
+}
+
+html[data-movil] .selector-tablero__nuevo {
+  gap: 10px;
+  padding: 0 16px;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .selector-tablero__nuevo-proyecto {
+  margin-top: 4px;
+  box-shadow: inset 0 1px 0 var(--c-hover-fuerte);
+}
+
+html[data-movil] .campo-en-linea {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+html[data-movil] .campo-en-linea__campo {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+}
+
+html[data-movil] .campo-en-linea .boton {
+  flex-shrink: 0;
+  padding: 0 12px;
+}
+
+/* ───────── Buscar (4.3) ───────── */
+
+/* Arriba lleva aire: el campo enfocado tiene un anillo de 2 px por fuera y, pegado al borde de la zona que se desplaza
+   (la hoja no tiene título), quedaba cortado arriba. */
+html[data-movil] .buscar-movil__fijo {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 6px var(--m-margen) 10px;
+  background: var(--c-elevada);
+}
+
+html[data-movil] .buscar-movil__fila {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+html[data-movil] .buscar-movil__campo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 6px 0 14px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  color: var(--c-texto-3);
+  transition:
+    background var(--t-rapido),
+    box-shadow var(--t-rapido);
+}
+
+html[data-movil] .buscar-movil__campo:focus-within {
+  background: var(--c-superficie);
+  box-shadow: 0 0 0 2px var(--c-foco);
+}
+
+html[data-movil] .buscar-movil__campo input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  color: var(--c-texto);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+html[data-movil] .buscar-movil__campo input::-webkit-search-cancel-button {
+  display: none;
+}
+
+html[data-movil] .buscar-movil__borrar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .buscar-movil__cancelar {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 4px;
+  color: var(--c-acento-fuerte);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+html[data-movil] .buscar-movil__alcance {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+html[data-movil] .buscar-movil__lista {
+  transition: opacity var(--t-rapido);
+}
+
+html[data-movil] .buscar-movil__lista--buscando {
+  opacity: 0.5;
+}
+
+html[data-movil] .buscar-movil__titulo {
+  padding: 14px var(--m-margen) 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .buscar-movil__vacio {
+  padding: 32px var(--m-margen);
+  text-align: center;
+  color: var(--c-texto-3);
+  font-size: 15px;
+}
+
+html[data-movil] .buscar-movil__aviso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px var(--m-margen) 4px;
+  padding: 8px 12px;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+  font-size: 13px;
+}
+
+html[data-movil] .buscar-movil__resultado .fila-tactil__principal {
+  font-size: 16px;
+}
+
+html[data-movil] .buscar-movil__resultado b {
+  font-weight: 760;
+}
+
+/* Buscar en el lienzo (la lupa de arriba del lienzo): la misma hoja, con el filtro por tipo en una fila. */
+html[data-movil] .buscar-lienzo__filtros {
+  flex-wrap: nowrap;
+  margin-top: 10px;
+}
+
+html[data-movil] .buscar-lienzo__filtros .segmentado__opcion {
+  min-width: 0;
+  height: 44px;
+  padding: 0 6px;
+  border-radius: 9px;
+  font-size: 15px;
+}
+
+/* ───────── Hoja "Más" (4.4) ───────── */
+
+html[data-movil] .hoja-mas__temas {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 13px;
+  background: var(--c-hover);
+}
+
+html[data-movil] .hoja-mas__opcion-tema {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 44px;
+  border-radius: 10px;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .hoja-mas__opcion-tema svg {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-movil] .hoja-mas__opcion-tema--activa {
+  color: var(--c-texto);
+}
+
+html[data-movil] .hoja-mas__fondo-tema {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+}
+
+html[data-movil] .hoja-mas__confirmar {
+  margin: 6px var(--m-margen);
+  padding: 14px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+}
+
+html[data-movil] .hoja-mas__confirmar p {
+  color: var(--c-texto-2);
+  font-size: 15px;
+}
+
+html[data-movil] .hoja-mas__confirmar-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+html[data-movil] .hoja-mas__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  margin-top: 6px;
+  padding: 0 var(--m-margen);
+  color: var(--c-texto-3);
+  font-size: 12px;
+}
+
+html[data-movil] .hoja-crear {
+  padding-bottom: 4px;
+}
+
+/* ───────── Desplegables de escritorio como hoja (6.4, N5) ───────── */
+
+html[data-movil] .hoja-desplegable .menu__lista {
+  padding: 0 8px;
+  overflow: visible;
+}
+
+html[data-movil] .hoja-desplegable :is(.menu__item, .selector__item) {
+  border-radius: var(--r-m);
+  padding: 0 12px;
+}
+
+html[data-movil] .hoja-desplegable .menu__separador {
+  margin: 6px 12px;
+}
+
+html[data-movil] .hoja-desplegable .selector {
+  max-height: none;
+}
+
+html[data-movil] .hoja-desplegable .selector__buscar {
+  height: 44px;
+  margin: 0 var(--m-margen) 8px;
+  border-radius: var(--r-m);
+}
+
+html[data-movil] .hoja-desplegable .selector__lista {
+  max-height: none;
+  overflow: visible;
+  padding: 0 8px;
+}
+
+html[data-movil] .hoja-desplegable :is(.fechas, .nuevo-vinculo) {
+  padding: 0 var(--m-margen);
+}
+
+html[data-movil] .fechas-rapidas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 var(--m-margen) 14px;
+}
+
+html[data-movil] .fechas-rapidas__opcion {
+  height: 44px;
+  padding: 0 16px;
+}
+
+html[data-movil] .fechas-rapidas__opcion--quitar {
+  color: var(--c-peligro);
+}
+
+/* ───────── Diálogos y paneles de escritorio, como hojas (4.5) ───────── */
+
+html[data-movil] .velo {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-movil] .velo--centro {
+  place-items: end stretch;
+  padding: 0;
+}
+
+html[data-movil] .velo--centro .dialogo {
+  width: 100%;
+  max-height: calc(100dvh - var(--sa-t) - 24px - var(--teclado));
+  margin-bottom: var(--teclado);
+  padding: 20px var(--m-margen) max(16px, var(--sa-b));
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  overscroll-behavior: contain;
+}
+
+html[data-movil] .dialogo .campos-fila {
+  grid-template-columns: 1fr;
+}
+
+html[data-movil] .dialogo__pie .boton {
+  min-height: 48px;
+  padding: 0 18px;
+}
+
+html[data-movil] .panel {
+  inset: 0;
+  width: auto;
+  padding: var(--sa-t) var(--sa-r) var(--sa-b) var(--sa-l);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html[data-movil] .panel__cabecera {
+  min-height: 56px;
+  padding: 6px 6px 6px var(--m-margen);
+}
+
+html[data-movil] .panel__lista {
+  padding: 0 8px max(14px, var(--sa-b));
+}
+
+/* Los avisos van sobre la barra inferior (y sobre el teclado). */
+html[data-movil] .avisos {
+  bottom: calc(var(--m-barra-inf) + var(--sa-b) + 12px + var(--teclado));
+  width: max-content;
+  max-width: calc(100vw - 32px);
+}
+
+html[data-movil] .aviso {
+  max-width: calc(100vw - 32px);
+  font-size: 14.5px;
+}
+
+html[data-movil] .app-movil--lienzo .avisos {
+  bottom: calc(var(--m-barra-inf) + var(--sa-b) + 76px + var(--teclado));
+}
+
+html[data-movil][data-teclado] .avisos {
+  bottom: calc(12px + var(--teclado));
+}
+
+html[data-movil][data-apaisado] .avisos {
+  bottom: calc(12px + var(--sa-b) + var(--teclado));
+}
+
+/* ═══════════════ Lienzo, versión mínima (7.7) ═══════════════
+   Sin contrato con el lienzo de escritorio: solo CSS para que se pueda usar desde el primer día. El paquete H lo
+   reemplaza por la capa del celular (gestos, menús, barras propias). */
+
+html[data-movil] .lienzo .react-flow__minimap,
+html[data-movil] .lienzo .controles :is([aria-label='Alejar'], [aria-label='Zoom'], [aria-label='Acercar'], [aria-label='Minimapa'], [aria-label='Navegación'], .controles__sep) {
+  display: none;
+}
+
+html[data-movil] .lienzo .react-flow__panel {
+  margin: 10px;
+}
+
+html[data-movil] .lienzo .panel-lienzo .boton-flotante {
+  position: relative;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  gap: 0;
+  border-radius: 14px;
+  font-size: 0;
+}
+
+html[data-movil] .lienzo .panel-lienzo .boton-flotante > svg {
+  width: 20px;
+  height: 20px;
+}
+
+html[data-movil] .lienzo .boton-flotante__cuenta {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 10.5px;
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+}
+
+html[data-movil] .lienzo .controles {
+  padding: 0;
+  gap: 0;
+  border-radius: 14px;
+}
+
+html[data-movil] .lienzo .controles .control {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+}
+
+/* La barra de herramientas: pegada a la barra inferior, centrada, con botones de 44 px. Entra siempre entera: lo que
+   no cabe va a su botón ⋯ (Herramientas.tsx); el scroll queda solo de respaldo. */
+html[data-movil] .lienzo .react-flow__panel.panel-lienzo--abajo {
+  left: 0;
+  right: 0;
+  transform: none;
+  margin: 0 8px 8px !important;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Las opciones de Nota y Forma, centradas sobre la barra y en dos renglones si no entran (las 13 formas). */
+html[data-movil] .lienzo .herramientas__opciones {
+  left: 50% !important;
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+html[data-movil] .lienzo .herramientas__opciones:has(.herramientas__color) {
+  max-width: 236px;
+}
+
+html[data-movil] .lienzo .herramientas__color {
+  width: 30px;
+  height: 30px;
+  margin: 3px;
+}
+
+/* El aviso de la herramienta ("Tocá donde va la nota"): en la franja de los botones de arriba, con su mismo alto, centrado
+   y sin pisar el botón de centrar (deja libre lo mismo a los dos lados). Ícono de 18 px en un círculo de 32, texto de
+   14 px en uno o dos renglones. No recibe toques: un toque ahí llega al lienzo. */
+html[data-movil] .aviso-lienzo {
+  position: absolute;
+  z-index: 6;
+  top: 10px;
+  left: 62px;
+  right: 62px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+html[data-movil] .aviso-lienzo__pastilla {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  max-width: 300px;
+  padding: 6px 16px 6px 6px;
+  border-radius: 22px;
+  background: var(--c-texto);
+  color: var(--c-fondo);
+  box-shadow: var(--sombra-2);
+}
+
+html[data-movil] .aviso-lienzo__icono {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--c-fondo) 18%, transparent);
+}
+
+html[data-movil] .aviso-lienzo__texto {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 620;
+  line-height: 1.25;
+  text-align: left;
+  text-wrap: balance;
+}
+
+/* Mientras está el aviso, los botones de la izquierda se apartan (en un teléfono parado no entran los dos). */
+html[data-movil] .lienzo .react-flow__panel.panel-lienzo.top.left {
+  transition: opacity 160ms var(--curva);
+}
+
+@container lienzo (max-width: 620px) {
+  html[data-movil] .lienzo:has(.aviso-lienzo__pastilla):not(:has(.composer-lienzo)) .react-flow__panel.panel-lienzo.top.left {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/* Ya se tocó: mientras se escribe el título de la tarjeta nueva, el aviso no hace falta. */
+html[data-movil] .lienzo:has(.composer-lienzo) .aviso-lienzo {
+  opacity: 0;
+}
+
+/* Centrar: el mismo botón flotante que los de la izquierda. */
+html[data-movil] .lienzo .panel-lienzo--centrar .boton-flotante:disabled {
+  opacity: 0.45;
+}
+
+/* Escribiendo con el teclado abierto quedan unos 300 px de lienzo: los botones de arriba se apartan para dejarle lugar
+   a lo que se escribe (EdicionVisible lo lleva ahí). Vuelven al cerrar el teclado. */
+html[data-movil] .lienzo :is(.react-flow__panel.panel-lienzo.top, .aviso-lienzo) {
+  transition: opacity 160ms var(--curva);
+}
+
+html[data-movil][data-teclado] .lienzo--editando :is(.react-flow__panel.panel-lienzo.top, .aviso-lienzo) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Tarjeta nueva desde el lienzo: el campo va abajo, pegado al teclado (donde se escribe en el teléfono), a todo el
+   ancho. La tarjeta queda donde se tocó. */
+html[data-movil] .lienzo .composer-lienzo {
+  top: auto !important;
+  left: 8px !important;
+  right: 8px;
+  bottom: calc(8px + var(--teclado, 0px));
+  width: auto;
+}
+
+html[data-movil] .lienzo .composer-lienzo__fila input {
+  height: 48px;
+  font-size: 16px;
+}
+
+html[data-movil] .lienzo .composer-lienzo__lista {
+  max-width: 44%;
+}
+
+html[data-movil] .lienzo .composer-lienzo__lista select {
+  max-width: none;
+  border: 0;
+  outline: none;
+}
+
+html[data-movil] .lienzo .herramientas__forma {
+  width: 40px;
+  height: 40px;
+}
+
+html[data-movil] .lienzo .herramientas {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  padding: 4px;
+  border-radius: 16px;
+}
+
+html[data-movil] .lienzo .herramientas::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-movil] .lienzo .herramienta {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+}
+
+html[data-movil] .lienzo .herramientas__sep {
+  margin: 0 3px;
+}
+
+/* El aviso de herramienta va arriba de la barra y no la mueve. */
+html[data-movil] .lienzo .ayuda-herramienta {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  translate: -50% 0;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+/* Manijas de conector: siempre visibles en el objeto elegido, con zona táctil de 32 px. */
+html[data-movil] .react-flow__node:not(.selected) .manija.react-flow__handle {
+  opacity: 0;
+}
+
+html[data-movil] .lienzo--conector .react-flow__node .manija.react-flow__handle,
+html[data-movil] .react-flow__node.selected .manija.react-flow__handle {
+  opacity: 1;
+  width: 14px;
+  height: 14px;
+}
+
+html[data-movil] .manija.react-flow__handle::after {
+  content: '';
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+}
+
+html[data-movil] .lienzo .react-flow__attribution {
+  bottom: 62px;
+}
+
+html[data-movil] .lienzo .panel-tarjetas {
+  top: 64px;
+  left: 8px;
+  right: 8px;
+  bottom: 72px;
+  width: auto;
+}
+
+html[data-movil] .lienzo .panel-tarjetas__ayuda {
+  visibility: hidden;
+}
+
+html[data-movil] .lienzo .mini-tarjeta {
+  min-height: 44px;
+}
+
+/* ═══════════════ Kanban en el celular (5) ═══════════════
+   El mismo Kanban de escritorio, con una lista por pantalla: paginado a presión y la siguiente asomando 22 px. Es el
+   único modelo que deja la tarjeta entera y legible (345 px de ancho en un iPhone 15, más que los 272 de escritorio). */
+
+html[data-movil] .ranura-tira {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: var(--m-tira);
+  padding: 0 var(--sa-r) 0 var(--sa-l);
+}
+
+html[data-movil] .kanban__lienzo {
+  gap: 10px;
+  padding: 8px var(--m-margen) 12px;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--m-margen);
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  scrollbar-gutter: auto;
+}
+
+html[data-movil] .kanban__lienzo::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-movil] .kanban__lienzo > :is(.lista, .nueva-lista) {
+  flex: 0 0 min(calc(100% - 16px), 420px);
+  width: min(calc(100% - 16px), 420px);
+  scroll-snap-align: start;
+  /* Un deslizamiento = una lista: sin esto, un gesto con impulso saltea tres y hay que volver. */
+  scroll-snap-stop: always;
+}
+
+/* Lugar al final para que la última página ("Agregar lista") también quede alineada a la izquierda. */
+html[data-movil] .kanban__lienzo::after {
+  content: '';
+  flex: 0 0 max(0px, calc(100% - min(calc(100% - 16px), 420px) - 10px));
+}
+
+/* Un cambio dentro de una lista no recalcula las demás. */
+html[data-movil] .lista {
+  contain: layout paint;
+}
+
+/* Durante un arrastre se apaga el paginado: si no, el desplazamiento automático avanza de a pocos píxeles y el
+   navegador lo devuelve a la lista anterior; la tarjeta nunca llegaría a la de al lado. */
+html[data-movil] body.arrastrando .kanban__lienzo {
+  scroll-snap-type: none;
+}
+
+/* En horizontal entran dos listas (y asoma la tercera); con dos a la vista, el paginado estricto molesta. */
+html[data-movil][data-apaisado] .kanban__lienzo {
+  scroll-snap-type: x proximity;
+}
+
+html[data-movil][data-apaisado] .kanban__lienzo > :is(.lista, .nueva-lista) {
+  flex-basis: min(calc((100% - 26px) / 2), 380px);
+  width: min(calc((100% - 26px) / 2), 380px);
+  scroll-snap-stop: normal;
+}
+
+html[data-movil][data-apaisado] .kanban__lienzo::after {
+  flex-basis: 0;
+}
+
+html[data-movil] .lista__cabecera {
+  padding: 8px 8px 8px var(--m-margen);
+}
+
+html[data-movil] .lista__nombre,
+html[data-movil] .lista__nombre-input {
+  font-size: 16px;
+}
+
+html[data-movil] .lista__cuenta {
+  height: 28px;
+  min-width: 28px;
+  font-size: 13px;
+}
+
+/* El pie de la lista (Agregar tarjeta) queda siempre a la vista, pegado abajo. */
+html[data-movil] .lista__pie {
+  padding: 4px 8px 8px;
+}
+
+html[data-movil] .lista__tarjetas {
+  gap: 10px;
+  padding: 2px 8px 8px;
+  overscroll-behavior-x: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  scrollbar-gutter: auto;
+}
+
+html[data-movil] .lista__tarjetas::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-movil] .tarjeta__cuerpo {
+  gap: 8px;
+  padding: 12px 14px;
+}
+
+html[data-movil] .tarjeta__titulo {
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+html[data-movil] :is(.tarjeta__clave, .insignia) {
+  font-size: 12px;
+}
+
+html[data-movil] .lista__agregar {
+  font-size: 15px;
+}
+
+html[data-movil] .nueva-lista {
+  height: 52px;
+  font-size: 15px;
+}
+
+html[data-movil] .nueva-lista--abierta {
+  height: auto;
+}
+
+html[data-movil] .nueva-lista__input {
+  height: 44px;
+}
+
+/* La copia que se arrastra se corre 12 px hacia arriba: el dedo no tapa el título. Al soltar vuelve a su lugar. */
+html[data-tactil] .sombra-arrastre {
+  translate: 0 -12px;
+}
+
+html[data-tactil] .sombra-arrastre {
+  transition:
+    scale 180ms var(--curva),
+    translate 180ms var(--curva);
+}
+
+html[data-tactil] .sombra-arrastre.soltando {
+  translate: 0 0;
+  transition: translate 240ms cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+/* Sobre la tira de listas, la copia se achica y queda debajo del dedo: la pastilla elegida se ve. */
+html[data-movil] body.sobre-tira .sombra-arrastre:not(.soltando) {
+  scale: 0.5;
+  translate: 0 calc(25% + 28px);
+}
+
+/* El aviso de filtro: franja de 36 px a todo el ancho, debajo de la tira. */
+html[data-movil] .kanban__filtro {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 10px;
+  min-height: 36px;
+  height: auto;
+  margin: 0;
+  padding: 4px var(--m-margen);
+  border-radius: 0;
+  font-size: 13px;
+  text-align: center;
+  white-space: normal;
+}
+
+html[data-movil] .kanban__filtro button {
+  position: relative;
+  height: 28px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+html[data-movil] .kanban__filtro button::before {
+  content: '';
+  position: absolute;
+  inset: -8px -4px;
+}
+
+/* ───────── Tira de listas (5.2) ───────── */
+
+html[data-movil] .tira-listas {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--m-margen);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+html[data-movil] .tira-listas::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-movil] .barra-movil__ranura .tira-listas {
+  padding: 0 6px;
+}
+
+html[data-movil] .pastilla-lista {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: var(--c-texto-2);
+  white-space: nowrap;
+  transition:
+    height 160ms var(--curva),
+    scale 160ms var(--curva),
+    background var(--t-lento) var(--curva),
+    color var(--t-rapido);
+}
+
+/* Se ve de 32 px pero se toca en 44. */
+html[data-movil] .pastilla-lista::before {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+}
+
+html[data-movil] .pastilla-lista > :not(.pastilla-lista__fondo) {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-movil] .pastilla-lista__fondo {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+}
+
+html[data-movil] .pastilla-lista--activa {
+  color: var(--c-texto);
+}
+
+html[data-movil] .pastilla-lista__nombre {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+html[data-movil] .pastilla-lista__cuenta {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-texto-2); /* 4,5:1 a 12 px (10.2) */
+  font-variant-numeric: tabular-nums;
+}
+
+/* Durante un arrastre, cada pastilla es un destino. */
+html[data-movil] .tira-listas--arrastrando .pastilla-lista {
+  height: 40px;
+}
+
+html[data-movil] .pastilla-lista--destino {
+  background: var(--c-bandeja-destino);
+  color: var(--c-texto);
+  scale: 1.06;
+}
+
+html[data-movil] .pastilla-lista--destino .pastilla-lista__fondo {
+  background: var(--c-bandeja-destino);
+}
+
+/* ───────── Agregar rápido (5.4) ───────── */
+
+html[data-movil] .compositor-rapido__cuerpo {
+  padding: 0 var(--m-margen) 4px;
+}
+
+html[data-movil] .compositor-rapido__campo {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  max-height: calc(4 * 1.4em + 24px);
+  overflow-y: auto;
+  padding: 12px 0;
+  line-height: 1.4;
+}
+
+html[data-movil] .compositor-rapido__varias {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 8px;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  font-size: 14px;
+}
+
+html[data-movil] .compositor-rapido__varias span {
+  flex: 1 1 100%;
+}
+
+html[data-movil] .compositor-rapido__motivo {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  max-height: calc(3 * 1.4em + 20px);
+  overflow-y: auto;
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  line-height: 1.4;
+}
+
+/* En la hoja hay lugar de sobra: las tres píldoras en fila (y si no entran, bajan). */
+html[data-movil] .compositor-rapido__pildoras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+
+html[data-movil] .compositor-rapido .alta__etiquetas {
+  gap: 6px;
+  margin: -2px 0 10px;
+}
+
+html[data-movil] .compositor-rapido .alta__etiqueta--quitar {
+  position: relative;
+}
+
+html[data-movil] .compositor-rapido .alta__etiqueta--quitar::before {
+  content: '';
+  position: absolute;
+  inset: -10px -4px;
+}
+
+html[data-movil] .compositor-rapido__pie {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+}
+
+html[data-movil] .compositor-rapido__lista {
+  min-width: 0;
+  max-width: 62%;
+}
+
+html[data-movil] .compositor-rapido__lista-nombre {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html[data-movil] .compositor-rapido__donde {
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .compositor-rapido__espacio {
+  flex: 1;
+}
+
+html[data-movil] .compositor-rapido__enviar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--c-acento-solido, var(--c-acento));
+  color: var(--c-sobre-acento, var(--c-texto-inv));
+}
+
+html[data-movil] .compositor-rapido__enviar::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+}
+
+html[data-movil] .compositor-rapido__enviar:disabled {
+  background: var(--c-hundido-2);
+  color: var(--c-texto-3);
+  opacity: 1;
+}
+
+/* ───────── Filtros (5.5) ───────── */
+
+html[data-movil] .hoja-filtros__cuerpo {
+  padding: 0 var(--m-margen) 8px;
+}
+
+html[data-movil] .hoja-filtros__campo {
+  height: 44px;
+}
+
+html[data-movil] .hoja-filtros__grupo h3 {
+  margin: 16px 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .hoja-filtros__opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+html[data-movil] .hoja-filtros__opcion {
+  position: relative;
+  padding: 0 14px;
+}
+
+html[data-movil] .hoja-filtros__opcion::before {
+  content: '';
+  position: absolute;
+  inset: -2px 0;
+}
+
+html[data-movil] .hoja-filtros__ayuda {
+  margin-top: 18px;
+  color: var(--c-texto-3);
+  font-size: 13px;
+}
+
+html[data-movil] .hoja-filtros__espacio {
+  flex: 1;
+}
+
+html[data-movil] .hoja-filtros__ver {
+  min-height: 48px;
+  padding: 0 20px;
+}
+
+/* Con una hoja abierta abajo, los avisos van arriba: si no, tapan el campo que se está usando. */
+html[data-movil] body:has(.hoja-inferior__capa) .avisos {
+  top: calc(var(--sa-t) + 10px);
+  bottom: auto;
+}
+
+/* ═══════════════ La tarjeta a pantalla completa (6) ═══════════════
+   Usa el contenido de escritorio tal cual; acá se arma el orden del teléfono: título, propiedades en una grilla de dos
+   columnas, acciones rápidas, descripción, el porqué, lo demás, enlaces, comentarios y el pie. */
+
+html[data-movil] .hoja.hoja-movil {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 75;
+  width: 100%;
+  height: calc(100dvh - var(--teclado));
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--c-superficie);
+  outline: none;
+}
+
+html[data-movil] .hoja-movil__contenido {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+html[data-movil] .hoja-movil .hoja__marco {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+  scrollbar-gutter: auto;
+  /* Lo que se enfoca queda por encima de lo fijo de abajo (comentar, la barra Guardar): 56 + 16 de aire. */
+  scroll-padding-bottom: calc(72px + var(--sa-b));
+}
+
+html[data-movil][data-apaisado] .hoja-movil :is(.hoja__principal, .hoja__lateral) {
+  scroll-padding-bottom: calc(72px + var(--sa-b));
+}
+
+html[data-movil] .hoja-movil .hoja__marco::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-movil] .hoja-movil__cerrar {
+  position: absolute;
+  top: calc(var(--sa-t) + 4px);
+  left: max(4px, var(--sa-l));
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .hoja-movil__aviso {
+  position: absolute;
+  top: calc(52px + var(--sa-t));
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  margin: 0;
+  padding: 6px var(--m-margen);
+  background: var(--c-hundido-2);
+  color: var(--c-texto-2);
+  font-size: 13px;
+}
+
+html[data-movil] .hoja-movil:has(.hoja-movil__aviso) .hoja__cuerpo {
+  padding-top: 44px;
+}
+
+/* Una tarjeta que nunca se abrió, sin conexión (9.6): se ve lo que trae el tablero (título y propiedades). Lo demás no se
+   sabe: una descripción, un porqué o una checklist "vacíos" mentirían. */
+html[data-movil] .hoja-movil__contenido--minima :is(.hoja__agregar, .seccion, .porque) {
+  display: none;
+}
+
+/* Cabecera fija: cerrar · tipo · clave · lista · ⋯ (fondo sólido, sin desenfoque). */
+html[data-movil] .hoja-movil .hoja__cabecera {
+  order: -1;
+  flex-shrink: 0;
+  gap: 4px;
+  min-height: calc(52px + var(--sa-t));
+  padding: var(--sa-t) max(6px, var(--sa-r)) 0 calc(52px + var(--sa-l));
+  background: var(--c-superficie);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  touch-action: none;
+}
+
+html[data-movil] .hoja-movil .hoja__cabecera > :is(.hoja__en, .boton-icono[aria-label='Cerrar']) {
+  display: none;
+}
+
+html[data-movil] .hoja-movil .hoja__cabecera .selector-chip {
+  position: relative;
+  flex-shrink: 0;
+  height: 36px;
+}
+
+/* Se ven de 36 px y se tocan en 44. */
+html[data-movil] .hoja-movil .hoja__cabecera .selector-chip::before {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+}
+
+/* El tipo, solo con su ícono: el nombre está en el menú. */
+html[data-movil] .hoja-movil .hoja__cabecera > .selector-chip:first-child > span:not(.icono-tipo) {
+  display: none;
+}
+
+html[data-movil] .hoja-movil .hoja__cabecera .selector-chip--lista {
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+html[data-movil] .hoja-movil .hoja__cabecera .selector-chip--lista > span:not(.punto-categoria) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html[data-movil] .hoja-movil .hoja__clave {
+  flex-shrink: 0;
+  min-height: 44px;
+  font-size: 13px;
+}
+
+html[data-movil] .hoja-movil .hoja__portada {
+  height: 140px;
+}
+
+html[data-movil] .hoja-movil .hoja__portada--color {
+  height: 44px;
+}
+
+html[data-movil] .hoja-movil .hoja__cuerpo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px 8px;
+  padding: 6px max(var(--m-margen), var(--sa-r)) calc(96px + var(--sa-b)) max(var(--m-margen), var(--sa-l));
+}
+
+html[data-movil] .hoja-movil :is(.hoja__principal, .hoja__lateral, .hoja__lateral-extra) {
+  display: contents;
+}
+
+html[data-movil] .hoja-movil :is(.hoja__principal, .hoja__lateral, .hoja__lateral-extra) > * {
+  grid-column: 1 / -1;
+  order: 3;
+  min-width: 0;
+}
+
+html[data-movil] .hoja-movil .hoja__principal > .hoja__titulo {
+  order: 0;
+}
+
+html[data-movil] .hoja-movil .hoja__lateral > .propiedad {
+  order: 1;
+  grid-column: auto;
+}
+
+html[data-movil] .hoja-movil .hoja__lateral > .propiedad:is(:nth-child(5), :nth-child(6)) {
+  grid-column: 1 / -1;
+}
+
+html[data-movil] .hoja-movil .hoja__principal > .hoja__agregar {
+  order: 2;
+}
+
+html[data-movil] .hoja-movil .hoja__lateral-extra > .propiedad {
+  order: 4;
+}
+
+html[data-movil] .hoja-movil .hoja__principal > .seccion:has(.linea-tiempo) {
+  order: 5;
+}
+
+html[data-movil] .hoja-movil .hoja__lateral-extra > .hoja__origen {
+  order: 6;
+}
+
+/* "Ver en el lienzo" y "Archivar" están en el menú ⋯ de la cabecera. */
+html[data-movil] .hoja-movil .hoja__lateral > .boton {
+  display: none;
+}
+
+html[data-movil] .hoja-movil .hoja__titulo {
+  width: calc(100% + 8px);
+  margin: 0 0 0 -8px;
+  font-size: 22px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+/* Propiedades: celdas de 56 px; tocar cualquier parte abre su selector como hoja inferior. */
+html[data-movil] .hoja-movil .hoja__lateral > .propiedad {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 56px;
+  padding: 7px 6px 7px 12px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+}
+
+html[data-movil] .hoja-movil .propiedad__nombre {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+}
+
+html[data-movil] .hoja-movil .hoja__lateral > .propiedad .valor-boton {
+  min-height: 26px;
+  padding: 0;
+  font-size: 15px;
+  background: none;
+}
+
+html[data-movil] .hoja-movil .hoja__lateral > .propiedad .valor-boton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-m);
+}
+
+html[data-movil] .hoja-movil .propiedad .valor-boton__vacio {
+  font-size: 0;
+}
+
+html[data-movil] .hoja-movil .propiedad .valor-boton__vacio > svg {
+  display: none;
+}
+
+html[data-movil] .hoja-movil .propiedad .valor-boton__vacio::before {
+  content: 'Agregar';
+  font-size: 15px;
+}
+
+html[data-movil] .hoja-movil .propiedad .valor-boton__mas {
+  display: none;
+}
+
+html[data-movil] .hoja-movil .responsables {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+html[data-movil] .hoja-movil .estimacion {
+  gap: 6px;
+}
+
+html[data-movil] .hoja-movil .estimacion__punto {
+  flex: 1;
+  height: 40px;
+  font-size: 15px;
+}
+
+/* Acciones rápidas: Checklist y Adjunto (etiquetas, responsables y fechas ya están en las celdas de arriba). */
+html[data-movil] .hoja-movil .hoja__agregar {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: -6px 0;
+}
+
+html[data-movil] .hoja-movil .hoja__agregar > :nth-child(-n + 3) {
+  display: none;
+}
+
+html[data-movil] .hoja-movil .seccion__titulo h3 {
+  font-size: 16px;
+}
+
+html[data-movil] .hoja-movil :is(.descripcion, .seccion__nada) {
+  padding-left: 0;
+}
+
+html[data-movil] .hoja-movil :is(.descripcion--vacia, .editor-md) {
+  margin-left: 0;
+}
+
+html[data-movil] .hoja-movil .descripcion {
+  font-size: 16px;
+}
+
+html[data-movil] .hoja-movil .descripcion--vacia {
+  width: 100%;
+  min-height: 56px;
+  font-size: 15px;
+}
+
+/* Al editar, Guardar y Cancelar quedan pegados al teclado, no al final del texto. */
+html[data-movil] .hoja-movil .editor-md__pie {
+  position: sticky;
+  bottom: 0;
+  z-index: 4;
+  padding: 8px 0 calc(8px + var(--sa-b));
+  background: var(--c-superficie);
+  box-shadow: 0 -1px 0 var(--c-hover-fuerte);
+}
+
+html[data-movil][data-teclado] .hoja-movil .editor-md__pie {
+  padding-bottom: 8px;
+}
+
+html[data-movil] .hoja-movil .editor-md__pie .boton {
+  min-height: 44px;
+  padding: 0 18px;
+}
+
+/* ───────── El porqué (6.3): la pieza que distingue a Telar ───────── */
+
+html[data-movil] .hoja-movil .porque {
+  padding: 16px;
+  border-radius: var(--r-l);
+}
+
+html[data-movil] .hoja-movil .porque__cabecera {
+  flex-wrap: wrap;
+  row-gap: 6px;
+}
+
+html[data-movil] .hoja-movil .estado-porque {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+html[data-movil] .hoja-movil .porque--vacio p {
+  font-size: 15px;
+}
+
+html[data-movil] .hoja-movil .porque--vacio .boton {
+  width: 100%;
+  min-height: 48px;
+}
+
+html[data-movil] .hoja-movil .porque__campo {
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+html[data-movil] .hoja-movil .porque__valor {
+  margin: 0 -8px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+html[data-movil] .hoja-movil .porque__campo--grande .porque__valor {
+  font-size: 17px;
+}
+
+html[data-movil] .hoja-movil .porque__vacio {
+  margin-left: 0;
+  height: 44px;
+  font-size: 15px;
+}
+
+html[data-movil] .hoja-movil .opciones {
+  grid-template-columns: 1fr;
+}
+
+html[data-movil] .hoja-movil .opcion__cabecera {
+  min-height: 52px;
+}
+
+html[data-movil] .hoja-movil .opcion__elegir {
+  width: 44px;
+  height: 44px;
+  margin: -4px 0 -4px -8px;
+}
+
+html[data-movil] .hoja-movil .opcion__circulo {
+  width: 20px;
+  height: 20px;
+}
+
+html[data-movil] .hoja-movil .opcion__titulo {
+  font-size: 16px;
+}
+
+/* Los campos de cada opción (título, a favor, en contra, por qué se descartó): 44 de alto para tocarlos. El signo
+   (+, −, ×) baja lo mismo que el texto, para quedar en su primera línea. */
+html[data-movil] .hoja-movil .opcion :is(input, textarea) {
+  min-height: 44px;
+  padding-block: 10px;
+}
+
+html[data-movil] .hoja-movil .opcion__signo {
+  padding-top: 10px;
+}
+
+html[data-movil] .hoja-movil .opcion__pros-contras {
+  padding-left: 36px;
+}
+
+html[data-movil] .hoja-movil .opcion__pros-contras label {
+  font-size: 15px;
+}
+
+html[data-movil] .hoja-movil .opcion--nueva {
+  min-height: 52px;
+  font-size: 15px;
+}
+
+html[data-movil] .hoja-movil .evidencia--nueva input {
+  height: 44px;
+}
+
+/* ───────── El resto de las secciones ───────── */
+
+html[data-tactil] :is(.item__acciones, .enlace-fila__quitar, .evidencia button) {
+  opacity: 1;
+}
+
+html[data-tactil] .comentario__borrar {
+  opacity: 0.6;
+}
+
+html[data-movil] .hoja-movil .item {
+  min-height: 44px;
+}
+
+html[data-movil] .hoja-movil .item__texto {
+  font-size: 15px;
+}
+
+html[data-movil] .hoja-movil .casilla {
+  position: relative;
+}
+
+html[data-movil] .hoja-movil .casilla::before {
+  content: '';
+  position: absolute;
+  inset: -11px;
+}
+
+html[data-movil] .hoja-movil .adjuntos__grilla {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+html[data-movil] .hoja-movil :is(.vinculo__tarjeta, .rama) {
+  min-height: 44px;
+}
+
+html[data-movil] .hoja-movil .hoja__origen {
+  margin: 0;
+  padding: 14px 0 0;
+}
+
+/* Comentar va fijo al pie (más abajo); el de escritorio, en medio del contenido, no hace falta. */
+html[data-movil] .hoja-movil .comentar {
+  display: none;
+}
+
+html[data-movil] .comentar-movil {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 7;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 8px max(12px, var(--sa-r)) max(8px, var(--sa-b)) max(12px, var(--sa-l));
+  background: var(--c-superficie);
+  box-shadow: 0 -1px 0 var(--c-hover-fuerte);
+}
+
+html[data-movil][data-teclado] .comentar-movil {
+  padding-bottom: 8px;
+}
+
+html[data-movil] .comentar-movil > .avatar {
+  margin-bottom: 10px;
+}
+
+html[data-movil] .comentar-movil__campo {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  max-height: 128px;
+  overflow-y: auto;
+  padding: 13px 16px;
+  border-radius: 24px;
+  background: var(--c-hundido);
+  line-height: 1.4;
+}
+
+html[data-movil] .comentar-movil__enviar {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  height: 44px;
+  margin-bottom: 2px;
+  padding: 0 10px;
+  border-radius: 22px;
+  background: var(--c-acento-solido, var(--c-acento));
+  color: var(--c-sobre-acento, var(--c-texto-inv));
+  font-size: 13px;
+  font-weight: 650;
+}
+
+html[data-movil] .comentar-movil__enviar:disabled {
+  background: var(--c-hundido-2);
+  color: var(--c-texto-3);
+  opacity: 1;
+}
+
+/* Mientras se edita otra cosa, la barra de comentar se va (la reemplaza la de Cancelar y Guardar). */
+html[data-movil] .hoja-movil:has(.editor-md, .hoja__marco :is(textarea, input, [contenteditable='true']):focus) .comentar-movil {
+  display: none;
+}
+
+html[data-movil] .barra-edicion {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px max(12px, var(--sa-r)) max(6px, var(--sa-b)) max(12px, var(--sa-l));
+  background: var(--c-superficie);
+  box-shadow: 0 -1px 0 var(--c-hover-fuerte);
+}
+
+html[data-movil][data-teclado] .barra-edicion {
+  padding-bottom: 6px;
+}
+
+html[data-movil] .barra-edicion .boton {
+  min-height: 44px;
+  padding: 0 18px;
+}
+
+/* ───────── Horizontal: dos columnas, cada una con su scroll ───────── */
+
+html[data-movil][data-apaisado] .hoja-movil .hoja__marco {
+  overflow: hidden;
+}
+
+html[data-movil][data-apaisado] .hoja-movil .hoja__portada {
+  display: none;
+}
+
+html[data-movil][data-apaisado] .hoja-movil .hoja__cabecera {
+  min-height: calc(48px + var(--sa-t));
+}
+
+html[data-movil][data-apaisado] .hoja-movil .hoja__cuerpo {
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 0 20px;
+  padding: 0 0 0 max(var(--m-margen), var(--sa-l));
+}
+
+html[data-movil][data-apaisado] .hoja-movil :is(.hoja__principal, .hoja__lateral) {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+}
+
+/* Columnas de alto fijo con su propio scroll: lo de adentro no se achica, se desplaza. */
+html[data-movil][data-apaisado] .hoja-movil :is(.hoja__principal, .hoja__lateral, .hoja__lateral-extra) > * {
+  flex-shrink: 0;
+}
+
+html[data-movil][data-apaisado] .hoja-movil .hoja__principal {
+  gap: 20px;
+  padding: 4px 0 calc(84px + var(--sa-b));
+}
+
+html[data-movil][data-apaisado] .hoja-movil .hoja__lateral {
+  gap: 8px;
+  padding: 6px max(var(--m-margen), var(--sa-r)) calc(84px + var(--sa-b)) 0;
+}
+
+html[data-movil][data-apaisado] .hoja-movil .hoja__lateral > .propiedad {
+  min-height: 52px;
+}
+
+/* ═══════════════ Entrar (8) ═══════════════
+   Sin caja flotante: el formulario ocupa el ancho, alineado arriba (centrado, saltaría al abrirse el teclado; arriba se
+   queda donde estaba y el botón Entrar sigue a la vista). */
+
+/* El desplazamiento propio de la pantalla (alto de la ventana visible, overflow) está en entrar.css; acá, solo el relleno: abajo suma lo que
+   tapa el teclado cuando el navegador no achica la página (--entrar-teclado, util/campoVisible.ts), para que el último campo suba. */
+html[data-movil] .entrar {
+  padding: max(40px, 8dvh, var(--sa-t)) max(20px, var(--sa-r)) calc(max(24px, var(--sa-b)) + var(--entrar-teclado, 0px)) max(20px, var(--sa-l));
+}
+
+html[data-movil] .entrar__caja {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  gap: 16px;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+
+html[data-movil] .entrar__marca {
+  gap: 12px;
+  font-size: 20px;
+  color: var(--c-texto);
+}
+
+html[data-movil] .entrar__logo {
+  zoom: 1.85;
+}
+
+html[data-movil] .entrar__titulo {
+  font-size: 24px;
+}
+
+html[data-movil] .entrar__texto {
+  margin-top: -8px;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .entrar__campo {
+  font-size: 14px;
+}
+
+html[data-movil] .entrar__ayuda {
+  font-size: 13.5px;
+}
+
+html[data-movil] .entrar__campo input {
+  height: 52px;
+  font-size: 16px;
+}
+
+html[data-movil] .entrar__campo input.entrar__codigo {
+  font-size: 22px;
+}
+
+html[data-movil] .entrar__ver {
+  width: 44px;
+  height: 44px;
+  right: 4px;
+}
+
+html[data-movil] .entrar__boton {
+  height: 52px;
+  font-size: 16px;
+}
+
+/* El texto largo del botón secundario corta en dos líneas: si no, ensancha el formulario (era lo que lo corría). */
+html[data-movil] :is(.entrar__otro, .entrar__codigo-acciones) .boton {
+  height: auto;
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 15px;
+  line-height: 1.3;
+  white-space: normal;
+  text-align: center;
+}
+
+html[data-movil] :is(.entrar__error, .entrar__aviso) {
+  font-size: 15px;
+}
+
+/* En horizontal: la marca y el título a la izquierda, el formulario a la derecha. */
+html[data-movil][data-apaisado] .entrar {
+  padding-top: max(20px, var(--sa-t));
+}
+
+html[data-movil][data-apaisado] .entrar__caja {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-auto-flow: row dense;
+  align-items: start;
+  column-gap: 36px;
+  max-width: 760px;
+}
+
+html[data-movil][data-apaisado] .entrar__caja > * {
+  grid-column: 2;
+}
+
+html[data-movil][data-apaisado] .entrar__caja > :is(.entrar__marca, .entrar__titulo, .entrar__texto) {
+  grid-column: 1;
+}
+
+html[data-movil][data-apaisado] .entrar__texto {
+  margin-top: 0;
+}
+
+/* ═══════════════ PWA en el teléfono (9) ═══════════════ */
+
+html[data-movil] .aviso-actualizar {
+  bottom: calc(var(--m-barra-inf) + var(--sa-b) + 12px);
+}
+
+html[data-movil] .aviso-actualizar__boton {
+  min-height: 44px;
+}
+
+html[data-movil][data-apaisado] .aviso-actualizar {
+  left: calc(50% + (var(--m-barra-inf) + var(--sa-l)) / 2);
+  bottom: calc(12px + var(--sa-b));
+}
+
+/* La invitación a instalar: una sola vez, sobre la barra inferior. */
+html[data-movil] .invitacion-instalar {
+  position: fixed;
+  left: max(12px, var(--sa-l));
+  right: max(12px, var(--sa-r));
+  bottom: calc(var(--m-barra-inf) + var(--sa-b) + 10px);
+  z-index: 85;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px 12px;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 12px 12px 10px;
+  border-radius: var(--r-l);
+  background: var(--c-elevada);
+  box-shadow: var(--sombra-3);
+}
+
+html[data-movil] .invitacion-instalar img {
+  border-radius: 10px;
+}
+
+html[data-movil] .invitacion-instalar p {
+  font-size: 15px;
+  font-weight: 560;
+  line-height: 1.35;
+}
+
+html[data-movil] .invitacion-instalar__botones {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+html[data-movil][data-apaisado] .invitacion-instalar {
+  left: calc(var(--m-barra-inf) + var(--sa-l) + 12px);
+  bottom: calc(12px + var(--sa-b));
+}
+
+html[data-movil] .hoja-instalar__cuerpo {
+  padding: 0 var(--m-margen) 8px;
+}
+
+html[data-movil] .hoja-instalar__marca {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+html[data-movil] .hoja-instalar__marca img {
+  flex-shrink: 0;
+  border-radius: 14px;
+}
+
+html[data-movil] .hoja-instalar__marca p {
+  color: var(--c-texto-2);
+  font-size: 15px;
+}
+
+html[data-movil] .hoja-instalar__pasos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+html[data-movil] .hoja-instalar__pasos li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  font-size: 16px;
+}
+
+html[data-movil] .hoja-instalar__numero {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--c-hundido);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+html[data-movil] .hoja-instalar__icono {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  color: var(--c-acento-fuerte);
+}
+
+html[data-movil] .hoja-instalar__otra-app p {
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+html[data-movil] .hoja-instalar__nota {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+  font-size: 14px;
+}
+
+html[data-movil] .entrar__instalar {
+  align-self: center;
+  min-height: 44px;
+  margin-top: 8px;
+  color: var(--c-acento-fuerte);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+html[data-movil] .escena__estado--error {
+  flex-direction: column;
+  max-width: 300px;
+  text-align: center;
+  color: var(--c-texto-2);
+}
+
+/* ═══════════════ Sin conexión (9.6) ═══════════════ */
+
+html[data-movil] {
+  --icono-nube-tachada: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.94 5.274A7 7 0 0 1 15.71 10h1.79a4.5 4.5 0 0 1 4.222 6.057'/%3E%3Cpath d='M18.796 18.81A4.5 4.5 0 0 1 17.5 19H9A7 7 0 0 1 5.79 5.78'/%3E%3Cpath d='m2 2 20 20'/%3E%3C/svg%3E");
+  --icono-nube-sube: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 13v8'/%3E%3Cpath d='M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242'/%3E%3Cpath d='m8 17 4-4 4 4'/%3E%3C/svg%3E");
+  --icono-nube-alerta: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 12v4'/%3E%3Cpath d='M12 20h.01'/%3E%3Cpath d='M8.128 16.949A7 7 0 1 1 15.71 8h1.79a1 1 0 0 1 0 9h-1.642'/%3E%3C/svg%3E");
+}
+
+/* La franja bajo la barra superior: 32 px, entra bajando (la altura la anima FranjaSinConexion). */
+html[data-movil] .franja-conexion {
+  position: relative;
+  z-index: 20; /* por debajo de la barra superior (30): baja desde abajo de ella */
+  flex-shrink: 0;
+  height: 32px;
+  background: var(--c-hundido-2);
+  color: var(--c-texto-2);
+  font-size: 13px;
+  font-weight: 560;
+}
+
+html[data-movil] .franja-conexion--ok {
+  color: var(--c-ok);
+}
+
+html[data-movil] .app-movil--apaisado .franja-conexion {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+html[data-movil] .franja-conexion__dentro {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 32px;
+  padding: 0 max(var(--m-margen), var(--sa-r)) 0 max(var(--m-margen), var(--sa-l));
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+html[data-movil] .franja-conexion__dentro > svg {
+  flex-shrink: 0;
+}
+
+html[data-movil] .franja-conexion__texto {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html[data-movil] .franja-conexion__pendientes {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 2px;
+  height: 22px;
+  padding: 0 6px 0 10px;
+  border-radius: 11px;
+  background: var(--c-superficie);
+  color: var(--c-texto);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+/* Las tarjetas anotadas sin conexión, en su lista: borde punteado, la nube tachada y la leyenda en lugar de la clave
+   (la pone bandeja.ts). Se reconocen por la leyenda, que también es lo primero que lee un lector de pantalla. */
+html[data-movil] .ordenable:is([aria-label^='Se sube cuando haya conexión: '], [aria-label^='Subiendo…: '], [aria-label^='No se pudo subir: ']) .tarjeta {
+  opacity: 1;
+  background: var(--c-superficie-2);
+  box-shadow: none;
+  outline: 1.5px dashed var(--c-texto-3);
+  outline-offset: -1.5px;
+}
+
+html[data-movil] .ordenable:is([aria-label^='Se sube cuando haya conexión: '], [aria-label^='Subiendo…: '], [aria-label^='No se pudo subir: ']) .tarjeta__clave {
+  font-family: var(--fuente);
+  font-weight: 600;
+}
+
+html[data-movil] .ordenable:is([aria-label^='Se sube cuando haya conexión: '], [aria-label^='Subiendo…: '], [aria-label^='No se pudo subir: ']) .tarjeta__clave > .icono-tipo {
+  display: none;
+}
+
+html[data-movil] .ordenable:is([aria-label^='Se sube cuando haya conexión: '], [aria-label^='Subiendo…: '], [aria-label^='No se pudo subir: ']) .tarjeta__clave::before {
+  content: '';
+  flex: none;
+  width: 15px;
+  height: 15px;
+  background: currentColor;
+  -webkit-mask: var(--icono-nube-tachada) center / contain no-repeat;
+  mask: var(--icono-nube-tachada) center / contain no-repeat;
+}
+
+html[data-movil] .ordenable[aria-label^='Se sube cuando haya conexión: '] .tarjeta__clave {
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .ordenable[aria-label^='Subiendo…: '] .tarjeta__clave {
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .ordenable[aria-label^='Subiendo…: '] .tarjeta__clave::before {
+  -webkit-mask-image: var(--icono-nube-sube);
+  mask-image: var(--icono-nube-sube);
+  animation: latir-subiendo 1.1s ease-in-out infinite alternate;
+}
+
+html[data-movil] .ordenable[aria-label^='No se pudo subir: '] .tarjeta {
+  outline-color: var(--c-peligro);
+}
+
+html[data-movil] .ordenable[aria-label^='No se pudo subir: '] :is(.tarjeta__clave, .tarjeta__clave span) {
+  color: var(--c-peligro);
+}
+
+html[data-movil] .ordenable[aria-label^='No se pudo subir: '] .tarjeta__clave::before {
+  -webkit-mask-image: var(--icono-nube-alerta);
+  mask-image: var(--icono-nube-alerta);
+}
+
+/* (nombre propio: los @keyframes son globales y "latir" ya es de escritorio) */
+@keyframes latir-subiendo {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.35;
+  }
+}
+
+/* La hoja "Por subir". */
+html[data-movil] .hoja-pendientes__cuerpo {
+  padding: 0 var(--m-margen) 8px;
+}
+
+html[data-movil] .hoja-pendientes__intro {
+  margin-bottom: 12px;
+  color: var(--c-texto-2);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+html[data-movil] .hoja-pendientes__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+html[data-movil] .pendiente {
+  display: flex;
+  gap: 12px;
+  padding: 12px 12px 8px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+}
+
+html[data-movil] .pendiente__icono {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 22px;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .pendiente--fallida .pendiente__icono,
+html[data-movil] .pendiente__error {
+  color: var(--c-peligro);
+}
+
+html[data-movil] .pendiente__cuerpo {
+  flex: 1;
+  min-width: 0;
+}
+
+html[data-movil] .pendiente__titulo {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .pendiente__detalle {
+  margin-top: 2px;
+  color: var(--c-texto-2);
+  font-size: 13px;
+}
+
+html[data-movil] .pendiente__error {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+html[data-movil] .pendiente__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+html[data-movil] .pendiente__acciones .boton {
+  min-height: 44px;
+}
+

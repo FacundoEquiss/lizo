@@ -1,0 +1,2442 @@
+/* ═══════════════ Diseño en el celular ═══════════════
+   La vista Diseño del teléfono (web/src/vistas/diseno/movil/). Todas las reglas cuelgan de html[data-movil] y de clases
+   propias (dzm-): en la computadora no se mueve nada. Se carga con la vista (no en el arranque). Colores solo por
+   tokens de tokens.css; sin contornos: la jerarquía la dan el tono, la sombra y el espacio (como en el resto de Telar).
+   Medidas táctiles: 44 px como mínimo; letra base de 15; campos de 16 (iOS no agranda la página). */
+
+html[data-movil] .diseno.dzm {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-fondo);
+}
+
+html[data-movil] .dzm__escena {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+}
+
+html[data-movil] .dzm-estado {
+  margin: auto;
+  padding: 24px var(--m-margen);
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-estado--encima {
+  position: absolute;
+  inset: 0;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 4;
+}
+
+html[data-movil] .dzm-estado--encima > * {
+  pointer-events: auto;
+}
+
+html[data-movil] .dzm-estado--chico {
+  margin: 0 auto;
+  padding: 32px var(--m-margen);
+}
+
+/* El estado vacío de Diseño, a medida del teléfono (y también adentro de las hojas, que van fuera de .diseno). */
+html[data-movil] :is(.dzm, .dzm-hoja) .dz-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 22px 22px;
+  border-radius: var(--r-l);
+  background: var(--c-elevada);
+  box-shadow: var(--sombra-2);
+  text-align: center;
+}
+
+html[data-movil] .dzm-hoja .dz-vacio {
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-movil] :is(.dzm, .dzm-hoja) .dz-vacio__icono {
+  color: var(--c-texto-3);
+  margin-bottom: 4px;
+}
+
+html[data-movil] :is(.dzm, .dzm-hoja) .dz-vacio__titulo {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 650;
+  color: var(--c-texto);
+}
+
+html[data-movil] :is(.dzm, .dzm-hoja) .dz-vacio__ayuda {
+  margin: 0;
+  max-width: 320px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] :is(.dzm, .dzm-hoja) .dz-vacio__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+html[data-movil] .dzm-en-linea {
+  display: inline;
+  vertical-align: -2px;
+}
+
+/* ───────── La tira de páginas (como la de listas del Kanban) ───────── */
+
+html[data-movil] .dzm-tira {
+  position: relative;
+  z-index: 6;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--m-tira, 44px);
+  padding: 0 var(--m-margen);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  background: var(--c-fondo);
+}
+
+html[data-movil] .dzm-tira::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-movil][data-apaisado] .dzm-tira {
+  height: 40px;
+  padding: 0 max(12px, var(--sa-r)) 0 12px;
+}
+
+html[data-movil] .dzm-tira__pagina {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: var(--c-texto-2);
+  white-space: nowrap;
+}
+
+/* Se ve de 32 px pero se toca en 44. */
+html[data-movil] .dzm-tira__pagina::before {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+}
+
+html[data-movil] .dzm-tira__pagina > :not(.dzm-tira__fondo) {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-movil] .dzm-tira__fondo {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+}
+
+html[data-movil] .dzm-tira__pagina--activa {
+  color: var(--c-texto);
+}
+
+html[data-movil] .dzm-tira__icono {
+  flex-shrink: 0;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-tira__pagina--activa .dzm-tira__icono {
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-tira__nombre {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+html[data-movil] .dzm-tira__cuenta {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-texto-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────── Página de lienzo ───────── */
+
+html[data-movil] .dzm-lienzo {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* El nombre de cada marco, un punto más grande que en la PC (a 30 cm de la cara). */
+html[data-movil] .dzm-lienzo .dz-marco__nombre {
+  font-size: calc(13px / var(--z));
+}
+
+html[data-movil] .dzm-lienzo .dz-marco--sel .dz-marco__nombre,
+html[data-movil] .dzm-lienzo .dz-marco:hover .dz-marco__nombre {
+  opacity: clamp(0, calc((var(--z) * 120 - 20) / 4), 1);
+}
+
+/* Los pines del lienzo: se ven de 22 y se tocan en 44. */
+html[data-movil] .dzm-lienzo .dz-pin::before {
+  content: '';
+  position: absolute;
+  inset: -11px;
+}
+
+html[data-movil] .dzm-flotantes {
+  position: absolute;
+  top: 10px;
+  right: max(10px, var(--sa-r));
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+html[data-movil] .dzm-flotante {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--c-elevada);
+  color: var(--c-texto-2);
+  box-shadow: var(--sombra-2);
+}
+
+/* ───────── El marco a pantalla completa ───────── */
+
+html[data-movil] .dzm-visor {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  overflow: hidden;
+  outline: none;
+  color: var(--c-texto);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html[data-movil] .dzm-visor__fondo {
+  position: absolute;
+  inset: 0;
+  background: var(--c-hundido-2);
+}
+
+html[data-movil] .dzm-visor__superficie {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+}
+
+html[data-movil] .dzm-visor__escenario {
+  --zs: 1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+
+html[data-movil] .dzm-visor__cuerpo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  box-shadow: var(--sombra-3);
+}
+
+html[data-movil] .dzm-visor__mini {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  transition: opacity 120ms linear;
+}
+
+html[data-movil] .dzm-visor__mini--oculta {
+  opacity: 0;
+}
+
+html[data-movil] .dzm-visor__vivo {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 120ms linear;
+}
+
+html[data-movil] .dzm-visor__vivo--listo {
+  opacity: 1;
+}
+
+/* El iframe del marco nunca recibe el dedo: los gestos son de la superficie. */
+html[data-movil] .dzm-visor__vivo iframe {
+  display: block;
+  border: 0;
+  background: transparent;
+  pointer-events: none;
+}
+
+html[data-movil] .dzm-visor__capa {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+html[data-movil] .dzm-visor__capa > button {
+  pointer-events: auto;
+}
+
+/* Modo Textos: los textos que se pueden cambiar, marcados. El borde mide lo mismo en la pantalla con cualquier zoom. */
+html[data-movil] .dzm-visor__texto {
+  position: absolute;
+  border-radius: calc(3px / var(--zs));
+  outline: calc(2px / var(--zs)) dashed color-mix(in srgb, var(--c-seleccion) 75%, transparent);
+  outline-offset: calc(2px / var(--zs));
+  background: color-mix(in srgb, var(--c-seleccion) 7%, transparent);
+  animation: dzm-aparecer 180ms var(--curva) both;
+}
+
+html[data-movil] .dzm-visor__texto--activo {
+  outline-style: solid;
+  background: color-mix(in srgb, var(--c-seleccion) 14%, transparent);
+}
+
+html[data-movil] .dzm-visor__resaltado {
+  position: absolute;
+  outline: calc(2px / var(--zs)) solid var(--c-seleccion);
+  background: color-mix(in srgb, var(--c-seleccion) 10%, transparent);
+  animation: dzm-aparecer 180ms var(--curva) both;
+}
+
+@keyframes dzm-aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Pines de comentarios: 30 px en la pantalla con cualquier zoom (la punta, abajo a la izquierda, marca el lugar). */
+html[data-movil] .dzm-pin {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-top: -30px;
+  border-radius: 15px 15px 15px 3px;
+  background: var(--c-acento-solido, var(--c-acento));
+  color: var(--c-sobre-acento, #fff);
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: var(--sombra-2);
+  transform: scale(calc(1 / var(--zs)));
+  transform-origin: 0 100%;
+  animation: dzm-pin 300ms var(--curva-resorte) both;
+}
+
+html[data-movil] .dzm-visor:not(.dzm-visor--ver) .dzm-pin:not(.dzm-pin--borrador) {
+  display: none;
+}
+
+html[data-movil] .dzm-pin::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+}
+
+html[data-movil] .dzm-pin--ia {
+  background: var(--c-ia);
+  color: #fff;
+}
+
+html[data-movil] .dzm-pin--borrador {
+  background: var(--c-seleccion);
+  color: #fff;
+  font-size: 17px;
+}
+
+html[data-movil] .dzm-pin__n {
+  position: absolute;
+  top: -6px;
+  right: -7px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--c-elevada);
+  color: var(--c-texto-2);
+  font-size: 10px;
+  line-height: 16px;
+  box-shadow: var(--sombra-1);
+}
+
+@keyframes dzm-pin {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+}
+
+/* Barras de arriba y de abajo: encima del marco, del color del fondo (casi opacas, sin desenfoque: 10.1). */
+html[data-movil] .dzm-visor__cab {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: calc(56px + var(--sa-t));
+  padding: var(--sa-t) max(4px, var(--sa-r)) 0 max(4px, var(--sa-l));
+  background: color-mix(in srgb, var(--c-fondo) 92%, transparent);
+  box-shadow: 0 1px 0 var(--c-hover);
+  transition: opacity 180ms var(--curva);
+}
+
+html[data-movil] .dzm-visor__boton {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--c-texto);
+}
+
+html[data-movil] .dzm-visor__titulo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0 4px;
+}
+
+html[data-movil] .dzm-visor__nombre {
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-movil] .dzm-visor__medidas {
+  font-size: 12.5px;
+  color: var(--c-texto-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-movil] .dzm-visor__pie {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-around;
+  padding: 6px max(8px, var(--sa-r)) max(6px, var(--sa-b)) max(8px, var(--sa-l));
+  background: color-mix(in srgb, var(--c-fondo) 92%, transparent);
+  box-shadow: 0 -1px 0 var(--c-hover);
+  transition: opacity 180ms var(--curva);
+}
+
+html[data-movil] .dzm-visor__accion {
+  flex: 1;
+  max-width: 104px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 56px;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-visor__accion-icono {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 30px;
+  border-radius: 999px;
+  transition: background 160ms var(--curva);
+}
+
+html[data-movil] .dzm-visor__accion--activa {
+  color: var(--c-texto);
+}
+
+html[data-movil] .dzm-visor__accion--activa .dzm-visor__accion-icono {
+  background: var(--c-activo);
+}
+
+html[data-movil] .dzm-visor__accion-texto {
+  max-width: 100%;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-movil] .dzm-visor__cuenta {
+  position: absolute;
+  top: -3px;
+  right: 6px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--c-acento-solido, var(--c-acento));
+  color: var(--c-sobre-acento, #fff);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Anterior y siguiente: se pasa deslizando (como en las fotos). Los botones quedan para el teclado y los lectores de
+   pantalla: aparecen solo con el foco (a la vista taparían los bordes del marco). */
+html[data-movil] .dzm-visor__lado {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-top: -18px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--c-elevada) 88%, transparent);
+  color: var(--c-texto-2);
+  box-shadow: var(--sombra-2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms var(--curva);
+}
+
+html[data-movil] .dzm-visor__lado:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+html[data-movil] .dzm-visor__lado::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
+html[data-movil] .dzm-visor__lado--izq {
+  left: max(6px, var(--sa-l));
+}
+
+html[data-movil] .dzm-visor__lado--der {
+  right: max(6px, var(--sa-r));
+}
+
+html[data-movil] .dzm-visor--limpio :is(.dzm-visor__cab, .dzm-visor__pie, .dzm-visor__lado) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* En los modos (comentar, textos, inspeccionar), las flechas se apartan: el toque es para el marco. */
+html[data-movil] .dzm-visor:not(.dzm-visor--ver) .dzm-visor__lado {
+  opacity: 0;
+  pointer-events: none;
+}
+
+html[data-movil] .dzm-visor__cartel {
+  position: absolute;
+  top: calc(56px + var(--sa-t) + 10px);
+  left: 50%;
+  z-index: 3;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100% - 24px);
+  height: 44px;
+  padding: 0 6px 0 16px;
+  border-radius: 999px;
+  background: var(--c-texto);
+  color: var(--c-texto-inv);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: var(--sombra-3);
+}
+
+html[data-movil] .dzm-visor__cartel > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-movil] .dzm-visor__cartel button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--c-texto-inv) 18%, transparent);
+  color: inherit;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+html[data-movil][data-apaisado] .dzm-visor__cab {
+  min-height: calc(44px + var(--sa-t));
+}
+
+html[data-movil][data-apaisado] .dzm-visor__pie {
+  padding-top: 2px;
+  padding-bottom: max(2px, var(--sa-b));
+}
+
+html[data-movil][data-apaisado] .dzm-visor__accion {
+  height: 48px;
+}
+
+html[data-movil][data-apaisado] .dzm-visor__cartel {
+  top: calc(44px + var(--sa-t) + 8px);
+}
+
+/* Con el marco abierto, los avisos van sobre su barra de abajo (no la tapan). */
+html[data-movil] body:has(.dzm-visor):not(:has(.hoja-inferior__capa)) .avisos {
+  bottom: calc(var(--sa-b) + 84px + var(--teclado));
+}
+
+/* ───────── Hojas ───────── */
+
+html[data-movil] .dzm-subtitulo {
+  margin: 0 0 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-subtitulo__n {
+  margin-left: 4px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+html[data-movil] .dzm-nota {
+  margin: 8px var(--m-margen);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-nota--mono {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--c-acento-fuerte);
+}
+
+html[data-movil] .dzm-boton-grande {
+  flex: 1;
+  height: 48px;
+  min-height: 48px;
+  gap: 8px;
+  padding: 0 16px;
+  border-radius: var(--r-m);
+  font-size: 16px;
+}
+
+html[data-movil] .dzm-boton-grande--ancho {
+  width: 100%;
+}
+
+html[data-movil] .dzm-cuenta {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 12px;
+  background: var(--c-hundido-2);
+  color: var(--c-texto-2);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+html[data-movil] .dzm-muestra {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+html[data-movil] .dzm-hoja .dz-llave,
+html[data-movil] .dzm .dz-llave {
+  padding: 0 2px;
+  border-radius: 4px;
+  background: var(--c-acento-tinte);
+  color: var(--c-acento-fuerte);
+  font-family: var(--fuente-mono);
+  font-size: 0.9em;
+}
+
+html[data-movil] .dzm-segmentos {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 12px;
+  background: var(--c-hundido);
+}
+
+html[data-movil] .dzm-segmentos--ancho {
+  display: flex;
+  width: 100%;
+}
+
+html[data-movil] .dzm-segmentos__opcion {
+  min-width: 56px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-segmentos--ancho .dzm-segmentos__opcion {
+  flex: 1;
+}
+
+html[data-movil] .dzm-segmentos__opcion--activa {
+  background: var(--c-superficie);
+  color: var(--c-texto);
+  box-shadow: var(--sombra-1);
+}
+
+html[data-movil] .dzm-campo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+html[data-movil] .dzm-campo--columna {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+html[data-movil] .dzm-campo__etiqueta {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--c-texto);
+}
+
+html[data-movil] .dzm-entrada {
+  width: 100%;
+  min-height: 44px;
+  height: auto;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+/* Las hojas que se abren sobre el marco dejan ver su parte de arriba (ahí sube lo que se está mirando). */
+html[data-movil]:not([data-apaisado]) .hoja-inferior.dzm-hoja--capa {
+  max-height: 64dvh;
+}
+
+html[data-movil]:not([data-apaisado]) .hoja-inferior.dzm-hoja--comentarios {
+  max-height: min(70dvh, calc(100dvh - var(--teclado, 0px) - var(--sa-t, 0px) - 24px));
+}
+
+/* Lista de marcos */
+
+html[data-movil] .dzm-marcos {
+  padding-bottom: 8px;
+}
+
+html[data-movil] .dzm-marcos__seccion + .dzm-marcos__seccion {
+  margin-top: 8px;
+}
+
+html[data-movil] .dzm-marcos__seccion .dzm-subtitulo {
+  margin: 0;
+  padding: 8px var(--m-margen) 4px;
+}
+
+html[data-movil] .dzm-fila-marco {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 68px;
+  padding: 6px var(--m-margen);
+  text-align: left;
+}
+
+html[data-movil] .dzm-fila-marco__mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  padding: 5px;
+  border-radius: 10px;
+  background: var(--c-hundido);
+  overflow: hidden;
+}
+
+html[data-movil] .dzm-fila-marco__mini img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 2px;
+  box-shadow: var(--sombra-1);
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+html[data-movil] .dzm-fila-marco__texto {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+html[data-movil] .dzm-fila-marco__nombre {
+  font-size: 15.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-movil] .dzm-fila-marco__detalle {
+  font-size: 13px;
+  color: var(--c-texto-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-movil] .dzm-fila-marco__flecha {
+  flex-shrink: 0;
+  color: var(--c-texto-3);
+}
+
+/* Menú de un marco */
+
+html[data-movil] .dzm-menu {
+  padding-bottom: 6px;
+}
+
+html[data-movil] .dzm-menu__bajada {
+  margin: -4px 20px 6px;
+  font-size: 13.5px;
+  color: var(--c-texto-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Comentarios */
+
+html[data-movil] .dzm-hilos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 2px var(--m-margen) 12px;
+}
+
+html[data-movil] .dzm-hilo {
+  padding: 12px 12px 6px;
+  border-radius: var(--r-l);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+}
+
+html[data-movil] .dzm-hilo--resuelto {
+  opacity: 0.72;
+}
+
+html[data-movil] .dzm-hilo--elegido {
+  animation: dzm-destello 1.6s var(--curva);
+}
+
+@keyframes dzm-destello {
+  0%,
+  30% {
+    box-shadow: 0 0 0 3px var(--c-foco), var(--sombra-1);
+  }
+}
+
+html[data-movil] .dzm-comentario {
+  display: flex;
+  gap: 10px;
+}
+
+html[data-movil] .dzm-comentario__cara {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--c-acento-suave);
+  color: var(--c-acento-fuerte);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+html[data-movil] .dzm-comentario__cara--ia {
+  background: var(--c-ia-suave);
+  color: var(--c-ia);
+}
+
+html[data-movil] .dzm-comentario__cuerpo {
+  flex: 1;
+  min-width: 0;
+}
+
+html[data-movil] .dzm-comentario__cab {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin: 0 0 2px;
+  font-size: 13px;
+}
+
+html[data-movil] .dzm-comentario__autor {
+  font-weight: 700;
+  color: var(--c-texto);
+}
+
+html[data-movil] .dzm-comentario__cuando {
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-comentario__pin {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--c-acento-tinte);
+  color: var(--c-acento-fuerte);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+html[data-movil] .dzm-comentario__texto {
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--c-texto);
+  overflow-wrap: anywhere;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+html[data-movil] .dzm-comentario__texto p {
+  margin: 0;
+}
+
+html[data-movil] .dzm-comentario__capa {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-hilo__respuesta {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  padding-left: 6px;
+}
+
+html[data-movil] .dzm-hilo__flecha {
+  flex-shrink: 0;
+  margin-top: 8px;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-hilo__acciones {
+  display: flex;
+  gap: 2px;
+  margin: 4px 0 0 32px;
+}
+
+html[data-movil] .dzm-hilo__acciones .boton {
+  height: 40px;
+  min-height: 40px;
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+html[data-movil] .dzm-hoja--comentarios .hoja-inferior__pie {
+  padding-top: 8px;
+}
+
+html[data-movil] .dzm-comentar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+html[data-movil] .dzm-comentar__contexto {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding-left: 4px;
+  font-size: 13.5px;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-comentar__contexto span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+html[data-movil] .dzm-comentar__quitar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-left: auto;
+  border-radius: 50%;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-comentar__quitar::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
+html[data-movil] .dzm-comentar__fila {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+html[data-movil] .dzm-comentar__pin {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 2px;
+  border-radius: 50%;
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-comentar__pin--puesto {
+  color: var(--c-seleccion);
+}
+
+html[data-movil] .dzm-comentar__campo {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  max-height: 128px;
+  overflow-y: auto;
+  padding: 13px 16px;
+  border-radius: 24px;
+  background: var(--c-hundido);
+  line-height: 1.4;
+  resize: none;
+}
+
+html[data-movil] .dzm-comentar__enviar {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 2px;
+  border-radius: 22px;
+  background: var(--c-acento-solido, var(--c-acento));
+  color: var(--c-sobre-acento, var(--c-texto-inv));
+}
+
+html[data-movil] .dzm-comentar__enviar:disabled {
+  background: var(--c-hundido-2);
+  color: var(--c-texto-3);
+  opacity: 1;
+}
+
+/* Compartir */
+
+html[data-movil] .dzm-compartir {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 var(--m-margen) 4px;
+}
+
+html[data-movil] .dzm-compartir__vista {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 176px;
+  padding: 14px;
+  border-radius: var(--r-l);
+  background: var(--c-hundido);
+}
+
+html[data-movil] .dzm-compartir__vista img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 3px;
+  box-shadow: var(--sombra-2);
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+html[data-movil] .dzm-compartir__opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+html[data-movil] .dzm-compartir__dato {
+  margin: 0;
+  font-size: 13px;
+  color: var(--c-texto-2);
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-movil] .dzm-compartir__estado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-compartir__estado--error {
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--c-peligro);
+}
+
+html[data-movil] .dzm-compartir__botones {
+  display: flex;
+  gap: 10px;
+}
+
+html[data-movil] .dzm-compartir__enlace {
+  align-self: center;
+}
+
+/* Detalles */
+
+html[data-movil] .dzm-detalles {
+  padding-bottom: 6px;
+}
+
+html[data-movil] .dzm-detalles__cabeza {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 2px var(--m-margen) 14px;
+}
+
+html[data-movil] .dzm-detalles__mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  padding: 6px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+}
+
+html[data-movil] .dzm-detalles__mini img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 2px;
+  box-shadow: var(--sombra-1);
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+html[data-movil] .dzm-detalles__nombre {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+html[data-movil] .dzm-detalles__nombre b {
+  font-size: 17px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-detalles__nombre span {
+  font-size: 13.5px;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-detalles__seccion {
+  margin-top: 16px;
+}
+
+html[data-movil] .dzm-detalles__seccion > .dzm-subtitulo {
+  padding: 0 var(--m-margen);
+}
+
+html[data-movil] .dzm-detalles__nota {
+  margin: 0 var(--m-margen);
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+html[data-movil] .dzm-datos {
+  margin: 0 var(--m-margen);
+  padding: 4px 14px;
+  border-radius: var(--r-l);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+}
+
+html[data-movil] .dzm-datos__fila {
+  display: flex;
+  gap: 12px;
+  padding: 9px 0;
+}
+
+html[data-movil] .dzm-datos__fila + .dzm-datos__fila {
+  box-shadow: inset 0 1px 0 var(--c-hover);
+}
+
+html[data-movil] .dzm-datos dt {
+  flex-shrink: 0;
+  width: 92px;
+  font-size: 14px;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-datos dd {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 14.5px;
+  color: var(--c-texto);
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-en-la-compu {
+  display: flex;
+  gap: 10px;
+  margin: 18px var(--m-margen) 4px;
+  padding: 12px 14px;
+  border-radius: var(--r-l);
+  background: var(--c-hundido);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-en-la-compu svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--c-texto-3);
+}
+
+/* Cambiar un texto */
+
+html[data-movil] .dzm-texto {
+  padding: 0 var(--m-margen) 4px;
+}
+
+html[data-movil] .dzm-texto .dzm-nota {
+  margin: 8px 0 0;
+}
+
+html[data-movil] .dzm-texto__campo {
+  width: 100%;
+  min-height: 88px;
+  max-height: 40dvh;
+  overflow-y: auto;
+  padding: 12px 14px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  font-size: 17px;
+  line-height: 1.45;
+  resize: none;
+}
+
+/* Ficha de un ítem y valores (también los de Inspeccionar) */
+
+html[data-movil] .dzm-item,
+html[data-movil] .dzm-capa {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 var(--m-margen) 8px;
+}
+
+html[data-movil] .dzm-item .dzm-nota,
+html[data-movil] .dzm-capa .dzm-nota {
+  margin: 0;
+}
+
+html[data-movil] .dzm-item__vacio,
+html[data-movil] .dzm-capa__vacia {
+  margin: 8px var(--m-margen) 16px;
+}
+
+html[data-movil] .dzm-gran-muestra {
+  position: relative;
+  height: 112px;
+  border-radius: var(--r-l);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+html[data-movil] .dzm-gran-muestra--lienzo {
+  display: grid;
+  place-items: center;
+  background: var(--c-hundido);
+  box-shadow: none;
+}
+
+html[data-movil] .dzm-gran-muestra__caja {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  background: var(--c-superficie);
+}
+
+html[data-movil] .dzm-gran-muestra__caja--radio {
+  background: var(--c-acento-suave);
+  box-shadow: inset 0 0 0 2px var(--c-acento);
+}
+
+html[data-movil] .dzm-gran-muestra--texto {
+  display: grid;
+  place-items: center;
+  height: auto;
+  min-height: 96px;
+  padding: 16px;
+  overflow: hidden;
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+  text-align: center;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-gran-muestra--imagen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 168px;
+  padding: 14px;
+  background: conic-gradient(var(--c-hundido) 25%, var(--c-superficie) 0 50%, var(--c-hundido) 0 75%, var(--c-superficie) 0) 0 0 / 16px 16px;
+}
+
+html[data-movil] .dzm-gran-muestra--imagen img {
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+html[data-movil] .dzm-gran-muestra--marco {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: auto;
+  padding: 14px;
+  background: var(--c-hundido);
+  box-shadow: none;
+}
+
+html[data-movil] .dzm-gran-muestra--marco img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 2px;
+  box-shadow: var(--sombra-2);
+}
+
+html[data-movil] .dzm-gran-muestra__pie {
+  font-size: 14.5px;
+  font-weight: 650;
+  color: var(--c-acento-fuerte);
+}
+
+html[data-movil] .dzm-gran-texto {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--r-l);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+  font-size: 18px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+html[data-movil] .dzm-item__nombre {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-item__clase {
+  margin: 2px 0 0;
+  font-size: 13.5px;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-item__uso {
+  margin: 6px 0 0;
+  font-size: 14.5px;
+}
+
+html[data-movil] .dzm-item__acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+html[data-movil] .dzm-valores {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-l);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+  overflow: hidden;
+}
+
+html[data-movil] .dzm-valores:empty {
+  display: none;
+}
+
+html[data-movil] .dzm-valores--dos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+html[data-movil] .dzm-valor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 8px 14px;
+  text-align: left;
+  color: var(--c-texto);
+}
+
+html[data-movil] .dzm-valor:disabled {
+  opacity: 1;
+}
+
+html[data-movil] .dzm-valores:not(.dzm-valores--dos) .dzm-valor + .dzm-valor,
+html[data-movil] .dzm-valores--dos .dzm-valor:nth-child(n + 3) {
+  box-shadow: inset 0 1px 0 var(--c-hover);
+}
+
+html[data-movil] .dzm-valor__etiqueta {
+  flex-shrink: 0;
+  width: 96px;
+  font-size: 14px;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-valores--dos .dzm-valor__etiqueta {
+  width: auto;
+  min-width: 46px;
+}
+
+html[data-movil] .dzm-valor__dato {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14.5px;
+}
+
+html[data-movil] .dzm-valor__dato--mono {
+  font-family: var(--fuente-mono);
+  font-size: 13.5px;
+}
+
+html[data-movil] .dzm-valor__texto {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-valor__copiar {
+  flex-shrink: 0;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-usos {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--r-l);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+  overflow: hidden;
+}
+
+html[data-movil] .dzm-usos li + li .dzm-usos__fila {
+  box-shadow: inset 0 1px 0 var(--c-hover);
+}
+
+html[data-movil] .dzm-usos__fila {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  width: 100%;
+  min-height: 48px;
+  padding: 8px 14px;
+  text-align: left;
+}
+
+html[data-movil] .dzm-usos__lugar {
+  font-family: var(--fuente-mono);
+  font-size: 13px;
+  color: var(--c-texto);
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-usos__detalle {
+  font-size: 12.5px;
+  color: var(--c-texto-3);
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-item__seccion .fila-tactil {
+  margin: 0 calc(var(--m-margen) * -1);
+  width: calc(100% + var(--m-margen) * 2);
+}
+
+html[data-movil] .dzm-proponer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--r-l);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+}
+
+html[data-movil] .dzm-proponer .dzm-subtitulo {
+  margin: 0;
+}
+
+html[data-movil] .dzm-editar-token {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+html[data-movil] .dzm-editar-token__selector {
+  flex-shrink: 0;
+  width: 52px;
+  height: 44px;
+  padding: 2px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+}
+
+html[data-movil] .dzm-entrada--mono {
+  font-family: var(--fuente-mono);
+}
+
+html[data-movil] .dzm-proponer__botones {
+  display: flex;
+  gap: 10px;
+}
+
+/* Inspeccionar */
+
+html[data-movil] .dzm-capa__seccion .dzm-subtitulo {
+  margin-top: 2px;
+}
+
+html[data-movil] .dzm-capa__texto {
+  margin: 0 0 8px;
+  font-size: 15px;
+  color: var(--c-texto-2);
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-regla__origen {
+  margin: 0 0 4px;
+  font-family: var(--fuente-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-texto-3);
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-regla__codigo {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+  text-align: left;
+  font-family: var(--fuente-mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-regla__selector {
+  display: block;
+  margin-bottom: 2px;
+  font-weight: 600;
+  color: var(--c-acento-fuerte);
+}
+
+html[data-movil] .dzm-regla__decl {
+  display: block;
+  color: var(--c-texto);
+}
+
+/* ───────── Página de sistema: un documento ───────── */
+
+html[data-movil] .dzm-sistema {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 12px;
+}
+
+html[data-movil] .dzm-indice {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  gap: 6px;
+  padding: 6px var(--m-margen) 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--c-fondo);
+  box-shadow: 0 1px 0 var(--c-hover);
+}
+
+html[data-movil] .dzm-indice::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-movil] .dzm-indice__chip {
+  position: relative;
+  flex-shrink: 0;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+  font-size: 13.5px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+html[data-movil] .dzm-indice__chip::before {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+}
+
+html[data-movil] .dzm-indice__chip--activo {
+  background: var(--c-texto);
+  color: var(--c-texto-inv);
+}
+
+html[data-movil] .dzm-seccion {
+  padding: 16px var(--m-margen) 10px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
+}
+
+html[data-movil] .dzm-seccion__cab h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 750;
+  letter-spacing: -0.015em;
+}
+
+html[data-movil] .dzm-seccion__cab p {
+  margin: 2px 0 12px;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-grupo + .dzm-grupo {
+  margin-top: 16px;
+}
+
+html[data-movil] .dzm-nuevo {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--e-amarillo-s);
+  box-shadow: 0 0 0 2px var(--c-superficie);
+}
+
+html[data-movil] .dzm-colores {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+}
+
+html[data-movil] .dzm-color {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-radius: var(--r-m);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+  text-align: left;
+  overflow: hidden;
+}
+
+html[data-movil] .dzm-color__muestra {
+  position: relative;
+  height: 64px;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+}
+
+html[data-movil] .dzm-color__nombre {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding: 7px 9px 0;
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-color__valor {
+  padding: 2px 9px 8px;
+  font-family: var(--fuente-mono);
+  font-size: 11.5px;
+  color: var(--c-texto-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-movil] .dzm-fichas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 6px;
+}
+
+html[data-movil] .dzm-ficha {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+html[data-movil] .dzm-ficha__usos {
+  position: absolute;
+  right: 5px;
+  bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+
+html[data-movil] .dzm-ficha__cerca {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+html[data-movil] .dzm-familias,
+html[data-movil] .dzm-filas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+html[data-movil] .dzm-familia,
+html[data-movil] .dzm-escala,
+html[data-movil] .dzm-estilo,
+html[data-movil] .dzm-pieza,
+html[data-movil] .dzm-mov {
+  border-radius: var(--r-m);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+  text-align: left;
+  overflow: hidden;
+}
+
+html[data-movil] .dzm-familia {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border-radius: var(--r-l);
+}
+
+html[data-movil] .dzm-familia__cabeza {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+html[data-movil] .dzm-familia__aa {
+  font-size: 52px;
+  line-height: 1;
+}
+
+html[data-movil] .dzm-familia__datos {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+html[data-movil] .dzm-familia__datos b {
+  font-size: 17px;
+}
+
+html[data-movil] .dzm-familia__datos span {
+  font-size: 13px;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-familia__abc {
+  font-size: 17px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-familia__pesos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 19px;
+  line-height: 1.3;
+}
+
+html[data-movil] .dzm-familia__pesos small {
+  display: inline-block;
+  width: 36px;
+  font-family: var(--fuente-mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-escala,
+html[data-movil] .dzm-estilo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+}
+
+html[data-movil] .dzm-escala__muestra {
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-movil] .dzm-escala__dato,
+html[data-movil] .dzm-estilo__dato {
+  font-size: 12.5px;
+  color: var(--c-texto-2);
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-escala__dato b {
+  font-family: var(--fuente-mono);
+  font-weight: 600;
+  color: var(--c-texto);
+}
+
+html[data-movil] .dzm-estilo__muestra {
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-filas--tabla {
+  gap: 0;
+  border-radius: var(--r-l);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+  overflow: hidden;
+}
+
+html[data-movil] .dzm-token {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 8px 14px;
+  background: var(--c-superficie);
+  text-align: left;
+}
+
+html[data-movil] .dzm-filas:not(.dzm-filas--tabla) > .dzm-token {
+  border-radius: var(--r-m);
+  box-shadow: var(--sombra-1);
+}
+
+html[data-movil] .dzm-filas--tabla .dzm-token + .dzm-token {
+  box-shadow: inset 0 1px 0 var(--c-hover);
+}
+
+html[data-movil] .dzm-token__nombre {
+  flex: 1 1 55%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-token__valor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--fuente-mono);
+  font-size: 13px;
+  color: var(--c-texto-2);
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-token__var {
+  flex-basis: 100%;
+  font-family: var(--fuente-mono);
+  font-size: 12px;
+  color: var(--c-texto-3);
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-token__barra {
+  display: inline-block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--c-acento-suave);
+}
+
+html[data-movil] .dzm-mosaico {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+html[data-movil] .dzm-radio,
+html[data-movil] .dzm-sombra {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 8px 10px;
+  border-radius: var(--r-m);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+  text-align: center;
+}
+
+html[data-movil] .dzm-sombra {
+  background: var(--c-hundido);
+  box-shadow: none;
+}
+
+html[data-movil] .dzm-radio__muestra {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 6px;
+  background: var(--c-acento-suave);
+  box-shadow: inset 0 0 0 2px var(--c-acento);
+}
+
+html[data-movil] .dzm-sombra__muestra {
+  width: 64px;
+  height: 48px;
+  margin: 6px 0 12px;
+  border-radius: 10px;
+  background: var(--c-superficie);
+}
+
+html[data-movil] .dzm-sombra__muestra--texto {
+  width: auto;
+  height: auto;
+  background: transparent;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+html[data-movil] .dzm-mosaico__dato {
+  max-width: 100%;
+  font-size: 13px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-mosaico__bajada {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 100%;
+  font-size: 12px;
+  color: var(--c-texto-2);
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-mosaico__bajada--mono {
+  font-family: var(--fuente-mono);
+  font-size: 11px;
+}
+
+html[data-movil] .dzm-mov {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px 6px 8px;
+}
+
+html[data-movil] .dzm-mov__pista {
+  position: relative;
+  flex-shrink: 0;
+  width: 112px;
+  height: 36px;
+  border-radius: 18px;
+  background: var(--c-hundido);
+}
+
+html[data-movil] .dzm-mov__punto {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  border-radius: 50%;
+  background: var(--c-acento-solido, var(--c-acento));
+}
+
+html[data-movil] .dzm-mov__pista--andando .dzm-mov__punto {
+  animation: dzm-andar var(--dur, 700ms) var(--curva-m, ease) both;
+}
+
+@keyframes dzm-andar {
+  to {
+    transform: translateX(76px);
+  }
+}
+
+html[data-movil] .dzm-mov__dato {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+}
+
+html[data-movil] .dzm-mov__dato b {
+  font-family: var(--fuente-mono);
+  font-size: 13.5px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-mov__dato span {
+  font-size: 12.5px;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-pieza {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 8px 14px 8px 8px;
+}
+
+html[data-movil] .dzm-pieza__mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 60px;
+  height: 48px;
+  padding: 4px;
+  border-radius: 8px;
+  background: var(--c-hundido);
+  color: var(--c-texto-3);
+  overflow: hidden;
+}
+
+html[data-movil] .dzm-pieza__mini img {
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+html[data-movil] .dzm-pieza__texto {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+html[data-movil] .dzm-pieza__texto b {
+  font-size: 15px;
+}
+
+html[data-movil] .dzm-pieza__texto span {
+  font-size: 12.5px;
+  color: var(--c-texto-2);
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-activos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 10px 8px;
+}
+
+html[data-movil] .dzm-activo {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+html[data-movil] .dzm-activo__img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  padding: 8px;
+  border-radius: var(--r-m);
+  background: conic-gradient(var(--c-hundido) 25%, var(--c-superficie) 0 50%, var(--c-hundido) 0 75%, var(--c-superficie) 0) 0 0 / 12px 12px;
+  box-shadow: var(--sombra-1);
+}
+
+html[data-movil] .dzm-activo__img img {
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+html[data-movil] .dzm-activo__nombre {
+  font-size: 11.5px;
+  color: var(--c-texto-2);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-movil] .dzm-salud {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+html[data-movil] .dzm-salud__tarjeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 12px;
+  border-radius: var(--r-m);
+  background: var(--e-amarillo);
+  color: var(--e-amarillo-t);
+  text-align: left;
+}
+
+html[data-movil] .dzm-salud__tarjeta--ok {
+  background: var(--e-verde);
+  color: var(--e-verde-t);
+}
+
+html[data-movil] .dzm-salud__tarjeta b {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-movil] .dzm-salud__tarjeta span {
+  font-size: 13.5px;
+  font-weight: 650;
+}
+
+html[data-movil] .dzm-salud__tarjeta small {
+  font-size: 12px;
+  line-height: 1.3;
+  opacity: 0.85;
+}
+
+html[data-movil] .dzm-sistema__pie {
+  margin: 10px var(--m-margen) 24px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--c-texto-3);
+  text-align: center;
+}
+
+/* ───────── Página de tabla (Textos) ───────── */
+
+html[data-movil] .dzm-tabla {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 16px;
+}
+
+html[data-movil] .dzm-tabla__barra {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+  padding: 6px var(--m-margen) 8px;
+  background: var(--c-fondo);
+}
+
+html[data-movil] .dzm-buscar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 2px 0 14px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-buscar input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  background: transparent;
+  color: var(--c-texto);
+  font-size: 16px;
+}
+
+html[data-movil] .dzm-buscar__limpiar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-tabla__letra {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+html[data-movil] .dzm-tabla__letra--activa {
+  background: var(--c-texto);
+  color: var(--c-texto-inv);
+}
+
+html[data-movil] .dzm-tabla__cuenta {
+  margin: 0 var(--m-margen) 6px;
+  font-size: 13px;
+  color: var(--c-texto-2);
+}
+
+html[data-movil] .dzm-tabla__grupo {
+  margin: 4px var(--m-margen) 14px;
+  border-radius: var(--r-l);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1);
+  overflow: clip;
+}
+
+html[data-movil] .dzm-tabla__titulo {
+  position: sticky;
+  top: 58px;
+  z-index: 2;
+  margin: 0;
+  padding: 10px 14px 6px;
+  background: var(--c-superficie);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-texto-3);
+}
+
+html[data-movil] .dzm-tabla__titulo span {
+  margin-left: 4px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+html[data-movil] .dzm-tabla__fila {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  min-height: 56px;
+  padding: 9px 14px;
+  text-align: left;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 62px;
+}
+
+html[data-movil] .dzm-tabla__fila + .dzm-tabla__fila {
+  box-shadow: inset 0 1px 0 var(--c-hover);
+}
+
+html[data-movil] .dzm-tabla__texto {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--c-texto);
+  overflow-wrap: anywhere;
+}
+
+html[data-movil] .dzm-tabla__clave {
+  font-family: var(--fuente-mono);
+  font-size: 12px;
+  color: var(--c-texto-3);
+  overflow-wrap: anywhere;
+}
+
+/* ───────── Movimiento reducido ───────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-movil]:not([data-movimiento='completo']) :is(.dzm-pin, .dzm-visor__texto, .dzm-visor__resaltado, .dzm-hilo--elegido) {
+    animation: none;
+  }
+}
+
+html[data-movil][data-movimiento='reducido'] :is(.dzm-pin, .dzm-visor__texto, .dzm-visor__resaltado, .dzm-hilo--elegido) {
+  animation: none;
+}

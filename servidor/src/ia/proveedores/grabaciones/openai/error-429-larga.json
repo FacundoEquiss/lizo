@@ -1,0 +1,24 @@
+{
+  "descripcion": "Límite con espera de 45 s: se le avisa al ciclo (esperarMs).",
+  "fuente": "https://developers.openai.com/api/docs/guides/error-codes",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1/responses"
+  },
+  "respuesta": {
+    "estado": 429,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "req_grabado_0001",
+      "retry-after": "45"
+    },
+    "cuerpo": {
+      "error": {
+        "message": "Rate limit reached for tokens per min. Please try again in 45s.",
+        "type": "tokens",
+        "param": null,
+        "code": "rate_limit_exceeded"
+      }
+    }
+  }
+}

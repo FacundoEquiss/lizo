@@ -1,0 +1,58 @@
+{
+  "descripcion": "finish_reason insufficient_system_resource (DeepSeek): hay que reintentar.",
+  "fuente": "https://api-docs.deepseek.com/guides/thinking_mode",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/chat/completions"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream; charset=utf-8"
+    },
+    "eventos": [
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant",
+                "content": ""
+              },
+              "logprobs": null,
+              "finish_reason": null
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": ""
+              },
+              "logprobs": null,
+              "finish_reason": "insufficient_system_resource"
+            }
+          ]
+        }
+      },
+      {
+        "data": "[DONE]"
+      }
+    ]
+  }
+}

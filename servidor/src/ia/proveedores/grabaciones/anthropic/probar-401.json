@@ -1,0 +1,32 @@
+{
+  "caso": "probar-401",
+  "descripcion": "GET /v1/models con una clave mala: 401.",
+  "origen": "Hecha a mano de la documentación oficial de la API de Messages (streaming y errores); a validar con la prueba real (scripts/probar-ia-real.mjs --grabar).",
+  "esperado": {
+    "probar": {
+      "ok": false
+    }
+  },
+  "intercambios": [
+    {
+      "pedido": {
+        "metodo": "GET",
+        "ruta": "/v1/models"
+      },
+      "respuesta": {
+        "estado": 401,
+        "cabeceras": {
+          "request-id": "req_011CTx8qK2mV4nR7sT1uW3yZ"
+        },
+        "cuerpo": {
+          "type": "error",
+          "error": {
+            "type": "authentication_error",
+            "message": "invalid x-api-key"
+          },
+          "request_id": "req_011CTx8qK2mV4nR7sT1uW3yZ"
+        }
+      }
+    }
+  ]
+}

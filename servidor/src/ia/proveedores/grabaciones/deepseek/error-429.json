@@ -1,0 +1,23 @@
+{
+  "descripcion": "Límite con espera corta.",
+  "fuente": "https://api-docs.deepseek.com/quick_start/error_codes",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/chat/completions"
+  },
+  "respuesta": {
+    "estado": 429,
+    "headers": {
+      "content-type": "application/json",
+      "retry-after": "2"
+    },
+    "cuerpo": {
+      "error": {
+        "message": "Rate Limit Reached",
+        "type": "rate_limit_reached_error",
+        "param": null,
+        "code": "rate_limit_reached"
+      }
+    }
+  }
+}

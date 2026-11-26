@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es-AR" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f4efe6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1a1b1d" media="(prefers-color-scheme: dark)" />
+    <title>Telar</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icono.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/pwa/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/pwa/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Telar" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    <!-- arranque-ios:inicio (lo escribe scripts/iconos-pwa.mjs) -->
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1320x2868-claro.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1320x2868-oscuro.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1290x2796-claro.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1290x2796-oscuro.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1284x2778-claro.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1284x2778-oscuro.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1260x2736-claro.png" media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1260x2736-oscuro.png" media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1242x2688-claro.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1242x2688-oscuro.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-828x1792-claro.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: light)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-828x1792-oscuro.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: dark)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1206x2622-claro.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1206x2622-oscuro.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1179x2556-claro.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1179x2556-oscuro.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1170x2532-claro.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1170x2532-oscuro.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1125x2436-claro.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-1125x2436-oscuro.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-750x1334-claro.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: light)" />
+    <link rel="apple-touch-startup-image" href="/pwa/arranque-750x1334-oscuro.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: dark)" />
+    <!-- arranque-ios:fin -->
+    <script>
+      // Antes de pintar, para que no parpadee: el tema, y si es celular, táctil o app instalada (plan del celular 2.1;
+      // la misma regla que web/src/movil/detectar.ts, que después sigue los cambios sin contar el teclado).
+      try {
+        var d = document.documentElement
+        var t = localStorage.getItem('tablero.tema') || 'sistema'
+        var oscuro = t === 'oscuro' || (t === 'sistema' && matchMedia('(prefers-color-scheme: dark)').matches)
+        d.dataset.theme = oscuro ? 'dark' : 'light'
+        var f = localStorage.getItem('telar.movil')
+        var tactil = matchMedia('(pointer: coarse)').matches
+        var alto = innerHeight
+        var corto = Math.min(screen.width || innerWidth, screen.height || innerHeight)
+        var o = screen.orientation && screen.orientation.type
+        var acostada = o ? o.indexOf('landscape') === 0 : typeof window.orientation === 'number' ? Math.abs(window.orientation) === 90 : innerWidth > alto
+        var movil = f ? f === 'si' : matchMedia('(max-width: 760px)').matches || (tactil && alto <= 500)
+        if (movil) d.setAttribute('data-movil', '')
+        if (movil && (tactil ? alto <= 500 && (innerWidth > corto + 100 || (acostada && innerWidth > alto)) : matchMedia('(orientation: landscape) and (max-height: 500px)').matches))
+          d.setAttribute('data-apaisado', '')
+        if (tactil) d.setAttribute('data-tactil', '')
+        if (matchMedia('(display-mode: standalone)').matches || navigator.standalone === true) d.setAttribute('data-instalada', '')
+        // Solo iOS: no bloquea el pellizco (iOS lo ignora) pero evita el zoom automático al escribir en una nota del lienzo.
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+          var v = document.querySelector('meta[name=viewport]')
+          v.setAttribute('content', v.getAttribute('content') + ', maximum-scale=1')
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

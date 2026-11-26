@@ -1,0 +1,165 @@
+{
+  "descripcion": "Dos llamadas en paralelo (índices 0 y 1).",
+  "fuente": "https://api-docs.deepseek.com/guides/tool_calls",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/chat/completions"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream; charset=utf-8"
+    },
+    "eventos": [
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant",
+                "content": null,
+                "reasoning_content": "Leo las dos cosas."
+              },
+              "logprobs": null,
+              "finish_reason": null
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "tool_calls": [
+                  {
+                    "index": 0,
+                    "id": "call_00_a",
+                    "type": "function",
+                    "function": {
+                      "name": "leer_tarjeta",
+                      "arguments": "{\"tarjeta\":\"RC-12\"}"
+                    }
+                  }
+                ]
+              },
+              "logprobs": null,
+              "finish_reason": null
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "tool_calls": [
+                  {
+                    "index": 1,
+                    "id": "call_01_b",
+                    "type": "function",
+                    "function": {
+                      "name": "leer_tablero",
+                      "arguments": ""
+                    }
+                  }
+                ]
+              },
+              "logprobs": null,
+              "finish_reason": null
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "tool_calls": [
+                  {
+                    "index": 1,
+                    "function": {
+                      "arguments": "{\"tablero\":\"Pendientes\"}"
+                    }
+                  }
+                ]
+              },
+              "logprobs": null,
+              "finish_reason": null
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": ""
+              },
+              "logprobs": null,
+              "finish_reason": "tool_calls"
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "choices": [],
+          "usage": {
+            "prompt_tokens": 2100,
+            "completion_tokens": 80,
+            "total_tokens": 2180,
+            "prompt_tokens_details": {
+              "cached_tokens": 2048
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 20
+            },
+            "prompt_cache_hit_tokens": 2048,
+            "prompt_cache_miss_tokens": 52
+          }
+        }
+      },
+      {
+        "data": "[DONE]"
+      }
+    ]
+  }
+}

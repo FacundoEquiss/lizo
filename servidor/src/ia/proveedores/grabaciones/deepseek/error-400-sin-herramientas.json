@@ -1,0 +1,22 @@
+{
+  "descripcion": "Un modelo que no admite herramientas (el mensaje de Ollama).",
+  "fuente": "https://api-docs.deepseek.com/quick_start/error_codes",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/chat/completions"
+  },
+  "respuesta": {
+    "estado": 400,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "cuerpo": {
+      "error": {
+        "message": "registry.ollama.ai/library/gemma:2b does not support tools",
+        "type": "api_error",
+        "param": null,
+        "code": null
+      }
+    }
+  }
+}

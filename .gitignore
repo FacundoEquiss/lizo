@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.datos/
+.tmp/
+*.log
+.env
+.env.*
+.vercel/
+# Diseño: las capturas con material de Restaurant City (sprites, pantallas) nunca van al repo
+docs/capturas/diseno/rc-*
+
+# copias de trabajo de los agentes de Claude Code (no van al repo)
+.claude/worktrees/

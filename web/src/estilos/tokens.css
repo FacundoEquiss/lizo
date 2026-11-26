@@ -1,0 +1,301 @@
+/* Tokens de diseño. Sin contornos: la jerarquía la dan el tono, la sombra y el espacio. */
+
+:root {
+  --fuente: 'Figtree Variable', 'Figtree', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fuente-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --r-xs: 6px;
+  --r-s: 8px;
+  --r-m: 12px;
+  --r-l: 16px;
+  --r-xl: 22px;
+
+  --curva: cubic-bezier(0.15, 1, 0.3, 1); /* la de Atlassian para resaltar destinos */
+  --curva-sale: cubic-bezier(0.32, 0, 0.67, 0);
+  --curva-resorte: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --t-rapido: 120ms;
+  --t-medio: 220ms;
+  --t-lento: 350ms;
+
+  --ancho-lista: 272px;
+  --alto-barra: 56px;
+  --ancho-lateral: 248px;
+
+  /* Factor de espaciado de la densidad (1 cómoda, 0,8 compacta) y blanco mínimo de botones de barras y menús.
+     El celular sube --toque a 44px en movil.css. */
+  --d: 1;
+  --toque: 32px;
+
+  /* Las cinco fuentes del lienzo (5.2). Serif, Manuscrita y Títulos se cargan recién cuando algún objeto las usa. */
+  --f-sans: var(--fuente);
+  --f-serif: 'Newsreader Variable', 'Newsreader', ui-serif, Georgia, 'Times New Roman', serif;
+  --f-mono: var(--fuente-mono);
+  --f-mano: 'Caveat Variable', 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+  --f-titulos: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', var(--fuente);
+
+  /* Tinta del texto de color (por nombre: cambia con el tema). Sobre papel claro (notas, resaltado) va fija: ver
+     .tinta-clara en lienzo.css. */
+  --tinta-verde: var(--e-verde-t);
+  --tinta-amarillo: var(--e-amarillo-t);
+  --tinta-naranja: var(--e-naranja-t);
+  --tinta-rojo: var(--e-rojo-t);
+  --tinta-violeta: var(--e-violeta-t);
+  --tinta-azul: var(--e-azul-t);
+  --tinta-celeste: var(--e-celeste-t);
+  --tinta-lima: var(--e-lima-t);
+  --tinta-rosa: var(--e-rosa-t);
+  --tinta-gris: var(--e-gris-t);
+}
+
+/* ───────── Tema claro: crema, hueso, crudo ───────── */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --c-fondo: #f4efe6;
+  --c-fondo-2: #efe8dc;
+  --c-lateral: #ece5d8;
+  --c-bandeja: #e9e2d4;
+  --c-bandeja-destino: #ecd9c7;
+  --c-superficie: #fffdf9;
+  --c-superficie-2: #faf6ef;
+  --c-elevada: #fffefb;
+  --c-hundido: #f1ebe1;
+  --c-hundido-2: #e8e0d2;
+  --c-hover: rgba(70, 52, 30, 0.055);
+  --c-hover-fuerte: rgba(70, 52, 30, 0.09);
+  --c-activo: rgba(70, 52, 30, 0.12);
+
+  --c-texto: #29241e;
+  --c-texto-2: #665d52;
+  --c-texto-3: #786e62; /* era #978d80 (2,9 sobre el fondo): ahora 4,9 sobre tarjetas y 4,4 sobre el fondo */
+  --c-texto-inv: #fffdf9;
+
+  --c-acento: #d2663a;
+  --c-acento-fuerte: #b6522a;
+  --c-acento-solido: #bf562d; /* fondo de botones llenos: blanco encima da 4,6 */
+  --c-sobre-acento: #ffffff; /* texto sobre --c-acento-solido */
+  --c-acento-suave: #f7e0d3;
+  --c-acento-tinte: rgba(210, 102, 58, 0.12);
+  --c-foco: rgba(210, 102, 58, 0.45);
+  /* Seleccionar es azul en los dos temas (solo en el lienzo): no se confunde con notas, formas y marcos naranjas. */
+  --c-seleccion: #2f6fde;
+  --c-medida: #e5484d; /* solo para medir (regla de Diseño) */
+
+  --c-ia: #7b5cd6;
+  --c-ia-suave: #ece5fb;
+  --c-sobre-ia: #ffffff; /* texto sobre --c-ia (el número de la campana): 4,8 */
+  --c-ia-texto: #6e4fca; /* el violeta como TEXTO sobre --c-ia-suave (pastillas de mención): 4,7; --c-ia da 4,0 */
+
+  --c-ok: #3f8f4f;
+  --c-peligro: #c4473a;
+
+  --sombra-1: 0 1px 1px rgba(64, 44, 22, 0.05), 0 1px 3px rgba(64, 44, 22, 0.07);
+  --sombra-2: 0 1px 2px rgba(64, 44, 22, 0.06), 0 4px 14px -2px rgba(64, 44, 22, 0.1);
+  --sombra-3: 0 2px 6px rgba(52, 36, 18, 0.08), 0 16px 36px -10px rgba(52, 36, 18, 0.22);
+  --sombra-arrastre: 0 24px 48px -12px rgba(52, 36, 18, 0.34), 0 8px 16px -4px rgba(52, 36, 18, 0.14);
+  --sombra-hoja: 0 40px 100px -24px rgba(36, 24, 10, 0.4), 0 8px 24px -8px rgba(36, 24, 10, 0.12);
+  --sombra-interior: inset 0 1px 2px rgba(64, 44, 22, 0.08);
+  --brillo: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+
+  --velo: rgba(44, 32, 18, 0.32);
+  --puntos: #cfc5b5;
+  --barra-scroll: rgba(70, 52, 30, 0.18);
+
+  /* Etiquetas: fondo suave y texto fuerte. */
+  --e-verde: #dcefd8;
+  --e-verde-t: #2f6b35;
+  --e-verde-s: #58ad62;
+  --e-amarillo: #f6eac0;
+  --e-amarillo-t: #765a0a;
+  --e-amarillo-s: #e2b52c;
+  --e-naranja: #f8dcc7;
+  --e-naranja-t: #8d4414;
+  --e-naranja-s: #e07a3a;
+  --e-rojo: #f6d4d0;
+  --e-rojo-t: #992e26;
+  --e-rojo-s: #d2493f;
+  --e-violeta: #e6dcf3;
+  --e-violeta-t: #5a3c8d;
+  --e-violeta-s: #8e6ad0;
+  --e-azul: #d7e3f6;
+  --e-azul-t: #2c5296;
+  --e-azul-s: #4a7fd8;
+  --e-celeste: #d2ebf0;
+  --e-celeste-t: #1e6475;
+  --e-celeste-s: #38a7c0;
+  --e-lima: #e5efc7;
+  --e-lima-t: #4d6513;
+  --e-lima-s: #8db32d;
+  --e-rosa: #f7d8e5;
+  --e-rosa-t: #913963;
+  --e-rosa-s: #d9649a;
+  --e-gris: #e8e2d9;
+  --e-gris-t: #5d564d;
+  --e-gris-s: #a39a8d;
+  /* Blanco (relleno de formas y fondo de textos, Telar 0.3): sobre el lienzo claro es blanco con borde gris. */
+  --e-blanco: #ffffff;
+  --e-blanco-t: #29241e;
+  --e-blanco-s: #cfc6b8;
+
+  /* Notas adhesivas (pastel, iguales en los dos temas para que se lean como papel). */
+  --n-amarillo: #fff0a6;
+  --n-naranja: #ffd9b5;
+  --n-rosa: #ffcfe0;
+  --n-violeta: #e4d6ff;
+  --n-azul: #cddfff;
+  --n-celeste: #c3ecf5;
+  --n-verde: #cdefc4;
+  --n-lima: #e6f5a8;
+  --n-gris: #ebe6de;
+  --n-rojo: #ffc9c2;
+  --n-texto: #2b261f;
+
+  /* Marcos del lienzo (tinte muy suave). */
+  --m-gris: #efe9df;
+  --m-naranja: #fbe9dd;
+  --m-azul: #e3ecf9;
+  --m-violeta: #ede6f7;
+  --m-verde: #e4f1e1;
+  --m-amarillo: #faf1d4;
+  --m-rosa: #f9e4ec;
+  --m-celeste: #e0f1f4;
+  --m-lima: #ecf4d9;
+  --m-rojo: #f9e1de;
+}
+
+/* ───────── Tema oscuro: carbón neutro ─────────
+   Misma luminosidad por superficie que la 0.1 (el Kanban conserva su jerarquía) pero sin matiz cálido: el azul queda
+   2 o 3 puntos por encima del rojo. El acento pasa a azul acero, con la misma luminosidad que el naranja anterior.
+   En oscuro el color es del contenido: la interfaz queda gris y azul. */
+[data-theme='dark'] {
+  color-scheme: dark;
+  --c-fondo: #1a1b1d;
+  --c-fondo-2: #1e1f21;
+  --c-lateral: #151617;
+  --c-bandeja: #222326;
+  --c-bandeja-destino: color-mix(in srgb, var(--c-acento) 10%, var(--c-bandeja));
+  --c-superficie: #2b2c30;
+  --c-superficie-2: #27282b;
+  --c-elevada: #323337;
+  --c-hundido: #1f2022;
+  --c-hundido-2: #17181a;
+  --c-hover: rgba(255, 255, 255, 0.05);
+  --c-hover-fuerte: rgba(255, 255, 255, 0.085);
+  --c-activo: rgba(255, 255, 255, 0.12);
+
+  --c-texto: #ededef;
+  --c-texto-2: #b1b3ba;
+  --c-texto-3: #9a9da6;
+  --c-texto-inv: #17181a;
+
+  --c-acento: #8fb2f8;
+  --c-acento-fuerte: #a9c4fb;
+  --c-acento-solido: #8fb2f8; /* fondo de botones llenos */
+  --c-sobre-acento: #14161a; /* texto sobre --c-acento-solido: 8,5 */
+  --c-acento-suave: #41495c;
+  --c-acento-tinte: rgba(143, 178, 248, 0.16);
+  --c-foco: rgba(143, 178, 248, 0.55);
+  --c-seleccion: #7aa7ff;
+  --c-medida: #ff6b6f;
+
+  --c-ia: #a690f0;
+  --c-ia-suave: #2f2c45;
+  --c-sobre-ia: #14161a; /* texto sobre --c-ia: 6,8 */
+  --c-ia-texto: #a690f0; /* en oscuro --c-ia ya alcanza sobre su tono suave: 5,0 */
+
+  --c-ok: #74c283;
+  --c-peligro: #f0877b;
+
+  --sombra-1: 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.22);
+  --sombra-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 16px -4px rgba(0, 0, 0, 0.4);
+  --sombra-3: 0 2px 8px rgba(0, 0, 0, 0.35), 0 18px 40px -10px rgba(0, 0, 0, 0.55);
+  --sombra-arrastre: 0 28px 56px -12px rgba(0, 0, 0, 0.7), 0 8px 18px -4px rgba(0, 0, 0, 0.45);
+  --sombra-hoja: 0 40px 110px -20px rgba(0, 0, 0, 0.75), 0 8px 24px -6px rgba(0, 0, 0, 0.4);
+  --sombra-interior: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+  --brillo: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  --velo: rgba(0, 0, 0, 0.55);
+  --puntos: #33353a;
+  --barra-scroll: rgba(255, 255, 255, 0.14);
+
+  --e-verde: #263f2a;
+  --e-verde-t: #a3dcaa;
+  --e-verde-s: #5fb36b;
+  --e-amarillo: #453b18;
+  --e-amarillo-t: #eed27c;
+  --e-amarillo-s: #d9ad2e;
+  --e-naranja: #4a2f1d;
+  --e-naranja-t: #f4b282;
+  --e-naranja-s: #e58447;
+  --e-rojo: #4b2523;
+  --e-rojo-t: #f3a59c;
+  --e-rojo-s: #e0594e;
+  --e-violeta: #352b48;
+  --e-violeta-t: #c9b4f1;
+  --e-violeta-s: #9b7ce0;
+  --e-azul: #22324c;
+  --e-azul-t: #a6c3f3;
+  --e-azul-s: #5c8fe0;
+  --e-celeste: #1f3a41;
+  --e-celeste-t: #93d4e2;
+  --e-celeste-s: #45b2c9;
+  --e-lima: #33401d;
+  --e-lima-t: #c4de80;
+  --e-lima-s: #97bb35;
+  --e-rosa: #4a2636;
+  --e-rosa-t: #f2a9c9;
+  --e-rosa-s: #df70a2;
+  --e-gris: #333438;
+  --e-gris-t: #c3c5cb;
+  --e-gris-s: #8c8f96;
+  /* Blanco en el tema oscuro: la superficie clara de la interfaz, con borde gris (no un blanco que encandile). */
+  --e-blanco: #3a3c42;
+  --e-blanco-t: #ededef;
+  --e-blanco-s: #6a6d75;
+
+  --n-amarillo: #ead77d;
+  --n-naranja: #ebbf91;
+  --n-rosa: #e9adc2;
+  --n-violeta: #c3b1ea;
+  --n-azul: #a9c0ea;
+  --n-celeste: #9fd0dc;
+  --n-verde: #a9d39f;
+  --n-lima: #c9dc86;
+  --n-gris: #c6c8cd;
+  --n-rojo: #e9a69d;
+  --n-texto: #1c1d20;
+
+  --m-gris: #28292c;
+  --m-naranja: #2e2826;
+  --m-azul: #242931;
+  --m-violeta: #292731;
+  --m-verde: #242b29;
+  --m-amarillo: #2d2b25;
+  --m-rosa: #2d272d;
+  --m-celeste: #232b30;
+  --m-lima: #282c25;
+  --m-rojo: #2d2527;
+}
+
+/* "Movimiento" de Configuración: Reducido hace lo mismo que el sistema; Completo anima aunque el sistema pida menos. */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-movimiento='completo']) {
+    --t-rapido: 0ms;
+    --t-medio: 0ms;
+    --t-lento: 0ms;
+  }
+}
+
+:root[data-movimiento='reducido'] {
+  --t-rapido: 0ms;
+  --t-medio: 0ms;
+  --t-lento: 0ms;
+}
+
+/* Densidad compacta (Configuración → Apariencia). En cómoda todo vale lo de la 0.1 (--d: 1). */
+:root[data-densidad='compacta'] {
+  --ancho-lista: 256px;
+  --alto-barra: 48px;
+  --ancho-lateral: 228px;
+  --d: 0.8;
+}

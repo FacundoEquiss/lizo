@@ -1,0 +1,23 @@
+{
+  "descripcion": "Falta la firma de pensamiento en un reenvío (por eso el reenvío es exacto).",
+  "fuente": "https://aistudio.google.com/docs/api-errors",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1beta/openai/chat/completions"
+  },
+  "respuesta": {
+    "estado": 400,
+    "headers": {
+      "content-type": "application/json; charset=UTF-8"
+    },
+    "cuerpo": [
+      {
+        "error": {
+          "code": 400,
+          "message": "Function call is missing a thought_signature in functionCall parts. This is required for tools to work correctly.",
+          "status": "INVALID_ARGUMENT"
+        }
+      }
+    ]
+  }
+}

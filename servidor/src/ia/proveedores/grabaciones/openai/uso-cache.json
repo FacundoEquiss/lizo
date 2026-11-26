@@ -1,0 +1,125 @@
+{
+  "descripcion": "Uso con caché: 2.048 tokens leídos de caché y 4.096 escritos (30 min).",
+  "fuente": "https://developers.openai.com/api/docs/guides/prompt-caching",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1/responses"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream; charset=utf-8",
+      "x-request-id": "req_grabado_0001"
+    },
+    "eventos": [
+      {
+        "event": "response.created",
+        "data": {
+          "type": "response.created",
+          "response": {
+            "id": "resp_grabada_01",
+            "object": "response",
+            "status": "in_progress",
+            "output": []
+          }
+        }
+      },
+      {
+        "event": "response.output_item.added",
+        "data": {
+          "type": "response.output_item.added",
+          "output_index": 0,
+          "item": {
+            "id": "msg_05",
+            "type": "message",
+            "status": "in_progress",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "Listo.",
+                "annotations": [],
+                "logprobs": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "event": "response.output_text.delta",
+        "data": {
+          "type": "response.output_text.delta",
+          "item_id": "msg_05",
+          "output_index": 0,
+          "content_index": 0,
+          "delta": "Listo."
+        }
+      },
+      {
+        "event": "response.output_item.done",
+        "data": {
+          "type": "response.output_item.done",
+          "output_index": 0,
+          "item": {
+            "id": "msg_05",
+            "type": "message",
+            "status": "completed",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "Listo.",
+                "annotations": [],
+                "logprobs": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "event": "response.completed",
+        "data": {
+          "type": "response.completed",
+          "response": {
+            "id": "resp_grabada_01",
+            "object": "response",
+            "model": "gpt-6.2-sol",
+            "status": "completed",
+            "output": [
+              {
+                "id": "msg_05",
+                "type": "message",
+                "status": "completed",
+                "role": "assistant",
+                "content": [
+                  {
+                    "type": "output_text",
+                    "text": "Listo.",
+                    "annotations": [],
+                    "logprobs": []
+                  }
+                ]
+              }
+            ],
+            "usage": {
+              "input_tokens": 10000,
+              "input_tokens_details": {
+                "cached_tokens": 2048,
+                "cache_write_tokens": 4096,
+                "cache_write_tokens_details": {
+                  "ttl_30m_tokens": 4096,
+                  "ttl_12h_tokens": 0
+                }
+              },
+              "output_tokens": 12,
+              "output_tokens_details": {
+                "reasoning_tokens": 0
+              },
+              "total_tokens": 10012
+            }
+          }
+        }
+      }
+    ]
+  }
+}

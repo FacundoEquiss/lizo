@@ -1,0 +1,22 @@
+{
+  "descripcion": "Un servicio que no conoce stream_options: se reintenta sin él.",
+  "fuente": "https://api-docs.deepseek.com/quick_start/error_codes",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/chat/completions"
+  },
+  "respuesta": {
+    "estado": 400,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "cuerpo": {
+      "error": {
+        "message": "unknown field: stream_options",
+        "type": "invalid_request_error",
+        "param": null,
+        "code": null
+      }
+    }
+  }
+}

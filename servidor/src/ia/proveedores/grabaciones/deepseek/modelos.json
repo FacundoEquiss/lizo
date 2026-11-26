@@ -1,0 +1,30 @@
+{
+  "descripcion": "GET /models.",
+  "fuente": "https://api-docs.deepseek.com/api/list-models",
+  "pedido": {
+    "metodo": "GET",
+    "ruta": "/models"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "req_grabado_0001"
+    },
+    "cuerpo": {
+      "object": "list",
+      "data": [
+        {
+          "id": "deepseek-flash",
+          "object": "model",
+          "owned_by": "deepseek"
+        },
+        {
+          "id": "deepseek-v4-pro",
+          "object": "model",
+          "owned_by": "deepseek"
+        }
+      ]
+    }
+  }
+}

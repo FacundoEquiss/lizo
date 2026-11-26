@@ -1,0 +1,24 @@
+{
+  "descripcion": "Límite de pedidos con retry-after de 1 s (se reintenta adentro).",
+  "fuente": "https://developers.openai.com/api/docs/guides/error-codes",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1/responses"
+  },
+  "respuesta": {
+    "estado": 429,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "req_grabado_0001",
+      "retry-after": "1"
+    },
+    "cuerpo": {
+      "error": {
+        "message": "Rate limit reached for gpt-6.2-sol in organization org-XXXX on requests per min. Please try again in 1s.",
+        "type": "requests",
+        "param": null,
+        "code": "rate_limit_exceeded"
+      }
+    }
+  }
+}

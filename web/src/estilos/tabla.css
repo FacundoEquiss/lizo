@@ -1,0 +1,826 @@
+/* Tablas y gráficos del lienzo (Telar 0.3). Solo tokens de tokens.css; números en mono con cifras tabulares; sin contornos
+   de interfaz (la jerarquía la dan el tono y la sombra). Las medidas (36 px de fila, 40 de cabecera…) son las de
+   MEDIDAS_TABLA en compartido/tabla.ts: si se cambian acá, se cambian allá (el tamaño del objeto sale de esas cuentas). */
+
+/* ───────── celdas (las usan la tabla del lienzo y el editor) ───────── */
+.celda__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--c-acento-fuerte);
+  text-decoration: none;
+}
+.celda__link:hover {
+  text-decoration: underline;
+}
+.celda__pastilla {
+  display: inline-block;
+  max-width: 100%;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.celda__pastilla--clave {
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+  font-family: var(--f-mono);
+  font-size: 12px;
+}
+.celda__codigo {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  padding: 2px 8px;
+  border-radius: var(--r-xs);
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.celda__color {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.celda__color i {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.celda__casilla {
+  display: inline-grid;
+  place-items: center;
+  color: var(--c-texto-3);
+}
+.celda__casilla--si {
+  color: var(--c-acento-fuerte);
+}
+.celda__porcentaje {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 22px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--tabla-color, var(--e-azul)) 55%, transparent);
+}
+.celda__porcentaje i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--tabla-fuerte, var(--e-azul-s));
+  opacity: 0.35;
+}
+.celda__porcentaje span {
+  position: relative;
+  display: block;
+  padding: 0 8px;
+  line-height: 22px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────── la tabla en el lienzo ───────── */
+.tabla-nodo {
+  --tabla-color: var(--e-azul);
+  --tabla-tinta: var(--e-azul-t);
+  --tabla-fuerte: var(--e-azul-s);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--r-m);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-2);
+  color: var(--c-texto);
+  font-size: 14px;
+}
+.tabla-nodo__titulo {
+  flex: none;
+  height: 44px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tabla-nodo__cuerpo {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.tabla-nodo__fila {
+  display: flex;
+  height: 36px;
+  align-items: stretch;
+}
+.tabla-nodo--rayas .tabla-nodo__fila:nth-child(even):not(.tabla-nodo__fila--cabecera):not(.tabla-nodo__fila--resumen) {
+  background: var(--c-hundido);
+}
+.tabla-nodo__fila--cabecera {
+  height: 40px;
+  background: color-mix(in srgb, var(--tabla-color) 70%, var(--c-superficie));
+  color: var(--tabla-tinta);
+  font-weight: 650;
+  font-size: 13px;
+}
+.tabla-nodo--fuerte .tabla-nodo__fila--cabecera {
+  background: var(--tabla-fuerte);
+  color: var(--c-sobre-acento);
+}
+.tabla-nodo--lisa .tabla-nodo__fila--cabecera {
+  background: transparent;
+  color: var(--c-texto-2);
+  box-shadow: inset 0 -2px 0 var(--tabla-color);
+}
+.tabla-nodo__fila--resumen {
+  height: 36px;
+  background: var(--c-hundido);
+  font-weight: 650;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+.tabla-nodo__celda {
+  flex: none;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+.tabla-nodo__celda--derecha {
+  justify-content: flex-end;
+  text-align: right;
+}
+.tabla-nodo__celda--centro {
+  justify-content: center;
+}
+.tabla-nodo__celda--numero {
+  width: 44px;
+  justify-content: center;
+  padding: 0;
+  color: var(--c-texto-3);
+  font-size: 12px;
+}
+.tabla-nodo__vacia {
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  color: var(--c-texto-3);
+}
+.tabla-nodo__mas {
+  display: block;
+  width: 100%;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  color: var(--c-acento-fuerte);
+  font: 600 13px var(--fuente);
+  cursor: pointer;
+}
+.tabla-nodo__mas:hover {
+  background: var(--c-hover);
+}
+.tabla-nodo__lejos {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  background: color-mix(in srgb, var(--tabla-color) 70%, var(--c-superficie));
+  color: var(--tabla-tinta);
+  font-size: 40px;
+  font-weight: 800;
+  text-align: center;
+}
+/* De lejos: sin sombras ni pastillas (el texto plano alcanza). */
+.tabla-nodo--lejos,
+.tabla-nodo--muy-lejos {
+  box-shadow: none;
+}
+
+/* ───────── el gráfico en el lienzo ───────── */
+.grafico-nodo {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--r-m);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-2);
+  color: var(--c-texto);
+  padding: 12px 12px 10px;
+}
+.grafico-nodo--lejos,
+.grafico-nodo--muy-lejos {
+  box-shadow: none;
+}
+.grafico-nodo__titulo {
+  flex: none;
+  padding: 0 4px 6px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.grafico-nodo__area {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.grafico-nodo__area svg {
+  display: block;
+}
+.grafico-nodo__vacio {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  text-align: center;
+  color: var(--c-texto-2);
+  font-size: 13.5px;
+}
+.grafico-nodo__vacio p {
+  margin: 0;
+  max-width: 28ch;
+  line-height: 1.4;
+}
+.grafico-nodo__aviso {
+  flex: none;
+  padding: 2px 4px 0;
+  color: var(--c-texto-3);
+  font-size: 12px;
+}
+.grafico-nodo__leyenda {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 4px 0 0;
+  padding: 0 4px;
+  list-style: none;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+}
+.grafico-nodo__leyenda li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.grafico-nodo__leyenda i {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+.grafico-nodo__lejos {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  font-size: 40px;
+  font-weight: 800;
+  text-align: center;
+}
+.grafico__eje {
+  stroke: var(--c-texto-3);
+  stroke-width: 1;
+}
+.grafico__guia {
+  stroke: var(--c-hover-fuerte);
+  stroke-width: 1;
+}
+.grafico__rotulo {
+  fill: var(--c-texto-2);
+  font: 500 11px var(--fuente);
+}
+.grafico__valor {
+  fill: var(--c-texto);
+  font: 650 11px var(--fuente);
+  font-variant-numeric: tabular-nums;
+}
+.grafico__valor--sobre {
+  fill: var(--c-sobre-acento);
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.28);
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+}
+.grafico__total {
+  fill: var(--c-texto);
+  font: 750 20px var(--fuente);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────── el editor de la tabla (diálogo) ───────── */
+.dialogo--tabla,
+.dialogo--grafico {
+  width: min(1100px, 100%);
+  height: min(760px, 88vh);
+  max-height: 88vh;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+.editor-tabla__cabecera {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+}
+.editor-tabla__titulo {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--r-s);
+  background: transparent;
+  color: var(--c-texto);
+  font: 700 19px var(--fuente);
+  letter-spacing: -0.01em;
+  outline: none;
+}
+.editor-tabla__titulo:hover {
+  background: var(--c-hover);
+}
+.editor-tabla__titulo:focus {
+  background: var(--c-hundido);
+  box-shadow: 0 0 0 3px var(--c-foco);
+}
+.editor-tabla__acciones {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.editor-tabla__aviso {
+  flex: none;
+  margin: 0 18px 8px;
+  padding: 8px 12px;
+  border-radius: var(--r-s);
+  background: var(--c-acento-tinte);
+  font-size: 13px;
+}
+.editor-tabla__aviso--suave {
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+}
+.editor-tabla__grilla {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  margin: 0 18px;
+  border-radius: var(--r-s);
+  background: var(--c-fondo-2);
+  outline: none;
+}
+.editor-tabla__grilla:focus-visible {
+  box-shadow: 0 0 0 3px var(--c-foco);
+}
+.editor-tabla {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: max-content;
+  min-width: 100%;
+  font-size: 14px;
+}
+.editor-tabla th,
+.editor-tabla td {
+  height: 38px;
+  padding: 0;
+  background: var(--c-superficie);
+  box-shadow: inset -1px -1px 0 var(--c-hover-fuerte);
+  text-align: left;
+  font-weight: 500;
+  vertical-align: middle;
+}
+.editor-tabla thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--c-superficie-2);
+  height: 42px;
+}
+.editor-tabla .editor-tabla__num {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: 46px;
+  min-width: 46px;
+  background: var(--c-superficie-2);
+  color: var(--c-texto-3);
+  font-size: 12px;
+  text-align: center;
+}
+.editor-tabla thead .editor-tabla__num {
+  z-index: 4;
+}
+.editor-tabla__cab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--c-texto-2);
+  font: 650 13px var(--fuente);
+  cursor: pointer;
+  text-align: left;
+}
+.editor-tabla__cab span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.editor-tabla__cab:hover:not(:disabled) {
+  background: var(--c-hover);
+  color: var(--c-texto);
+}
+.editor-tabla__th--orden .editor-tabla__cab {
+  color: var(--c-acento-fuerte);
+}
+.editor-tabla__fila-menu {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.editor-tabla__fila-menu svg {
+  display: none;
+}
+.editor-tabla__fila-menu:hover:not(:disabled) span {
+  display: none;
+}
+.editor-tabla__fila-menu:hover:not(:disabled) svg {
+  display: block;
+}
+.editor-tabla__mas-col {
+  width: 46px;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.editor-tabla__vacio {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.editor-tabla td.editor-tabla__celda {
+  position: relative;
+  padding: 0 12px;
+  cursor: cell;
+}
+.editor-tabla__celda--derecha {
+  text-align: right;
+}
+.editor-tabla__celda--derecha .editor-tabla__valor {
+  justify-content: flex-end;
+}
+.editor-tabla__celda--centro {
+  text-align: center;
+}
+.editor-tabla__celda--centro .editor-tabla__valor {
+  justify-content: center;
+}
+.editor-tabla__celda--sel {
+  z-index: 1;
+  box-shadow: inset 0 0 0 2px var(--c-acento) !important;
+  background: var(--c-acento-tinte) !important;
+}
+.editor-tabla__valor {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.editor-tabla__campo {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.editor-tabla__campo input,
+.editor-tabla__campo select {
+  width: 100%;
+  height: 100%;
+  padding: 0 12px;
+  border: 0;
+  background: var(--c-superficie);
+  color: var(--c-texto);
+  font: 500 14px var(--fuente);
+  outline: none;
+}
+.editor-tabla__error {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 5;
+  min-width: 220px;
+  margin-top: 4px;
+  padding: 6px 10px;
+  border-radius: var(--r-s);
+  background: var(--c-peligro);
+  color: #fff;
+  font-size: 12.5px;
+  white-space: normal;
+  text-align: left;
+}
+.editor-tabla__resumen {
+  position: sticky;
+  bottom: 0;
+  background: var(--c-superficie-2) !important;
+  font-weight: 650;
+  font-size: 12.5px;
+}
+.editor-tabla__pie {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  color: var(--c-texto-3);
+  font-size: 12.5px;
+}
+.editor-tabla__ayuda {
+  margin-left: auto;
+}
+.editor-tabla__colores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.editor-tabla__texto-boton {
+  display: inline;
+}
+
+/* ───────── menú de columna ───────── */
+.menu-columna {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 292px;
+  padding: 14px;
+  border-radius: var(--r-m);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-hoja);
+  overflow-y: auto;
+}
+.menu-columna__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-texto-2);
+}
+.menu-columna__campo input[type='text'],
+.menu-columna__campo input:not([type]),
+.menu-columna__campo select {
+  height: 34px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  color: var(--c-texto);
+  font: 500 14px var(--fuente);
+  outline: none;
+}
+.menu-columna__campo input:focus,
+.menu-columna__campo select:focus {
+  box-shadow: 0 0 0 3px var(--c-foco);
+}
+.menu-columna__check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--c-texto);
+}
+.menu-columna__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.menu-columna__aviso {
+  padding: 10px 12px;
+  border-radius: var(--r-s);
+  background: var(--c-acento-tinte);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.menu-columna__ayuda {
+  margin: 0;
+  color: var(--c-texto-3);
+  font-size: 12px;
+  font-weight: 500;
+}
+.menu-columna__opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.menu-columna__opciones li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.menu-columna__opciones select {
+  width: 92px;
+}
+
+/* ───────── el editor del gráfico (diálogo) ───────── */
+.editor-grafico {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) 1fr;
+  gap: 18px;
+  padding: 0 18px 18px;
+}
+.editor-grafico__ajustes {
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-right: 4px;
+}
+.editor-grafico__ajustes h3 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-texto-3);
+}
+.editor-grafico__tipos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.editor-grafico__tipo {
+  min-height: var(--toque);
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+  font: 600 13px var(--fuente);
+  cursor: pointer;
+}
+.editor-grafico__tipo:hover:not(:disabled) {
+  background: var(--c-hover-fuerte);
+  color: var(--c-texto);
+}
+.editor-grafico__tipo--activo {
+  background: var(--c-acento-tinte);
+  color: var(--c-acento-fuerte);
+}
+.editor-grafico__campos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+.editor-grafico__series {
+  gap: 8px;
+}
+.editor-grafico__ayuda {
+  margin: 0;
+  color: var(--c-texto-3);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.editor-grafico__grilla {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  overflow-x: auto;
+}
+.editor-grafico__grilla table {
+  border-collapse: separate;
+  border-spacing: 4px;
+}
+.editor-grafico__grilla th {
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--c-texto-2);
+  text-align: left;
+  white-space: nowrap;
+}
+.editor-grafico__grilla input {
+  width: 100%;
+  min-width: 80px;
+  height: 34px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--r-xs);
+  background: var(--c-hundido);
+  color: var(--c-texto);
+  font: 500 14px var(--fuente);
+  outline: none;
+}
+.editor-grafico__grilla input:focus {
+  box-shadow: 0 0 0 3px var(--c-foco);
+}
+.editor-grafico__vista {
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-m);
+  background: var(--c-fondo-2);
+  overflow: auto;
+  padding: 12px;
+}
+.editor-grafico__previa {
+  box-shadow: var(--sombra-2);
+  max-width: 100%;
+}
+
+/* ───────── celular: el editor ocupa toda la pantalla y las celdas se tocan con el dedo ───────── */
+html[data-movil] .dialogo--tabla,
+html[data-movil] .dialogo--grafico {
+  width: 100%;
+  height: calc(100dvh - var(--sa-t) - 12px);
+  max-height: none;
+  padding: 0;
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+}
+html[data-movil] .editor-tabla__cabecera {
+  padding: 12px 12px 8px;
+  flex-wrap: wrap;
+}
+html[data-movil] .editor-tabla__grilla {
+  margin: 0 8px;
+}
+html[data-movil] .editor-tabla th,
+html[data-movil] .editor-tabla td {
+  height: 44px;
+}
+html[data-movil] .editor-tabla__texto-boton,
+html[data-movil] .editor-tabla__ayuda {
+  display: none;
+}
+html[data-movil] .editor-tabla__pie {
+  padding: 10px 12px max(10px, var(--sa-b));
+}
+html[data-movil] .editor-grafico {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  overflow-y: auto;
+  padding: 0 12px max(12px, var(--sa-b));
+}
+html[data-movil] .editor-grafico__vista {
+  order: -1;
+  min-height: 240px;
+}
+html[data-movil] .menu-columna {
+  width: min(292px, calc(100vw - 24px));
+}
+@media (pointer: coarse) {
+  .editor-grafico__tipo {
+    min-height: 44px;
+  }
+  .menu-columna__campo input[type='text'],
+  .menu-columna__campo input:not([type]),
+  .menu-columna__campo select {
+    height: 44px;
+  }
+}

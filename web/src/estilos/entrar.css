@@ -1,0 +1,361 @@
+/*
+ * Pantalla de entrar (online). Sin contornos: la caja se separa del fondo por el tono y la sombra.
+ * El `body` no se desplaza (la app es un lienzo), así que la pantalla se desplaza SOLA: alto de la ventana visible (dvh: descuenta la barra
+ * del navegador), contenido centrado con márgenes automáticos (si no entra, empieza arriba y se baja con el dedo; centrar con `place-items` lo
+ * cortaría por arriba) y, abajo, lugar para la barra del sistema y para el teclado (`--entrar-teclado`, util/campoVisible.ts).
+ */
+.entrar {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 24px 24px calc(24px + env(safe-area-inset-bottom, 0px) + var(--entrar-teclado, 0px));
+  background: var(--c-fondo);
+}
+.entrar > .entrar__caja {
+  margin: auto;
+  flex-shrink: 0;
+}
+.entrar__campo input {
+  scroll-margin: 96px 0;
+}
+.entrar__caja {
+  width: min(100%, 380px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 32px 28px 22px;
+  background: var(--c-superficie);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sombra-2);
+  animation: entrar-aparece var(--t-lento) var(--curva) both;
+}
+.entrar__marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 750;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--c-texto);
+}
+.entrar__logo {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--c-texto);
+  color: var(--c-fondo);
+  flex-shrink: 0;
+}
+.entrar__titulo {
+  margin: 6px 0 0;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--c-texto);
+}
+.entrar__texto {
+  margin: -6px 0 4px;
+  color: var(--c-texto-2);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.entrar__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-texto-2);
+}
+.entrar__campo input {
+  height: 42px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  color: var(--c-texto);
+  font: 500 15px var(--fuente);
+  outline: none;
+  transition: background var(--t-rapido), box-shadow var(--t-rapido);
+}
+.entrar__campo input:focus {
+  background: var(--c-superficie-2);
+  box-shadow: 0 0 0 3px var(--c-foco);
+}
+.entrar__campo input:disabled {
+  opacity: 0.65;
+}
+.entrar__error,
+.entrar__aviso {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+.entrar__error {
+  color: var(--c-peligro);
+}
+.entrar__aviso {
+  color: var(--c-ok);
+}
+.entrar__boton {
+  height: 42px;
+  margin-top: 4px;
+  justify-content: center;
+}
+.entrar__otro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+/* Crear cuenta: la segunda acción de la pantalla, a lo ancho y sin competir con Entrar (sin color). */
+.entrar__otro .entrar__crear {
+  align-self: stretch;
+  height: 40px;
+  justify-content: center;
+}
+.entrar__invitacion {
+  margin: 4px 0 0;
+  color: var(--c-texto-2);
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: center;
+}
+/* Tu cuenta espera la aprobación del dueño. */
+.espera__icono {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+}
+.espera__texto b {
+  color: var(--c-texto);
+  font-weight: 650;
+}
+.entrar__ayuda {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--c-texto-3);
+}
+@keyframes entrar-aparece {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .entrar__caja {
+    animation: none;
+  }
+}
+/* Ver la contraseña (en el teléfono se escribe a ciegas y con errores) y el paso del código. */
+.entrar__clave {
+  position: relative;
+  display: block;
+}
+.entrar__clave input {
+  width: 100%;
+  padding-right: 46px;
+}
+.entrar__ver {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  color: var(--c-texto-3);
+}
+.entrar__ver:hover {
+  color: var(--c-texto);
+  background: var(--c-hover-fuerte);
+}
+.entrar__campo input.entrar__codigo {
+  font: 600 20px var(--fuente-mono);
+  letter-spacing: 0.2em;
+}
+.entrar__codigo-acciones {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: -6px;
+}
+
+/* «Permitir» (OAuth de ChatGPT y Claude): misma caja que entrar, una sola decisión por pantalla. */
+.autorizar__cargando {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+.autorizar__sitio {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+.autorizar__sitio b {
+  color: var(--c-texto);
+  font-weight: 650;
+}
+.autorizar__acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.autorizar__acciones .entrar__boton {
+  margin-top: 0;
+  min-height: 44px;
+}
+.autorizar__pie {
+  margin: 0;
+  text-align: center;
+  color: var(--c-texto-3);
+  font-size: 12.5px;
+}
+
+/* Conectar IA → «ChatGPT y Claude (chat)»: las aplicaciones conectadas por OAuth. */
+.conexiones {
+  margin-top: 14px;
+}
+.conexiones__titulo {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--c-texto-2);
+}
+.conexiones__fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  font-size: 14px;
+}
+.conexiones__fecha,
+.conexiones__vacio {
+  color: var(--c-texto-3);
+  font-size: 13px;
+}
+.conexiones__vacio {
+  margin: 0;
+}
+.conexiones__error {
+  margin: 6px 0 0;
+  color: var(--c-peligro);
+  font-size: 13px;
+}
+
+/* Mi perfil (Configuración → Cuenta y el menú del celular). */
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 0;
+}
+.perfil__campos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.perfil__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-texto-2);
+}
+.perfil__campo input {
+  height: var(--toque);
+  min-height: 38px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  color: var(--c-texto);
+  font: 500 15px var(--fuente);
+  outline: none;
+}
+.perfil__campo input:focus {
+  box-shadow: 0 0 0 3px var(--c-foco);
+}
+.perfil__colores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.perfil__vacio {
+  margin: 0;
+  color: var(--c-texto-3);
+  font-size: 13.5px;
+}
+.perfil__botones {
+  display: inline-flex;
+  gap: 8px;
+}
+.hoja-mas__perfil {
+  padding: 4px var(--m-margen, 16px) 12px;
+}
+@media (pointer: coarse) {
+  .perfil__colores .herramientas__color {
+    width: 36px;
+    height: 36px;
+  }
+}
+.hoja-mas__perfil .perfil {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.hoja-mas__perfil .perfil__campos {
+  width: 100%;
+}
+
+/* Cambiar la contraseña y lo que usa la cuenta (Configuración → Cuenta). */
+.cambiar-clave {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(100%, 340px);
+}
+.cambiar-clave__ayuda {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-texto-3);
+}
+.cambiar-clave__error {
+  margin: 0;
+  color: var(--c-peligro);
+  font-size: 13px;
+}
+.cuenta-uso {
+  font-variant-numeric: tabular-nums;
+}
+.datos-cuenta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+.datos-cuenta__mail {
+  margin: 0;
+  font-size: 14px;
+  color: var(--c-texto-2);
+  overflow-wrap: anywhere;
+}

@@ -1,0 +1,23 @@
+{
+  "descripcion": "Saturado.",
+  "fuente": "https://developers.openai.com/api/docs/guides/error-codes",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1/responses"
+  },
+  "respuesta": {
+    "estado": 503,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "req_grabado_0001"
+    },
+    "cuerpo": {
+      "error": {
+        "message": "The engine is currently overloaded, please try again later.",
+        "type": "server_error",
+        "param": null,
+        "code": null
+      }
+    }
+  }
+}

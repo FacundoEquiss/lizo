@@ -1,0 +1,270 @@
+/* Recuperar la contraseña sin correo: «Guardá estos códigos», «Olvidé mi contraseña», la pantalla del enlace de restablecimiento y la fila
+   «Códigos de recuperación» de Configuración → Cuenta. Lo importan ui/CodigosRecuperacion.tsx y ui/CodigosCuenta.tsx. Solo tokens, sin
+   contornos: separan el tono, el espacio y la sombra. Lo del celular cuelga de html[data-movil] / html[data-tactil]. */
+
+.codigos {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.codigos__titulo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.codigos__texto {
+  margin: 0;
+  color: var(--c-texto-2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.codigos__texto b {
+  color: var(--c-texto);
+  font-weight: 650;
+}
+
+/* En la pantalla de entrar, el texto de arriba es el de siempre (.entrar__texto): acá solo se resalta lo importante. */
+.codigos--pantalla .entrar__texto b {
+  color: var(--c-texto);
+  font-weight: 650;
+}
+
+/* Lo que no se puede perder: amarillo (cuando hace falta algo) o rojo (cuando ya se está por quedar sin nada). */
+.codigos__aviso {
+  display: grid;
+  grid-template-columns: 15px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  margin: 0;
+  padding: 9px 11px;
+  border-radius: var(--r-s);
+  background: var(--e-amarillo);
+  color: var(--e-amarillo-t);
+  font-size: 12.5px;
+  font-weight: 560;
+  line-height: 1.45;
+}
+
+.codigos__aviso svg {
+  margin-top: 2px;
+}
+
+.codigos__aviso--fuerte {
+  background: var(--e-rojo);
+  color: var(--e-rojo-t);
+}
+
+.codigos__lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.codigos__lista li {
+  padding: 10px 8px;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  text-align: center;
+}
+
+.codigos__lista code {
+  font: 600 15px var(--fuente-mono);
+  letter-spacing: 0.04em;
+  color: var(--c-texto);
+  font-variant-numeric: tabular-nums;
+  user-select: all;
+  white-space: nowrap;
+}
+
+/* El texto que se selecciona cuando el navegador no deja copiar solo: existe, pero no se ve ni se toca. */
+.codigos__copia {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  resize: none;
+}
+
+.codigos__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.codigos__confirmar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--c-texto);
+  cursor: pointer;
+}
+
+.codigos__confirmar input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--c-acento-solido);
+  cursor: pointer;
+}
+
+.codigos__seguir {
+  height: 42px;
+  justify-content: center;
+}
+
+.codigos__ayuda {
+  margin: -6px 0 0;
+  color: var(--c-texto-3);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+/* ───────── «Olvidé mi contraseña»: lo que se ve cuando ya entró ───────── */
+
+.recuperada {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.recuperada__cuenta {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.recuperada__cuenta b {
+  color: var(--c-texto);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.recuperada__acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recuperada__acciones .boton {
+  justify-content: center;
+}
+
+.entrar__ayuda-extra {
+  margin: 2px 0 0;
+  color: var(--c-texto-2);
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+/* ───────── Configuración → Cuenta: «Códigos de recuperación» ───────── */
+
+.codigos-cuenta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(100%, 460px);
+}
+
+.codigos-cuenta__estado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.codigos-cuenta__numero {
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.codigos-cuenta__pocos {
+  margin: 0;
+}
+
+/* El formulario de «Generar códigos nuevos» es el mismo de «Cambiar contraseña» (.cambiar-clave). */
+
+/* ───────── En el celular ───────── */
+
+html[data-movil] .codigos .boton,
+html[data-tactil] .codigos .boton {
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+html[data-movil] .codigos__confirmar,
+html[data-tactil] .codigos__confirmar {
+  min-height: 44px;
+}
+
+html[data-movil] .codigos__confirmar input,
+html[data-tactil] .codigos__confirmar input {
+  width: 24px;
+  height: 24px;
+}
+
+html[data-movil] .codigos__lista code {
+  font-size: 16px;
+}
+
+html[data-movil] .codigos__seguir {
+  height: 52px;
+  font-size: 16px;
+}
+
+html[data-movil] .codigos__texto,
+html[data-movil] .codigos__aviso {
+  font-size: 14px;
+}
+
+/* El texto largo de los botones secundarios de la pantalla de entrar corta en dos líneas (como los demás). */
+html[data-movil] .recuperada__acciones .boton {
+  height: auto;
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 15px;
+  line-height: 1.3;
+  white-space: normal;
+  text-align: center;
+}
+
+html[data-movil] .entrar__ayuda-extra {
+  font-size: 14px;
+}
+
+/* El código de recuperación que se escribe en «¿Olvidaste tu contraseña?»: monoespaciado y en mayúsculas, sin el espaciado ancho del
+   código de seis dígitos (14 símbolos con ese espaciado no entran en un teléfono). */
+.entrar__campo input.entrar__codigo-recuperacion {
+  font: 600 16px var(--fuente-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.entrar__campo input.entrar__codigo-recuperacion::placeholder {
+  text-transform: none;
+  color: var(--c-texto-3);
+  font-weight: 500;
+}

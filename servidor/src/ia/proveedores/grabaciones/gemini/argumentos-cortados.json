@@ -1,0 +1,51 @@
+{
+  "descripcion": "Corte por largo con los argumentos de la herramienta a medias.",
+  "fuente": "https://aistudio.google.com/docs/openai",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1beta/openai/chat/completions"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream"
+    },
+    "eventos": [
+      {
+        "data": {
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "function": {
+                      "arguments": "{\"titulo\":\"Revisar el me",
+                      "name": "crear_tarjeta"
+                    },
+                    "id": "call_c",
+                    "type": "function"
+                  }
+                ]
+              },
+              "finish_reason": "length"
+            }
+          ],
+          "created": 1764000000,
+          "id": "gem-0001",
+          "model": "gemini-4-hydrogen",
+          "object": "chat.completion.chunk",
+          "usage": {
+            "completion_tokens": 4000,
+            "prompt_tokens": 1900,
+            "total_tokens": 5900
+          }
+        }
+      },
+      {
+        "data": "[DONE]"
+      }
+    ]
+  }
+}

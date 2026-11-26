@@ -1,0 +1,87 @@
+/* Piezas de la PWA que se ven en la computadora y en el teléfono (plan del celular, 9). En el teléfono, movil.css las
+   reubica sobre la barra inferior. Colores: solo tokens. */
+
+.aviso-actualizar {
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  translate: -50% 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  max-width: min(360px, calc(100vw - 24px));
+  min-height: 52px;
+  padding: 6px 6px 6px 16px;
+  border-radius: 16px;
+  background: var(--c-elevada);
+  box-shadow: var(--sombra-3);
+  color: var(--c-texto);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.aviso-actualizar > svg {
+  flex-shrink: 0;
+  color: var(--c-acento-fuerte);
+}
+
+.aviso-actualizar__texto {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.aviso-actualizar__boton {
+  min-height: 40px;
+}
+
+.aviso-actualizar__girando {
+  animation: girar 900ms linear infinite;
+}
+
+/* Telar no pudo arrancar: sin red y sin nada guardado ("necesita conexión la primera vez") o un error del servidor
+   (PantallaSinConexion). Tapa la app entera, debajo de la pastilla de versión nueva. */
+.sin-conexion {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  display: grid;
+  place-items: center;
+  padding: max(24px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px))
+    max(24px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px));
+  background: var(--c-fondo);
+  color: var(--c-texto);
+}
+
+.sin-conexion__caja {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: min(380px, 100%);
+}
+
+.sin-conexion__titulo {
+  margin: 8px 0 0;
+  text-wrap: balance;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.sin-conexion__texto {
+  margin: 0;
+  color: var(--c-texto-2);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.sin-conexion__boton {
+  gap: 8px;
+  min-width: 140px;
+  min-height: 44px;
+  margin-top: 8px;
+}
+

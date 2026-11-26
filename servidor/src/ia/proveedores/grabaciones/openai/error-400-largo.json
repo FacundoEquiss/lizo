@@ -1,0 +1,23 @@
+{
+  "descripcion": "La conversación no entra.",
+  "fuente": "https://developers.openai.com/api/docs/guides/error-codes",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1/responses"
+  },
+  "respuesta": {
+    "estado": 400,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "req_grabado_0001"
+    },
+    "cuerpo": {
+      "error": {
+        "message": "This model's maximum context length is 1050000 tokens. However, your messages resulted in 1200000 tokens.",
+        "type": "invalid_request_error",
+        "param": "input",
+        "code": "context_length_exceeded"
+      }
+    }
+  }
+}

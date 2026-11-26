@@ -1,0 +1,81 @@
+{
+  "descripcion": "El streaming se corta sin evento de cierre.",
+  "fuente": "https://developers.openai.com/api/docs/guides/migrate-to-responses",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1/responses"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream; charset=utf-8",
+      "x-request-id": "req_grabado_0001"
+    },
+    "eventos": [
+      {
+        "event": "response.created",
+        "data": {
+          "type": "response.created",
+          "response": {
+            "id": "resp_grabada_01",
+            "object": "response",
+            "status": "in_progress",
+            "output": []
+          }
+        }
+      },
+      {
+        "event": "response.output_item.added",
+        "data": {
+          "type": "response.output_item.added",
+          "output_index": 0,
+          "item": {
+            "id": "msg_01",
+            "type": "message",
+            "status": "in_progress",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "La tarjeta RC-12 está en «Pendientes» y no tiene responsable.",
+                "annotations": [],
+                "logprobs": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "event": "response.output_text.delta",
+        "data": {
+          "type": "response.output_text.delta",
+          "item_id": "msg_01",
+          "output_index": 0,
+          "content_index": 0,
+          "delta": "La tarjeta R"
+        }
+      },
+      {
+        "event": "response.output_item.done",
+        "data": {
+          "type": "response.output_item.done",
+          "output_index": 0,
+          "item": {
+            "id": "msg_01",
+            "type": "message",
+            "status": "completed",
+            "role": "assistant",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "La tarjeta RC-12 está en «Pendientes» y no tiene responsable.",
+                "annotations": [],
+                "logprobs": []
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

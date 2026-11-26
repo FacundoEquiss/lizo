@@ -1,0 +1,338 @@
+/* La campana, la bandeja y la hoja de notificaciones (plan de la IA integrada, 8.4 y 14.5), y las preferencias (Configuración →
+   Notificaciones). Solo tokens, sin contornos: la jerarquía la dan el tono, el espacio y la sombra. */
+
+/* ───────── La campana ───────── */
+
+.campana {
+  position: relative;
+}
+
+/* El número de no leídas: sobre --c-ia (es de la IA), con su propio texto de contraste. Hasta «9+». */
+.campana__numero {
+  position: absolute;
+  top: -2px;
+  right: -3px;
+  display: grid;
+  place-items: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--c-ia);
+  color: var(--c-sobre-ia);
+  box-shadow: 0 0 0 2px var(--c-fondo);
+  font-size: 10.5px;
+  font-weight: 750;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+html[data-movil] .campana .campana__numero {
+  top: 5px;
+  right: 3px;
+}
+
+/* ───────── La bandeja (escritorio) ───────── */
+
+.bandeja__marco {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: inherit;
+}
+
+.bandeja__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 10px 6px 16px;
+}
+
+.bandeja__cabecera h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* 360 de ancho (lo fija el Desplegable) y hasta 480 de alto en total (cabecera y pie incluidos), con desplazamiento adentro. */
+.bandeja__lista {
+  flex: 1;
+  min-height: 0;
+  max-height: 390px;
+  padding: 2px 6px 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.bandeja__pie {
+  display: flex;
+  justify-content: flex-end;
+  padding: 6px 10px 8px;
+}
+
+.bandeja__grupo h3 {
+  margin: 8px 10px 2px;
+  color: var(--c-texto-3);
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.bandeja__cargando {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 28px 16px;
+  color: var(--c-texto-3);
+  font-size: 13px;
+}
+
+.bandeja__mas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 0 4px;
+}
+
+.bandeja__error {
+  color: var(--c-peligro);
+  font-size: 12.5px;
+}
+
+/* ───────── Una fila (bandeja y hoja) ───────── */
+
+.fila-notif {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 10px;
+  border-radius: var(--r-s);
+  text-align: left;
+  transition: background var(--t-rapido);
+}
+
+.fila-notif:hover {
+  background: var(--c-hover);
+}
+
+.fila-notif:active {
+  background: var(--c-activo);
+}
+
+/* El foco en una fila de menú es el fondo (02, estados). */
+.fila-notif:focus-visible {
+  outline: none;
+  background: var(--c-hover-fuerte);
+}
+
+.fila-notif__icono {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--c-hundido-2);
+  color: var(--c-texto-2);
+}
+
+/* Lo que viene de una IA va en violeta. */
+.fila-notif__icono--ia {
+  background: var(--c-ia-suave);
+  color: var(--c-ia-texto);
+}
+
+/* Un fallo: rojo de texto sobre su tono suave (el color nunca solo: el ícono es otro). */
+.fila-notif__icono--error {
+  background: var(--e-rojo);
+  color: var(--e-rojo-t);
+}
+
+.fila-notif__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.fila-notif__titulo,
+.fila-notif__cuerpo {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fila-notif__titulo {
+  color: var(--c-texto);
+  font-size: 13.5px;
+  font-weight: 560;
+}
+
+.fila-notif--sin-leer .fila-notif__titulo {
+  font-weight: 700;
+}
+
+.fila-notif__cuerpo {
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+}
+
+.fila-notif__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  min-width: 36px;
+}
+
+.fila-notif__cuando {
+  color: var(--c-texto-3);
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+
+/* El punto de «sin leer» es del acento (no del violeta: el violeta marca a la IA, no el estado). */
+.fila-notif__punto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-acento);
+}
+
+/* ───────── La hoja del celular ───────── */
+
+html[data-movil] .fila-notif {
+  min-height: 64px;
+  padding: 10px 12px;
+}
+
+/* Un interruptor que es un botón (las preferencias y Configuración → IA en el celular) se toca con el dedo: la caja mide 44 px de alto y
+   el dibujo sigue de 46 × 28 (el fondo se recorta al contenido; la perilla baja los 8 px del relleno). */
+html[data-movil] button.interruptor {
+  box-sizing: content-box;
+  padding: 8px 0;
+  background-clip: content-box;
+}
+
+html[data-movil] button.interruptor::after {
+  top: 11px;
+}
+
+html[data-movil] .confirmar--compacto {
+  margin: 0 12px 10px;
+}
+
+html[data-movil] .fila-notif__titulo {
+  font-size: 15px;
+}
+
+html[data-movil] .fila-notif__cuerpo {
+  font-size: 13px;
+}
+
+html[data-movil] .fila-notif__cuando {
+  font-size: 13px;
+}
+
+html[data-movil] .bandeja__grupo h3 {
+  margin: 12px 12px 4px;
+  font-size: 13px;
+}
+
+html[data-movil] .bandeja__lista {
+  max-height: none;
+  padding: 0 4px 8px;
+}
+
+.hoja-notificaciones__acciones,
+.hoja-notificaciones__pie {
+  display: flex;
+  width: 100%;
+}
+
+.hoja-notificaciones__acciones {
+  justify-content: flex-end;
+}
+
+.hoja-notificaciones__pie {
+  justify-content: center;
+}
+
+html[data-movil] .hoja-preferencias__cuerpo {
+  padding: 4px var(--m-margen, 16px) max(16px, var(--sa-b, 0px));
+}
+
+/* ───────── Configuración → Notificaciones ───────── */
+
+.notif-config__cargando {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 24px 0;
+  color: var(--c-texto-3);
+  font-size: 13px;
+}
+
+.notif-config__horas {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.notif-config__horas label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--c-texto-2);
+  font-size: 13px;
+}
+
+.notif-config__horas input {
+  height: var(--toque);
+  min-height: 38px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  color: var(--c-texto);
+  font: 500 15px var(--fuente);
+  outline: none;
+}
+
+.notif-config__horas input:focus {
+  box-shadow: 0 0 0 3px var(--c-foco);
+}
+
+/* ───────── Mi alias para que me mencionen (Configuración → Cuenta y el menú del celular) ───────── */
+
+.perfil__alias {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--c-texto-3);
+  font: 500 15px var(--fuente);
+}
+
+.perfil__alias input {
+  flex: 1;
+  min-width: 0;
+}
+
+.perfil__ayuda {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--c-texto-3);
+}
+
+.perfil__ayuda--error {
+  color: var(--c-peligro);
+}

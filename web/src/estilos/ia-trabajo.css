@@ -1,0 +1,394 @@
+/* Los trabajos de los agentes de la IA integrada, F2 (plan 14.4 y 14.6): la entrada «Claude está pensando…» en el hilo de la
+   tarjeta, la tarjeta de permiso, el pie con lo que hizo y la pastilla de la barra. Lo importan los trozos que los usan (el de la
+   tarjeta y el de la pastilla): no engorda el arranque. Solo tokens, sin contornos. Lo del celular cuelga de html[data-movil]. */
+
+/* ───────── La entrada en el hilo ───────── */
+
+.entrada-trabajo__cuerpo {
+  margin-top: 4px;
+  padding: 9px 13px;
+  border-radius: 4px 14px 14px 14px;
+  background: color-mix(in srgb, var(--c-ia-suave) 60%, var(--c-superficie));
+  box-shadow: var(--sombra-1);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.entrada-trabajo__linea {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+}
+
+.entrada-trabajo__linea > svg {
+  flex: none;
+  margin-top: 3px;
+  color: var(--c-ia-texto);
+}
+
+.entrada-trabajo__linea--curso {
+  align-items: center;
+}
+
+.entrada-trabajo__texto {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* El pulso es de opacidad y escala (brillar, la misma de «IA trabajando» de la barra) y se apaga con «reducir movimiento». */
+.entrada-trabajo__pulso {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  color: var(--c-ia-texto);
+}
+
+.entrada-trabajo__pulso svg {
+  animation: brillar 1.2s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-movimiento='completo']) .entrada-trabajo__pulso svg,
+  :root:not([data-movimiento='completo']) .pastilla-trabajo__icono svg {
+    animation: none;
+  }
+}
+
+[data-movimiento='reducido'] .entrada-trabajo__pulso svg,
+[data-movimiento='reducido'] .pastilla-trabajo__icono svg {
+  animation: none;
+}
+
+.entrada-trabajo__frenar {
+  flex: none;
+  margin-left: auto;
+}
+
+.entrada-trabajo__linea--error {
+  color: var(--e-rojo-t);
+  font-weight: 560;
+}
+
+.entrada-trabajo__linea--error > svg {
+  color: inherit;
+}
+
+.entrada-trabajo__hizo,
+.entrada-trabajo__costo {
+  margin: 6px 0 0;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+}
+
+.entrada-trabajo__costo {
+  margin-top: 2px;
+  color: var(--c-texto-2);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.entrada-trabajo__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Subir el tope sin salir de la tarjeta. */
+.entrada-trabajo__tope {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.entrada-trabajo__tope label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.entrada-trabajo__tope input {
+  width: 140px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  box-shadow: var(--sombra-interior);
+  color: var(--c-texto);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  transition:
+    background var(--t-rapido),
+    box-shadow var(--t-rapido);
+}
+
+.entrada-trabajo__tope input:focus {
+  background: var(--c-superficie);
+  box-shadow: 0 0 0 2px var(--c-foco);
+}
+
+.entrada-trabajo__tope small {
+  color: var(--c-texto-3);
+  font-size: 12px;
+}
+
+/* ───────── «Claude quiere hacer esto:» ───────── */
+
+.confirmar__titulo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px;
+  font-size: 13.5px;
+  font-weight: 650;
+}
+
+.confirmar__titulo > svg {
+  flex: none;
+  color: var(--c-ia-texto);
+}
+
+.confirmar__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.confirmar__accion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 10px;
+  border-radius: var(--r-s);
+  background: var(--c-superficie);
+}
+
+.confirmar__que {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 13.5px;
+}
+
+.confirmar__que b {
+  font-weight: 620;
+  overflow-wrap: anywhere;
+}
+
+.confirmar__que small {
+  color: var(--c-texto-2);
+  font-size: 12px;
+}
+
+.confirmar__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* En la bandeja de la campana: más chico y pegado a la fila de la notificación. */
+.confirmar--compacto {
+  margin: 0 10px 8px 54px;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+}
+
+.confirmar--compacto .confirmar__accion {
+  background: var(--c-superficie);
+}
+
+/* ───────── El pie de la respuesta ───────── */
+
+.pie-trabajo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  margin: 4px 0 0 2px;
+  color: var(--c-texto-2);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.pie-trabajo > svg {
+  flex: none;
+  color: var(--c-ia-texto);
+}
+
+.pie-trabajo__hizo {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.pie-trabajo__costo {
+  color: var(--c-texto-3);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pie-trabajo__costo::before {
+  content: '·';
+  margin-right: 6px;
+}
+
+/* ───────── La pastilla «Claude está trabajando…» de la barra ───────── */
+
+.pastilla-trabajo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 340px;
+  height: 28px;
+  padding: 0 4px 0 10px;
+  border-radius: 999px;
+  background: var(--c-ia-suave);
+  color: var(--c-ia-texto);
+  font-size: 12px;
+  font-weight: 640;
+  white-space: nowrap;
+}
+
+.pastilla-trabajo__icono {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+
+.pastilla-trabajo__icono svg {
+  animation: brillar 1.2s ease-in-out infinite alternate;
+}
+
+.pastilla-trabajo__texto {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pastilla-trabajo__mas {
+  flex: none;
+  padding: 0 5px;
+  border-radius: 8px;
+  background: var(--c-ia);
+  color: var(--c-sobre-ia);
+  font-size: 10.5px;
+  font-weight: 750;
+  line-height: 16px;
+}
+
+.pastilla-trabajo__frenar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  color: var(--c-ia-texto);
+  font-size: 12px;
+  font-weight: 650;
+  transition: background var(--t-rapido);
+}
+
+.pastilla-trabajo__frenar:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--c-ia) 16%, transparent);
+}
+
+.pastilla-trabajo__frenar:disabled {
+  opacity: 0.55;
+}
+
+/* En una barra angosta (zoom al 200 %) queda el ícono y «Frenar» como ícono solo. */
+@container barra (max-width: 860px) {
+  .pastilla-trabajo__texto,
+  .pastilla-trabajo__frenar span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
+
+/* ───────── En el celular ───────── */
+
+/* Lo que se toca con el dedo mide 44 px de alto. */
+html[data-movil] :is(.entrada-trabajo, .confirmar) .boton,
+html[data-tactil] :is(.entrada-trabajo, .confirmar) .boton {
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+html[data-movil] .entrada-trabajo__tope input {
+  width: 100%;
+  height: 44px;
+  font-size: 16px;
+}
+
+html[data-movil] .confirmar__accion {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+html[data-movil] .confirmar .segmentado__opcion {
+  min-height: 44px;
+}
+
+html[data-movil] .entrada-trabajo__cuerpo {
+  font-size: 15px;
+}
+
+/* La pastilla del teléfono, debajo de la barra: «Frenar» mide 44 px de alto de verdad (se mide con el dedo, no con el dibujo); la pastilla
+   sigue siendo de 36 y el botón le sobresale por arriba y por abajo sin verse (sin fondo). */
+html[data-movil] .pastilla-trabajo__frenar {
+  height: 44px;
+  min-width: 44px;
+  margin: -8px 0;
+  padding: 0 12px;
+  justify-content: center;
+  font-size: 13.5px;
+}
+
+html[data-movil] .barra-movil__ia.barra-movil__ia--trabajo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100vw - 24px);
+  height: 36px;
+  padding: 0 2px 0 14px;
+  pointer-events: auto;
+  color: var(--c-ia-texto);
+}
+
+html[data-movil] .barra-movil__ia.barra-movil__ia--trabajo .pastilla-trabajo__texto {
+  max-width: 52vw;
+}
+
+/* Y la misma, arriba del campo de comentar de la tarjeta: se ve que el pedido salió sin tener que buscar la respuesta más abajo. */
+html[data-movil] .pastilla-trabajo.comentar-movil__trabajando {
+  order: -2;
+  flex: 0 0 100%;
+  max-width: none;
+  height: 36px;
+  margin-bottom: 4px;
+  padding: 0 2px 0 14px;
+  font-size: 13.5px;
+}
+
+html[data-movil] .comentar-movil__trabajando .pastilla-trabajo__texto {
+  flex: 1;
+}

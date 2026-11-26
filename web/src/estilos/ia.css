@@ -1,0 +1,292 @@
+/* La IA integrada, F1 (plan de la IA integrada, 14): menciones con @, sus pastillas, el hilo con «Responder» y la cita de la
+   respuesta, y el alias en Configuración. Solo tokens, sin contornos. Lo del celular cuelga de html[data-movil].
+   Los estilos nuevos de la tarjeta viven acá y no en detalle.css (que se mantiene como estaba). */
+
+/* ───────── La lista de menciones (escritorio) ───────── */
+
+.menciones {
+  min-width: 280px;
+  max-width: min(400px, calc(100vw - 24px));
+  padding: 5px;
+}
+
+.menciones__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: inherit;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.menciones__opcion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--toque);
+  padding: 4px 10px;
+  border-radius: var(--r-s);
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: background var(--t-rapido);
+}
+
+.menciones__opcion--activa {
+  background: var(--c-hover-fuerte);
+}
+
+.menciones__nombre {
+  font-weight: 620;
+  color: var(--c-texto);
+}
+
+.menciones__alias {
+  font-size: 12.5px;
+  color: var(--c-texto-3);
+}
+
+/* Lo que va a pasar («responde sola»), a la derecha; si no va a andar (sin clave, pausado), en rojo de texto. */
+.menciones__efecto {
+  margin-left: auto;
+  padding-left: 12px;
+  font-size: 12px;
+  color: var(--c-texto-2);
+  text-align: right;
+}
+
+.menciones__efecto--problema {
+  color: var(--e-rojo-t);
+  font-weight: 560;
+}
+
+.menciones__vacio {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--c-texto-2);
+}
+
+/* Con el dedo (una tablet) las opciones son de 44 px. */
+html[data-tactil] .menciones__opcion {
+  min-height: 44px;
+}
+
+/* ───────── La barra de chips sobre el teclado (celular) ───────── */
+
+.barra-menciones {
+  overflow: hidden;
+  border-radius: var(--r-l);
+  background: var(--c-elevada);
+  box-shadow: var(--sombra-3);
+}
+
+.barra-menciones__lista {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 6px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  list-style: none;
+  scrollbar-width: none;
+}
+
+.barra-menciones__lista::-webkit-scrollbar {
+  display: none;
+}
+
+.barra-menciones__chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px 0 10px;
+  border-radius: 22px;
+  background: var(--c-hundido);
+  font-size: 14px;
+  white-space: nowrap;
+  transition: background var(--t-rapido);
+}
+
+.barra-menciones__chip:active,
+.barra-menciones__chip--activa {
+  background: var(--c-acento-tinte);
+}
+
+.barra-menciones__nombre {
+  font-weight: 650;
+}
+
+.barra-menciones__alias,
+.barra-menciones__efecto {
+  font-size: 13px;
+  color: var(--c-texto-2);
+}
+
+.barra-menciones__efecto--problema {
+  color: var(--e-rojo-t);
+  font-weight: 560;
+}
+
+.barra-menciones__vacio {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  margin: 0;
+  padding: 0 16px;
+  font-size: 14px;
+  color: var(--c-texto-2);
+}
+
+/* ───────── Las pastillas de mención en el texto ───────── */
+
+.md-mencion {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--r-xs);
+  background: var(--c-hundido-2);
+  color: var(--c-texto);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Una IA: violeta sobre su tono suave (el texto usa --c-ia-texto: --c-ia solo no llega a 4,5 en claro). */
+.md-mencion--ia {
+  background: var(--c-ia-suave);
+  color: var(--c-ia-texto);
+}
+
+/* ───────── El hilo de la tarjeta: «Responder», «Respondiendo a…» y la cita ───────── */
+
+.comentario {
+  position: relative;
+}
+
+.comentario__responder {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--r-xs);
+  color: var(--c-texto-3);
+  font-size: 12px;
+  font-weight: 560;
+  transition:
+    background var(--t-rapido),
+    color var(--t-rapido);
+}
+
+.comentario__responder:hover {
+  background: var(--c-hover);
+  color: var(--c-texto);
+}
+
+/* Un clic en la cita resalta el comentario original un momento. */
+.comentario::after {
+  content: '';
+  position: absolute;
+  inset: 0 -8px;
+  border-radius: var(--r-m);
+  background: var(--c-acento-tinte);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-lento);
+}
+
+.comentario--resaltado::after {
+  opacity: 1;
+}
+
+.comentario__cita {
+  display: block;
+  max-width: 100%;
+  margin-top: 4px;
+  overflow: hidden;
+  border-radius: var(--r-xs);
+  color: var(--c-texto-3);
+  font-size: 12px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color var(--t-rapido);
+}
+
+button.comentario__cita:hover {
+  color: var(--c-texto-2);
+}
+
+.comentar__respondiendo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 8px 0 14px;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  font-weight: 560;
+}
+
+.comentar__respondiendo span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comentar__respondiendo .boton-icono {
+  margin-left: auto;
+}
+
+/* ───────── En el celular ───────── */
+
+/* «Responder» se ve igual de chico, pero se acierta con el dedo: la zona de toque llega a 44 px sin cambiar el diseño. */
+html[data-movil] .comentario__responder {
+  position: relative;
+  height: 24px;
+  font-size: 13px;
+}
+
+html[data-movil] .comentario__responder::before {
+  content: '';
+  position: absolute;
+  inset: -10px -6px;
+}
+
+html[data-movil] .comentario__cita {
+  font-size: 13px;
+}
+
+/* «Respondiendo a…» arriba del campo de comentar, en su propia fila. */
+html[data-movil] .comentar-movil {
+  flex-wrap: wrap;
+}
+
+html[data-movil] .comentar-movil__respondiendo {
+  order: -1;
+  flex: 0 0 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 0 0 4px;
+  color: var(--c-texto-2);
+  font-size: 13px;
+  font-weight: 560;
+}
+
+html[data-movil] .comentar-movil__respondiendo span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html[data-movil] .comentar-movil__respondiendo .boton-icono {
+  width: 44px;
+  height: 44px;
+  margin: -6px 0;
+  margin-left: auto;
+}

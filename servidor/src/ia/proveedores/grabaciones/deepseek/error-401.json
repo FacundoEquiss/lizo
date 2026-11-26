@@ -1,0 +1,22 @@
+{
+  "descripcion": "Clave rechazada, repitiéndola.",
+  "fuente": "https://api-docs.deepseek.com/quick_start/error_codes",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/chat/completions"
+  },
+  "respuesta": {
+    "estado": 401,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "cuerpo": {
+      "error": {
+        "message": "Authentication Fails (invalid api key ${CLAVE})",
+        "type": "authentication_error",
+        "param": null,
+        "code": "invalid_request_error"
+      }
+    }
+  }
+}

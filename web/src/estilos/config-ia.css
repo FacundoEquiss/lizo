@@ -1,0 +1,834 @@
+/* Configuración → IA (plan de la IA integrada, 14.7 y Anexo F): el estado de la cuenta, los agentes, las claves, «Código (GitHub)», el
+   gasto y sus formularios. Lo importa SeccionIA.tsx, así que se baja con Configuración (o con la hoja «IA» del teléfono) y no pesa en el
+   arranque. Solo tokens, sin contornos: separan el tono, el espacio y la sombra. Lo del celular cuelga de html[data-movil]. */
+
+.ia-seccion {
+  display: flex;
+  flex-direction: column;
+}
+
+.ia-seccion .config-grupo + .config-grupo {
+  margin-top: 30px;
+}
+
+/* ───────── Avisos ───────── */
+
+.ia-aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 9px 12px;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.ia-aviso > svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.ia-aviso--lectura {
+  margin-bottom: 16px;
+  background: var(--e-amarillo);
+  color: var(--e-amarillo-t);
+  font-weight: 560;
+}
+
+.ia-aviso--error {
+  background: var(--e-rojo);
+  color: var(--e-rojo-t);
+  font-weight: 560;
+}
+
+.ia-aviso--suave > svg {
+  color: var(--c-ia-texto);
+}
+
+/* ───────── Pastillas de estado ───────── */
+
+.ia-pildora {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  gap: 4px;
+  height: 22px;
+  padding: 0 9px 0 7px;
+  border-radius: 11px;
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+  font-size: 11.5px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.ia-pildora--ok > svg {
+  color: var(--c-ok);
+}
+
+.ia-pildora--aviso {
+  background: var(--e-amarillo);
+  color: var(--e-amarillo-t);
+}
+
+.ia-pildora--malo {
+  background: var(--e-rojo);
+  color: var(--e-rojo-t);
+}
+
+/* ───────── Cómo está la IA ───────── */
+
+.ia-estado {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  font-size: 13.5px;
+  font-weight: 560;
+}
+
+.ia-estado > svg {
+  flex: none;
+  color: var(--c-ia-texto);
+}
+
+.ia-estado--ok {
+  background: var(--c-ia-suave);
+  color: var(--c-ia-texto);
+}
+
+.ia-estado--aviso {
+  background: var(--e-amarillo);
+  color: var(--e-amarillo-t);
+}
+
+.ia-estado--aviso > svg {
+  color: inherit;
+}
+
+/* ───────── La barra de gasto ───────── */
+
+.ia-gasto {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.ia-gasto__barra {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--c-hundido-2);
+}
+
+.ia-gasto__barra > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--c-ia);
+}
+
+.ia-gasto[data-nivel='aviso'] .ia-gasto__barra > span {
+  background: var(--e-amarillo-t);
+}
+
+.ia-gasto[data-nivel='tope'] .ia-gasto__barra > span {
+  background: var(--c-peligro);
+}
+
+.ia-gasto__texto {
+  color: var(--c-texto-2);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────── Listas (agentes y claves) ───────── */
+
+.ia-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ia-fila {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  text-align: left;
+}
+
+button.ia-fila {
+  grid-template-columns: 34px minmax(0, 1fr) auto 16px;
+  transition: background var(--t-rapido);
+}
+
+button.ia-fila:hover {
+  background: var(--c-hundido-2);
+}
+
+button.ia-fila:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--c-foco);
+}
+
+.ia-fila__icono {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--c-ia-suave);
+  color: var(--c-ia-texto);
+}
+
+.ia-fila__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ia-fila__titulo {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  font-size: 14px;
+}
+
+.ia-fila__titulo b {
+  font-weight: 650;
+}
+
+.ia-fila__titulo small {
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+}
+
+.ia-fila__detalle {
+  overflow: hidden;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ia-fila__error {
+  color: var(--e-rojo-t);
+  font-size: 12.5px;
+  font-weight: 560;
+}
+
+.ia-fila__flecha {
+  color: var(--c-texto-3);
+}
+
+.ia-clave-fila {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ia-botones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.ia-botones--fila {
+  padding-left: 46px;
+}
+
+.ia-confirmar-quitar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  font-weight: 560;
+}
+
+.ia-vacio-chico {
+  margin: 0;
+  color: var(--c-texto-2);
+  font-size: 13px;
+}
+
+/* El esqueleto mientras carga: bloques del tono de «hundido», quietos (sin movimiento que apagar). */
+.ia-esqueleto {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ia-esqueleto > span {
+  height: 64px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+}
+
+.ia-esqueleto > span:first-child {
+  height: 44px;
+}
+
+/* ───────── Formularios ───────── */
+
+.ia-volver {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 6px;
+  min-height: var(--toque);
+  margin: -4px 0 6px -8px;
+  padding: 0 10px;
+  border-radius: var(--r-s);
+  color: var(--c-texto-2);
+  font-size: 13px;
+  font-weight: 620;
+  transition:
+    background var(--t-rapido),
+    color var(--t-rapido);
+}
+
+.ia-volver:hover {
+  background: var(--c-hover);
+  color: var(--c-texto);
+}
+
+.ia-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.ia-formulario__cabecera {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ia-formulario__cabecera h4 {
+  margin: 0 0 3px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ia-formulario__cabecera p {
+  margin: 0;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+}
+
+.ia-formulario__chispa {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--c-ia-suave);
+  color: var(--c-ia-texto);
+}
+
+.ia-formulario__cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ia-formulario__cuerpo .config-grupo__filas {
+  gap: 14px;
+}
+
+/* Los botones quedan a la vista al desplazar. El contenedor que se desplaza tiene su relleno (28 px abajo y 24 a los lados en el
+   diálogo; el de la hoja del teléfono lo cambia): el pie lo ocupa para que el contenido no se vea por debajo. */
+.ia-seccion {
+  --ia-abajo: 28px;
+  --ia-lado: 24px;
+}
+
+.ia-formulario__pie {
+  position: sticky;
+  bottom: calc(-1 * var(--ia-abajo));
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 calc(-1 * var(--ia-lado)) calc(-1 * var(--ia-abajo));
+  padding: 14px var(--ia-lado) var(--ia-abajo);
+  background: var(--c-superficie);
+}
+
+.ia-formulario__archivar-boton {
+  margin-left: auto;
+}
+
+.ia-formulario__archivar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  font-weight: 560;
+}
+
+/* Un campo: etiqueta arriba, ayuda abajo (la pieza es la de «Mi perfil»). */
+.ia-campo label,
+.ia-campo > span:first-child {
+  color: var(--c-texto-2);
+}
+
+.ia-campo .campo,
+.ia-campo .campo-texto {
+  width: 100%;
+  color: var(--c-texto);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ia-campo .campo-texto {
+  resize: vertical;
+}
+
+.ia-campo input[type='password'] {
+  width: 100%;
+  height: var(--toque);
+  min-height: 38px;
+  padding: 0 12px;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  color: var(--c-texto);
+  font: 500 15px var(--fuente-mono);
+  letter-spacing: 0.04em;
+  outline: none;
+}
+
+.ia-campo input[type='password']:focus {
+  box-shadow: 0 0 0 3px var(--c-foco);
+}
+
+.ia-numero {
+  max-width: 160px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ia-campos-fila {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ia-select {
+  position: relative;
+  display: block;
+}
+
+.ia-select > select {
+  width: 100%;
+  height: 38px;
+  padding: 0 36px 0 12px;
+  border: 0;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  color: var(--c-texto);
+  font: 500 14px var(--fuente);
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.ia-select > select:focus {
+  box-shadow: 0 0 0 3px var(--c-foco);
+}
+
+.ia-select > select:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.ia-select > svg {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  translate: 0 -50%;
+  color: var(--c-texto-2);
+  pointer-events: none;
+}
+
+/* Permisos y opciones con casilla. */
+.ia-preajustes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.ia-preajustes .ia-preajuste--activo {
+  background: var(--c-acento-tinte);
+  color: var(--c-acento-fuerte);
+}
+
+.ia-preajuste-medida {
+  padding: 0 8px;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.ia-capacidades,
+.ia-opciones,
+.ia-listas {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ia-listas {
+  padding-left: 4px;
+}
+
+.ia-capacidad {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  padding: 8px 8px;
+  border-radius: var(--r-s);
+  cursor: pointer;
+  transition: background var(--t-rapido);
+}
+
+.ia-capacidad:hover {
+  background: var(--c-hover);
+}
+
+.ia-capacidad > input {
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: var(--c-acento-solido);
+}
+
+.ia-capacidad > input:focus-visible {
+  outline: 2px solid var(--c-foco);
+  outline-offset: 2px;
+}
+
+.ia-capacidad b {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 620;
+}
+
+.ia-capacidad small {
+  display: block;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.ia-capacidad--lista {
+  padding: 4px 8px;
+}
+
+/* ───────── Código (GitHub) ───────── */
+
+.ia-pasos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding-left: 22px;
+  color: var(--c-texto-2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ia-pasos li::marker {
+  color: var(--c-texto-3);
+  font-weight: 700;
+}
+
+.ia-pasos .enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  overflow-wrap: anywhere;
+}
+
+.ia-codigo__token {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ia-repos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.ia-repos__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ia-repo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 6px 0 10px;
+  border-radius: 14px;
+  background: var(--c-hundido);
+  color: var(--c-texto);
+  font: 560 12.5px var(--fuente-mono);
+}
+
+.ia-repo > svg {
+  color: var(--c-texto-3);
+}
+
+.ia-repo small {
+  padding-right: 4px;
+  color: var(--c-texto-3);
+  font: 500 11.5px var(--fuente);
+}
+
+.ia-repo--vacio {
+  padding: 0;
+  background: none;
+  color: var(--c-texto-2);
+  font: 500 12.5px var(--fuente);
+}
+
+.ia-repo__quitar {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: var(--c-texto-2);
+}
+
+.ia-repo__quitar:hover:not(:disabled) {
+  background: var(--c-hover-fuerte);
+  color: var(--c-texto);
+}
+
+.ia-repos__sumar {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.ia-repos__sumar .ia-campo {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ───────── Gasto ───────── */
+
+.ia-mes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: -2px 0 2px;
+  font-size: 14px;
+}
+
+.ia-mes b {
+  min-width: 140px;
+  text-align: center;
+  font-weight: 650;
+}
+
+.ia-uso,
+.ia-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ia-uso li {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.7fr) minmax(0, 1.3fr);
+  align-items: center;
+  gap: 14px;
+}
+
+.ia-uso__nombre {
+  display: flex;
+  flex-direction: column;
+}
+
+.ia-uso__nombre small {
+  color: var(--c-texto-2);
+  font-size: 12px;
+}
+
+.ia-detalle-boton {
+  align-self: flex-start;
+}
+
+.ia-detalle li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  font-size: 13px;
+}
+
+.ia-detalle small {
+  display: block;
+  color: var(--c-texto-2);
+  font-size: 12px;
+}
+
+.ia-detalle__costo {
+  flex: none;
+  color: var(--c-texto-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.ia-tope {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* ───────── En el celular ───────── */
+
+/* El relleno de abajo de la hoja es el de HojaInferior (12 px o la zona segura): el pie lo ocupa. */
+html[data-movil] .ia-seccion {
+  --ia-abajo: max(12px, var(--sa-b, 0px));
+  --ia-lado: var(--m-margen, 16px);
+}
+
+html[data-movil] .ia-formulario__pie {
+  background: var(--c-elevada);
+}
+
+html[data-movil] .ia-seccion .boton,
+html[data-tactil] .ia-seccion .boton {
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+html[data-movil] .ia-seccion .boton-icono {
+  width: 44px;
+  height: 44px;
+}
+
+html[data-movil] .ia-select > select,
+html[data-movil] .ia-campo .campo,
+html[data-movil] .ia-campo .perfil__alias input,
+html[data-movil] .ia-campo input[type='password'],
+html[data-movil] .ia-campo .campo-texto {
+  min-height: 44px;
+  font-size: 16px;
+}
+
+html[data-movil] .ia-capacidad {
+  min-height: 52px;
+  padding: 10px 8px;
+}
+
+html[data-movil] .ia-capacidad > input {
+  width: 22px;
+  height: 22px;
+}
+
+html[data-movil] .ia-capacidad {
+  grid-template-columns: 24px minmax(0, 1fr);
+}
+
+html[data-movil] .ia-campos-fila {
+  grid-template-columns: 1fr;
+}
+
+html[data-movil] .ia-fila {
+  grid-template-columns: 34px minmax(0, 1fr);
+  row-gap: 8px;
+}
+
+html[data-movil] button.ia-fila {
+  grid-template-columns: 34px minmax(0, 1fr) 16px;
+}
+
+html[data-movil] button.ia-fila > .ia-pildora {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: start;
+}
+
+html[data-movil] .ia-botones--fila {
+  padding-left: 0;
+}
+
+html[data-movil] .ia-uso li {
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+html[data-movil] .ia-repo__quitar {
+  position: relative;
+}
+
+html[data-movil] .ia-repo__quitar::before {
+  content: '';
+  position: absolute;
+  inset: -11px;
+}
+
+html[data-movil] .ia-repos__sumar,
+html[data-movil] .ia-tope {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+html[data-movil] .ia-seccion .config-fila:has(.interruptor) {
+  min-height: 52px;
+}
+
+/* La hoja «IA» del teléfono: la misma sección, con el margen de las demás hojas y la zona segura abajo. */
+html[data-movil] .hoja-ia__cuerpo {
+  padding: 4px var(--m-margen, 16px) 0;
+}

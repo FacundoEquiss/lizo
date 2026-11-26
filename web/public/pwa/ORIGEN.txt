@@ -1,0 +1,2 @@
+Marca usada para los íconos y las pantallas de arranque: web/public/marca/telar.svg
+Generado: 2026-11-24 con scripts/iconos-pwa.mjs. Colores: --c-fondo #f4efe6 (claro) y #1a1b1d (oscuro).

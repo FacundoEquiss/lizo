@@ -1,0 +1,22 @@
+{
+  "descripcion": "Saturado.",
+  "fuente": "https://api-docs.deepseek.com/quick_start/error_codes",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/chat/completions"
+  },
+  "respuesta": {
+    "estado": 503,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "cuerpo": {
+      "error": {
+        "message": "Server Overloaded",
+        "type": "server_overloaded",
+        "param": null,
+        "code": null
+      }
+    }
+  }
+}

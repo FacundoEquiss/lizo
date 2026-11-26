@@ -1,0 +1,23 @@
+{
+  "descripcion": "Falla del servidor.",
+  "fuente": "https://developers.openai.com/api/docs/guides/error-codes",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1/responses"
+  },
+  "respuesta": {
+    "estado": 500,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "req_grabado_0001"
+    },
+    "cuerpo": {
+      "error": {
+        "message": "The server had an error while processing your request. Sorry about that!",
+        "type": "server_error",
+        "param": null,
+        "code": null
+      }
+    }
+  }
+}

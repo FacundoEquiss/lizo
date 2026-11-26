@@ -1,0 +1,36 @@
+{
+  "descripcion": "Un servicio que contesta el objeto completo (sin streaming), con refusal null y annotations vacío.",
+  "fuente": "https://api-docs.deepseek.com/guides/thinking_mode",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/chat/completions"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "cuerpo": {
+      "id": "chatcmpl-x",
+      "object": "chat.completion",
+      "model": "deepseek-flash",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Hola.",
+            "refusal": null,
+            "annotations": []
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 10,
+        "completion_tokens": 3,
+        "total_tokens": 13
+      }
+    }
+  }
+}

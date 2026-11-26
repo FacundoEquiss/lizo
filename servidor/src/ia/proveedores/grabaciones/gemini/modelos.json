@@ -1,0 +1,30 @@
+{
+  "descripcion": "GET /models: los nombres vienen con «models/».",
+  "fuente": "https://aistudio.google.com/docs/openai",
+  "pedido": {
+    "metodo": "GET",
+    "ruta": "/v1beta/openai/models"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "req_grabado_0001"
+    },
+    "cuerpo": {
+      "object": "list",
+      "data": [
+        {
+          "id": "models/gemini-4-hydrogen",
+          "object": "model",
+          "owned_by": "google"
+        },
+        {
+          "id": "models/gemini-4-carbon",
+          "object": "model",
+          "owned_by": "google"
+        }
+      ]
+    }
+  }
+}

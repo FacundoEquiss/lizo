@@ -1,0 +1,159 @@
+{
+  "descripcion": "Texto con razonamiento (reasoning_content) antes del contenido; uso con aciertos y fallos de caché.",
+  "fuente": "https://api-docs.deepseek.com/guides/thinking_mode",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/chat/completions"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream; charset=utf-8"
+    },
+    "eventos": [
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant",
+                "content": null,
+                "reasoning_content": ""
+              },
+              "logprobs": null,
+              "finish_reason": null
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": null,
+                "reasoning_content": "El usuario pregunta por RC-12. "
+              },
+              "logprobs": null,
+              "finish_reason": null
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": null,
+                "reasoning_content": "Contesto corto."
+              },
+              "logprobs": null,
+              "finish_reason": null
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": "RC-12 está "
+              },
+              "logprobs": null,
+              "finish_reason": null
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": "en «Pendientes»."
+              },
+              "logprobs": null,
+              "finish_reason": null
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": ""
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "choices": [],
+          "usage": {
+            "prompt_tokens": 2000,
+            "completion_tokens": 40,
+            "total_tokens": 2040,
+            "prompt_tokens_details": {
+              "cached_tokens": 1536
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 18
+            },
+            "prompt_cache_hit_tokens": 1536,
+            "prompt_cache_miss_tokens": 464
+          }
+        }
+      },
+      {
+        "data": "[DONE]"
+      }
+    ]
+  }
+}

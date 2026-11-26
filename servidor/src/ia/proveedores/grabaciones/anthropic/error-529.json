@@ -1,0 +1,140 @@
+{
+  "caso": "error-529",
+  "descripcion": "529 overloaded_error, dos veces seguidas: reintenta una vez por su cuenta (1 s) y después le devuelve el error al ciclo.",
+  "origen": "Hecha a mano de la documentación oficial de la API de Messages (streaming y errores); a validar con la prueba real (scripts/probar-ia-real.mjs --grabar).",
+  "esperado": {
+    "error": {
+      "tipo": "sobrecarga",
+      "reintentable": true,
+      "esperarMs": 1000
+    },
+    "pedidos": 2,
+    "esperas": [
+      1000
+    ]
+  },
+  "intercambios": [
+    {
+      "pedido": {
+        "metodo": "POST",
+        "ruta": "/v1/messages",
+        "cuerpo": {
+          "model": "claude-opus-5-5",
+          "stream": true,
+          "max_tokens": 4096,
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "system": [
+            {
+              "type": "text",
+              "cache_control": {
+                "type": "ephemeral"
+              }
+            }
+          ],
+          "tools": [
+            {
+              "name": "leer_tarjeta",
+              "input_schema": {
+                "type": "object"
+              }
+            },
+            {
+              "name": "leer_tablero",
+              "input_schema": {
+                "type": "object"
+              }
+            }
+          ],
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Tarjeta RC-12: ¿qué falta?"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "respuesta": {
+        "estado": 529,
+        "cabeceras": {
+          "request-id": "req_011CTx8qK2mV4nR7sT1uW3yZ"
+        },
+        "cuerpo": {
+          "type": "error",
+          "error": {
+            "type": "overloaded_error",
+            "message": "Overloaded"
+          },
+          "request_id": "req_011CTx8qK2mV4nR7sT1uW3yZ"
+        }
+      }
+    },
+    {
+      "pedido": {
+        "metodo": "POST",
+        "ruta": "/v1/messages",
+        "cuerpo": {
+          "model": "claude-opus-5-5",
+          "stream": true,
+          "max_tokens": 4096,
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "system": [
+            {
+              "type": "text",
+              "cache_control": {
+                "type": "ephemeral"
+              }
+            }
+          ],
+          "tools": [
+            {
+              "name": "leer_tarjeta",
+              "input_schema": {
+                "type": "object"
+              }
+            },
+            {
+              "name": "leer_tablero",
+              "input_schema": {
+                "type": "object"
+              }
+            }
+          ],
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Tarjeta RC-12: ¿qué falta?"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "respuesta": {
+        "estado": 529,
+        "cabeceras": {
+          "request-id": "req_011CTx8qK2mV4nR7sT1uW3yZ"
+        },
+        "cuerpo": {
+          "type": "error",
+          "error": {
+            "type": "overloaded_error",
+            "message": "Overloaded"
+          },
+          "request_id": "req_011CTx8qK2mV4nR7sT1uW3yZ"
+        }
+      }
+    }
+  ]
+}

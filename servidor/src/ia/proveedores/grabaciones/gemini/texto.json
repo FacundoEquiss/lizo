@@ -1,0 +1,78 @@
+{
+  "descripcion": "Texto por el punto compatible. completion_tokens no suma el pensamiento: total_tokens sí (se cobra como salida).",
+  "fuente": "https://aistudio.google.com/docs/openai",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1beta/openai/chat/completions"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream"
+    },
+    "eventos": [
+      {
+        "data": {
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": "RC-12 está ",
+                "role": "assistant"
+              },
+              "finish_reason": null
+            }
+          ],
+          "created": 1764000000,
+          "id": "gem-0001",
+          "model": "gemini-4-hydrogen",
+          "object": "chat.completion.chunk"
+        }
+      },
+      {
+        "data": {
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": "en «Pendientes».",
+                "role": "assistant"
+              },
+              "finish_reason": null
+            }
+          ],
+          "created": 1764000000,
+          "id": "gem-0001",
+          "model": "gemini-4-hydrogen",
+          "object": "chat.completion.chunk"
+        }
+      },
+      {
+        "data": {
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": "",
+                "role": "assistant"
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "created": 1764000000,
+          "id": "gem-0001",
+          "model": "gemini-4-hydrogen",
+          "object": "chat.completion.chunk",
+          "usage": {
+            "completion_tokens": 12,
+            "prompt_tokens": 1800,
+            "total_tokens": 1950
+          }
+        }
+      },
+      {
+        "data": "[DONE]"
+      }
+    ]
+  }
+}

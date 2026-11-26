@@ -1,0 +1,56 @@
+{
+  "descripcion": "Una llamada: llega entera, SIN `index`, con la firma de pensamiento en extra_content (hay que reenviarla).",
+  "fuente": "https://aistudio.google.com/docs/openai",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1beta/openai/chat/completions"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream"
+    },
+    "eventos": [
+      {
+        "data": {
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "extra_content": {
+                      "google": {
+                        "thought_signature": "CiQBjz1rX0firma-de-pensamiento-base64=="
+                      }
+                    },
+                    "function": {
+                      "arguments": "{\"tarjeta\":\"RC-12\"}",
+                      "name": "leer_tarjeta"
+                    },
+                    "id": "abc123def456",
+                    "type": "function"
+                  }
+                ]
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "created": 1764000000,
+          "id": "gem-0001",
+          "model": "gemini-4-hydrogen",
+          "object": "chat.completion.chunk",
+          "usage": {
+            "completion_tokens": 15,
+            "prompt_tokens": 1900,
+            "total_tokens": 2010
+          }
+        }
+      },
+      {
+        "data": "[DONE]"
+      }
+    ]
+  }
+}

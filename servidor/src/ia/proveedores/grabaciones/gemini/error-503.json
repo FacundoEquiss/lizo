@@ -1,0 +1,23 @@
+{
+  "descripcion": "Saturado.",
+  "fuente": "https://aistudio.google.com/docs/api-errors",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1beta/openai/chat/completions"
+  },
+  "respuesta": {
+    "estado": 503,
+    "headers": {
+      "content-type": "application/json; charset=UTF-8"
+    },
+    "cuerpo": [
+      {
+        "error": {
+          "code": 503,
+          "message": "The model is overloaded. Please try again later.",
+          "status": "UNAVAILABLE"
+        }
+      }
+    ]
+  }
+}

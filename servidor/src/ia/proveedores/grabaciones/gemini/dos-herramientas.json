@@ -1,0 +1,83 @@
+{
+  "descripcion": "Dos llamadas en paralelo, cada una entera y sin index; la firma solo en la primera.",
+  "fuente": "https://aistudio.google.com/docs/openai",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1beta/openai/chat/completions"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream"
+    },
+    "eventos": [
+      {
+        "data": {
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "extra_content": {
+                      "google": {
+                        "thought_signature": "CiQBjz1rXprimera-firma=="
+                      }
+                    },
+                    "function": {
+                      "arguments": "{\"tarjeta\":\"RC-12\"}",
+                      "name": "leer_tarjeta"
+                    },
+                    "id": "call_a",
+                    "type": "function"
+                  }
+                ]
+              },
+              "finish_reason": null
+            }
+          ],
+          "created": 1764000000,
+          "id": "gem-0001",
+          "model": "gemini-4-hydrogen",
+          "object": "chat.completion.chunk"
+        }
+      },
+      {
+        "data": {
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "function": {
+                      "arguments": "{\"tablero\":\"Pendientes\"}",
+                      "name": "leer_tablero"
+                    },
+                    "id": "call_b",
+                    "type": "function"
+                  }
+                ]
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "created": 1764000000,
+          "id": "gem-0001",
+          "model": "gemini-4-hydrogen",
+          "object": "chat.completion.chunk",
+          "usage": {
+            "completion_tokens": 30,
+            "prompt_tokens": 1900,
+            "total_tokens": 1930
+          }
+        }
+      },
+      {
+        "data": "[DONE]"
+      }
+    ]
+  }
+}

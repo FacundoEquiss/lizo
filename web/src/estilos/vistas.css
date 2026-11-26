@@ -1,0 +1,301 @@
+/* Las vistas de un tablero (compartido/vistas.ts): elegir el tipo al crearlo, el ícono del tablero en la barra lateral y el panel
+   «Vistas» del menú ⋯. Sin contornos: el tono y la sombra marcan lo elegido, como en las tarjetas de tema. */
+
+/* ───────── Elegir el tipo (Nuevo tablero, Nuevo proyecto y la hoja del celular) ───────── */
+
+.tipo-tablero {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tipo-tablero__opciones {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.tipo-tablero__opcion {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px;
+  border-radius: var(--r-m);
+  background: var(--c-superficie-2);
+  box-shadow: 0 0 0 1px var(--c-hover-fuerte);
+  color: var(--c-texto-2);
+  text-align: left;
+  transition:
+    background var(--t-rapido) var(--curva),
+    box-shadow var(--t-rapido) var(--curva);
+}
+
+.tipo-tablero__opcion:hover {
+  background: var(--c-hover);
+  box-shadow: 0 0 0 1px var(--c-activo);
+  color: var(--c-texto);
+}
+
+.tipo-tablero__opcion--activa,
+.tipo-tablero__opcion--activa:hover {
+  background: var(--c-acento-tinte);
+  box-shadow:
+    0 0 0 2px var(--c-acento-solido),
+    0 0 0 5px var(--c-acento-tinte);
+  color: var(--c-texto);
+}
+
+.tipo-tablero__opcion:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--c-acento-solido),
+    0 0 0 5px var(--c-foco);
+}
+
+.tipo-tablero__icono {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+}
+
+.tipo-tablero__opcion--activa .tipo-tablero__icono {
+  background: var(--c-acento-solido);
+  color: var(--c-sobre-acento);
+}
+
+.tipo-tablero__textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.tipo-tablero__nombre {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--c-texto);
+}
+
+.tipo-tablero__frase {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--c-texto-2);
+}
+
+.tipo-tablero__nota,
+.tipo-tablero__frase-elegida {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--c-texto-3);
+}
+
+.tipo-tablero__frase-elegida {
+  color: var(--c-texto-2);
+}
+
+/* Compacto (formulario del proyecto): una fila de cuatro con el ícono y el nombre. */
+.tipo-tablero--compacto .tipo-tablero__opciones {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.tipo-tablero--compacto .tipo-tablero__opcion {
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 6px 8px;
+  text-align: center;
+}
+
+.tipo-tablero--compacto .tipo-tablero__icono {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+}
+
+.tipo-tablero--compacto .tipo-tablero__nombre {
+  font-size: 12.5px;
+}
+
+.dialogo--tablero {
+  width: min(560px, 100%);
+}
+
+.dialogo--vistas {
+  width: min(460px, 100%);
+}
+
+/* En el celular las cuatro caen en una columna: más fácil de tocar y la frase entra entera. */
+html[data-movil] .tipo-tablero__opciones {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+html[data-movil] .tipo-tablero__opcion {
+  min-height: 64px;
+  align-items: center;
+}
+
+html[data-movil] .tipo-tablero__frase,
+html[data-movil] .tipo-tablero__nota,
+html[data-movil] .tipo-tablero__frase-elegida {
+  font-size: 13.5px;
+}
+
+html[data-movil] .tipo-tablero--compacto .tipo-tablero__opciones {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+html[data-movil] .tipo-tablero--compacto .tipo-tablero__opcion {
+  min-height: 72px;
+  align-items: center;
+}
+
+/* ───────── El ícono del tipo en la fila del tablero (barra lateral) ───────── */
+
+.tablero-item__icono {
+  flex: none;
+  color: var(--c-texto-3);
+}
+
+.tablero-item:hover .tablero-item__icono,
+.tablero-item--activo .tablero-item__icono {
+  color: var(--c-texto-2);
+}
+
+/* ───────── El panel «Vistas» (menú ⋯ del tablero) ───────── */
+
+.vistas-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vistas-panel--hoja {
+  padding: 4px var(--m-margen, 16px) 16px;
+}
+
+.vistas-panel__fila {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 8px;
+  border-radius: var(--r-m);
+  text-align: left;
+}
+
+.vistas-panel__fila:hover:not(:disabled) {
+  background: var(--c-hover);
+}
+
+.vistas-panel__fila:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--c-foco);
+}
+
+.vistas-panel__fila:disabled {
+  cursor: default;
+}
+
+.vistas-panel__icono {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--c-hundido);
+  color: var(--c-texto-2);
+}
+
+.vistas-panel__fila--si .vistas-panel__icono {
+  background: var(--c-acento-tinte);
+  color: var(--c-acento-solido);
+}
+
+.vistas-panel__textos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.vistas-panel__nombre {
+  font-size: 14px;
+  font-weight: 620;
+  color: var(--c-texto);
+}
+
+.vistas-panel__detalle {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--c-texto-3);
+}
+
+.vistas-panel__nota {
+  margin: 6px 8px 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--c-texto-3);
+}
+
+/* La confirmación al sacar una vista que tiene contenido: en el lugar, sin otro diálogo encima. */
+.vistas-panel__confirmar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 12px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--c-texto);
+}
+
+.vistas-panel__confirmar p {
+  margin: 0;
+}
+
+.vistas-panel__botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+html[data-tactil] .vistas-panel__fila {
+  min-height: 56px;
+}
+
+/* ───────── Celular: «Nuevo tablero» (hoja) y el ícono de cada tablero en el selector ───────── */
+
+html[data-movil] .nuevo-tablero-movil {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px var(--m-margen, 16px) 20px;
+}
+
+/* 44 px de alto y 16 px de letra: más chico y iOS acerca la pantalla al tocar el campo. */
+html[data-movil] .nuevo-tablero-movil .campo {
+  min-height: 44px;
+  font-size: 16px;
+}
+
+html[data-movil] .nuevo-tablero-movil__crear {
+  min-height: 48px;
+  justify-content: center;
+}
+
+html[data-movil] .selector-tablero__icono {
+  flex: none;
+  color: var(--c-texto-3);
+}

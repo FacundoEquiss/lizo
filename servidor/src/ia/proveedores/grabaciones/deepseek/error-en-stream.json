@@ -1,0 +1,45 @@
+{
+  "descripcion": "Un error adentro del streaming.",
+  "fuente": "https://api-docs.deepseek.com/guides/thinking_mode",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/chat/completions"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream; charset=utf-8"
+    },
+    "eventos": [
+      {
+        "data": {
+          "id": "chatcmpl-ds-0001",
+          "object": "chat.completion.chunk",
+          "created": 1764000000,
+          "model": "deepseek-flash",
+          "system_fingerprint": "fp_grabado",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant",
+                "content": "Hola"
+              },
+              "logprobs": null,
+              "finish_reason": null
+            }
+          ]
+        }
+      },
+      {
+        "data": {
+          "error": {
+            "message": "Server is overloaded",
+            "type": "server_error",
+            "code": "overloaded"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "caso": "error-429",
+  "descripcion": "429 con espera larga: el adaptador no espera, devuelve el error con esperarMs (retry-after 30 s).",
+  "origen": "Hecha a mano de la documentación oficial de la API de Messages (streaming y errores); a validar con la prueba real (scripts/probar-ia-real.mjs --grabar).",
+  "esperado": {
+    "error": {
+      "tipo": "limite",
+      "reintentable": true,
+      "esperarMs": 30000
+    },
+    "pedidos": 1
+  },
+  "intercambios": [
+    {
+      "pedido": {
+        "metodo": "POST",
+        "ruta": "/v1/messages",
+        "cuerpo": {
+          "model": "claude-opus-5-5",
+          "stream": true,
+          "max_tokens": 4096,
+          "cache_control": {
+            "type": "ephemeral"
+          },
+          "system": [
+            {
+              "type": "text",
+              "cache_control": {
+                "type": "ephemeral"
+              }
+            }
+          ],
+          "tools": [
+            {
+              "name": "leer_tarjeta",
+              "input_schema": {
+                "type": "object"
+              }
+            },
+            {
+              "name": "leer_tablero",
+              "input_schema": {
+                "type": "object"
+              }
+            }
+          ],
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Tarjeta RC-12: ¿qué falta?"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "respuesta": {
+        "estado": 429,
+        "cabeceras": {
+          "request-id": "req_011CTx8qK2mV4nR7sT1uW3yZ",
+          "retry-after": "30"
+        },
+        "cuerpo": {
+          "type": "error",
+          "error": {
+            "type": "rate_limit_error",
+            "message": "This request would exceed your organization’s rate limit of 2,000,000 input tokens per minute."
+          },
+          "request_id": "req_011CTx8qK2mV4nR7sT1uW3yZ"
+        }
+      }
+    }
+  ]
+}

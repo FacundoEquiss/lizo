@@ -1,0 +1,44 @@
+{
+  "descripcion": "GET /v1/models (probar la clave).",
+  "fuente": "https://developers.openai.com/api/reference/resources/models",
+  "pedido": {
+    "metodo": "GET",
+    "ruta": "/v1/models"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "req_grabado_0001"
+    },
+    "cuerpo": {
+      "object": "list",
+      "data": [
+        {
+          "id": "gpt-6.2-sol",
+          "object": "model",
+          "created": 1760000000,
+          "owned_by": "system"
+        },
+        {
+          "id": "gpt-6-luna",
+          "object": "model",
+          "created": 1760000000,
+          "owned_by": "system"
+        },
+        {
+          "id": "text-embedding-4-large",
+          "object": "model",
+          "created": 1760000000,
+          "owned_by": "system"
+        },
+        {
+          "id": "whisper-2",
+          "object": "model",
+          "created": 1760000000,
+          "owned_by": "system"
+        }
+      ]
+    }
+  }
+}

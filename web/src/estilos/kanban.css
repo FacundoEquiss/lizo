@@ -1,0 +1,657 @@
+/* ───────── Kanban ───────── */
+
+.kanban {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.kanban__filtro {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 6px 0 12px;
+  border-radius: 999px;
+  background: var(--c-acento-tinte);
+  color: var(--c-acento-fuerte);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.kanban__filtro button {
+  height: 22px;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: var(--c-superficie);
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--c-texto);
+}
+
+.kanban__lienzo {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 18px 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-gutter: stable;
+}
+
+/* ───────── Lista ───────── */
+
+.lista {
+  flex: 0 0 var(--ancho-lista);
+  width: var(--ancho-lista);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-l);
+  background: var(--c-bandeja);
+  transition: background var(--t-lento) var(--curva);
+}
+
+.lista--destino {
+  background: var(--c-bandeja-destino);
+}
+
+.lista--hueco {
+  opacity: 0.45;
+}
+
+.lista--hueco > * {
+  visibility: hidden;
+}
+
+.lista--excedida .lista__cuenta {
+  background: color-mix(in srgb, var(--c-peligro) 16%, transparent);
+  color: var(--c-peligro);
+}
+
+.lista--fantasma {
+  box-shadow: var(--sombra-arrastre);
+  max-height: 440px;
+  overflow: hidden;
+}
+
+.lista__cabecera {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 8px 8px 8px 14px;
+  cursor: grab;
+  border-radius: var(--r-l) var(--r-l) 0 0;
+  touch-action: none;
+}
+
+.lista__cabecera:active {
+  cursor: grabbing;
+}
+
+.lista__nombre {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: text;
+  padding: 3px 0;
+}
+
+.lista__nombre-input {
+  flex: 1;
+  min-width: 0;
+  height: 30px;
+  padding: 0 8px;
+  margin: -3px 0 -3px -8px;
+  border-radius: 8px;
+  background: var(--c-superficie);
+  box-shadow: 0 0 0 2px var(--c-foco);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Lo de la derecha del encabezado (cantidad, «+», «⋯») comparte altura y centro: 28 px de alto en los tres, el número
+   en una píldora de 24 que se vuelve círculo con una cifra, y dos botones redondos de la misma familia. El ancho de la
+   lista no cambia: lo que cede ante un título largo es el título (puntos suspensivos). */
+.lista__cuenta {
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--c-hover-fuerte);
+  color: var(--c-texto-2);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.lista__limite {
+  opacity: 0.6;
+}
+
+.lista__botones {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lista__boton {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--c-texto-2);
+  flex-shrink: 0;
+  transition:
+    background var(--t-rapido),
+    color var(--t-rapido),
+    transform var(--t-rapido);
+}
+
+/* Se ve de 28 y se toca en 32 (el blanco mínimo de escritorio). */
+.lista__boton::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+}
+
+.lista__boton:hover,
+.lista__boton[data-abierto='true'] {
+  background: var(--c-hover-fuerte);
+  color: var(--c-texto);
+}
+
+.lista__boton:active {
+  transform: scale(0.94);
+}
+
+/* El «+»: el círculo que se ve de lejos, como una tarjeta chiquita apoyada en la lista. */
+.lista__boton--mas {
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1), var(--brillo);
+}
+
+.lista__boton--mas:hover {
+  background: var(--c-acento-tinte);
+  color: var(--c-acento-fuerte);
+}
+
+/* Cerca del borde derecho de la lista, el aviso se alinea a la derecha para no cortarse. */
+.lista__botones [data-tip]:hover::after {
+  left: auto;
+  right: 0;
+  transform: none;
+  animation-name: aparecer-tip-der;
+}
+
+.punto-categoria {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 2px var(--c-texto-3);
+  opacity: 0.6;
+}
+
+.punto-categoria--por_hacer {
+  box-shadow: none;
+  background: var(--e-gris-s);
+  opacity: 1;
+}
+
+.punto-categoria--en_curso {
+  box-shadow: none;
+  background: var(--e-azul-s);
+  opacity: 1;
+}
+
+.punto-categoria--hecho {
+  box-shadow: none;
+  background: var(--e-verde-s);
+  opacity: 1;
+}
+
+.lista__tarjetas {
+  flex: 1 1 auto;
+  min-height: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: calc(8px * var(--d));
+  scrollbar-gutter: stable;
+}
+
+.lista__vacia {
+  display: grid;
+  place-items: center;
+  min-height: 72px;
+  border-radius: var(--r-m);
+  color: var(--c-texto-3);
+  font-size: 12.5px;
+  background: color-mix(in srgb, var(--c-hundido-2) 50%, transparent);
+  box-shadow: var(--sombra-interior);
+  transition: background var(--t-lento) var(--curva);
+}
+
+.lista__vacia--arrastrando {
+  background: color-mix(in srgb, var(--c-acento) 10%, var(--c-bandeja));
+  color: var(--c-acento-fuerte);
+}
+
+/* «Ver N anteriores» al final de las tarjetas de una lista de Hecho (van las más recientes; las demás se piden de a 20). Es de
+   lo que se desplaza: el pie «Agregar tarjeta» sigue fijo abajo. Misma familia que «Agregar tarjeta», pero centrado y más tenue. */
+.lista__anteriores {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 36px;
+  margin-top: 2px;
+  padding: 0 10px;
+  border-radius: 10px;
+  color: var(--c-texto-3);
+  font-size: 13px;
+  font-weight: 560;
+  font-variant-numeric: tabular-nums;
+  background: color-mix(in srgb, var(--c-hundido-2) 45%, transparent);
+  transition:
+    background var(--t-rapido) var(--curva),
+    color var(--t-rapido) var(--curva);
+}
+
+.lista__anteriores:hover {
+  background: var(--c-hover-fuerte);
+  color: var(--c-texto);
+}
+
+.lista__anteriores:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--c-foco);
+}
+
+html[data-tactil] .lista__anteriores {
+  height: 48px;
+  font-size: 15px;
+}
+
+/* El pie de la lista queda fuera de lo que se desplaza: «Agregar tarjeta» (o el compositor abierto) siempre a la vista,
+   con tres tarjetas o con trescientas. Si el compositor no entra en pantallas muy bajas, el pie se desplaza por dentro. */
+.lista__pie {
+  flex: 0 0 auto;
+  max-height: 64vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px 8px 8px;
+  scrollbar-width: thin;
+}
+
+.lista--mas-abajo .lista__pie {
+  box-shadow: 0 -8px 10px -4px color-mix(in srgb, var(--c-texto) 12%, transparent);
+}
+
+.lista__agregar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 10px;
+  color: var(--c-texto-3);
+  font-size: 13.5px;
+  font-weight: 560;
+  flex-shrink: 0;
+}
+
+.lista__agregar span:nth-child(2) {
+  flex: 1;
+  text-align: left;
+}
+
+.lista__agregar:hover {
+  background: var(--c-hover-fuerte);
+  color: var(--c-texto);
+}
+
+.lista__agregar-tecla {
+  opacity: 0;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--c-hover-fuerte);
+  transition: opacity var(--t-rapido);
+}
+
+.lista:hover .lista__agregar-tecla {
+  opacity: 0.8;
+}
+
+/* ───────── Alta de tarjeta (compositor, sin modales) ───────── */
+
+.alta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  border-radius: var(--r-m);
+  background: var(--c-superficie);
+  box-shadow: var(--sombra-1), var(--brillo);
+  transition: box-shadow var(--t-rapido);
+}
+
+/* El foco lo marca el panel entero cuando se escribe en uno de sus campos (los campos no llevan anillo propio). */
+.alta:has(textarea:focus) {
+  box-shadow: var(--sombra-1), 0 0 0 2px var(--c-foco);
+}
+
+.alta__campos {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.alta__titulo {
+  display: block;
+  width: 100%;
+  max-height: 168px;
+  padding: 4px 4px 0;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 560;
+  overflow-wrap: anywhere;
+}
+
+.alta__motivo {
+  display: block;
+  width: 100%;
+  max-height: 120px;
+  padding: 7px 9px;
+  border-radius: var(--r-s);
+  background: var(--c-hundido);
+  color: var(--c-texto);
+  font-size: 13px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.alta__titulo::placeholder,
+.alta__motivo::placeholder {
+  color: var(--c-texto-3);
+  font-weight: 500;
+}
+
+/* En la lista (240 px útiles) entran dos píldoras por fila: tipo y prioridad arriba, etiquetas abajo a lo ancho. */
+.alta__pildoras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.alta__pildoras > :last-child {
+  grid-column: 1 / -1;
+}
+
+.alta__pildora {
+  height: 28px;
+  gap: 5px;
+  padding: 0 7px 0 8px;
+  max-width: 100%;
+  min-width: 0;
+  font-size: 12.5px;
+}
+
+.alta__pildora > span:not(.icono-tipo, .icono-prioridad) {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alta__pildora > svg:last-child {
+  opacity: 0.6;
+}
+
+.alta__vacio {
+  color: var(--c-texto-3);
+}
+
+.alta__etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alta__etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  max-width: 100%;
+  border-radius: 999px;
+  color: var(--c-texto-3);
+}
+
+.alta__etiqueta .chip-etiqueta {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alta__etiqueta--quitar:hover {
+  color: var(--c-peligro);
+}
+
+.alta__fallidas {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alta__fallida {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 4px 6px;
+  padding: 8px 6px 6px 10px;
+  border-radius: var(--r-s);
+  background: color-mix(in srgb, var(--c-peligro) 12%, var(--c-superficie));
+  font-size: 12.5px;
+}
+
+/* El mensaje ocupa todo el ancho (con el título entero, hasta tres líneas) y los botones van abajo. */
+.alta__fallida-texto {
+  grid-column: 1 / -1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}
+
+.alta__fallida-texto b {
+  color: var(--c-peligro);
+  font-weight: 650;
+}
+
+.alta__fallida-texto span {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  color: var(--c-texto-2);
+  overflow-wrap: anywhere;
+}
+
+.alta__fallida > button:first-of-type {
+  grid-column: 2;
+}
+
+.alta__pie {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.alta__agregar {
+  gap: 6px;
+}
+
+.alta__ayuda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  margin: 0;
+  color: var(--c-texto-3);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.alta__ayuda span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+/* ───────── Nueva lista ───────── */
+
+.nueva-lista {
+  flex: 0 0 var(--ancho-lista);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: var(--r-l);
+  background: color-mix(in srgb, var(--c-bandeja) 55%, transparent);
+  color: var(--c-texto-2);
+  font-weight: 600;
+  transition:
+    background var(--t-rapido),
+    color var(--t-rapido);
+}
+
+.nueva-lista:hover {
+  background: var(--c-bandeja);
+  color: var(--c-texto);
+}
+
+.nueva-lista--abierta {
+  height: auto;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 8px;
+  background: var(--c-bandeja);
+}
+
+.nueva-lista__input {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 9px;
+  background: var(--c-superficie);
+  box-shadow: 0 0 0 2px var(--c-foco);
+  font-weight: 600;
+}
+
+.nueva-lista__pie {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+/* ───────── Arrastre ───────── */
+
+.ordenable {
+  position: relative;
+  border-radius: var(--r-m);
+  touch-action: manipulation;
+  outline: none;
+}
+
+.ordenable:focus-visible .tarjeta {
+  box-shadow: var(--sombra-2), 0 0 0 2px var(--c-foco);
+}
+
+/* El lugar de destino: un hueco hundido del mismo alto de la tarjeta. */
+.ordenable--hueco {
+  border-radius: var(--r-m);
+  background: color-mix(in srgb, var(--c-hundido-2) 80%, var(--c-acento) 6%);
+  box-shadow: var(--sombra-interior);
+}
+
+.ordenable--hueco > * {
+  opacity: 0;
+}
+
+.ordenable--aterrizando > * {
+  opacity: 0;
+}
+
+.sombra-arrastre {
+  cursor: grabbing;
+}
+
+.sombra-arrastre__giro {
+  transform-origin: 50% 40%;
+  will-change: transform;
+}
+
+.sombra-arrastre .tarjeta {
+  box-shadow: var(--sombra-arrastre);
+}
+
+.sombra-arrastre.soltando .sombra-arrastre__giro {
+  transform: none !important;
+  transition: transform 240ms cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+.sombra-arrastre.soltando .tarjeta {
+  box-shadow: var(--sombra-2);
+  transition: box-shadow 240ms ease;
+}
+
+.sombra-arrastre--lista {
+  width: var(--ancho-lista);
+}
+
+body.arrastrando,
+body.arrastrando * {
+  cursor: grabbing !important;
+}

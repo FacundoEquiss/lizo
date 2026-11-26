@@ -1,0 +1,456 @@
+/* Configuración → Amigos: invitar por enlace, las invitaciones, los amigos con cuenta y el tope. Lo importa SeccionAmigos.tsx, así que
+   se baja con Configuración (o con la hoja «Amigos» del teléfono). Solo tokens, sin contornos: separan el tono, el espacio y la
+   sombra. Lo del celular cuelga de html[data-movil] / html[data-tactil]. */
+
+.amigos-seccion {
+  display: flex;
+  flex-direction: column;
+}
+
+.amigos-seccion .config-grupo + .config-grupo {
+  margin-top: 30px;
+}
+
+.amigos-esqueleto {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.amigos-esqueleto > span {
+  height: 64px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+}
+
+.amigos-esqueleto > span:first-child {
+  height: 44px;
+}
+
+.amigos-botones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.amigos-nota {
+  margin: 0;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+/* Los miedos del dueño, una línea cada uno. */
+.amigos-tranquilidad {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+  list-style: none;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.amigos-tranquilidad li {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+}
+
+.amigos-tranquilidad svg {
+  margin-top: 2px;
+  color: var(--c-ok);
+}
+
+/* El panel de «Invitar a un amigo» y el del enlace. */
+.amigos-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+}
+
+.amigos-panel__titulo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.amigos-panel__aviso {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: var(--r-s);
+  background: var(--e-amarillo);
+  color: var(--e-amarillo-t);
+  font-size: 12.5px;
+  font-weight: 560;
+  line-height: 1.45;
+}
+
+.amigos-panel .campo {
+  background: var(--c-superficie);
+}
+
+.amigos-enlace {
+  font-family: var(--fuente-mono);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+}
+
+.amigos-opcion {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 560;
+  color: var(--c-texto-2);
+}
+
+.amigos-panel .segmentado {
+  background: var(--c-hundido-2);
+}
+
+.amigos-panel .segmentado__opcion--activa {
+  background: var(--c-superficie);
+}
+
+.amigos-aclaracion {
+  margin: 0;
+  color: var(--c-texto-2);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.amigos-error {
+  margin: 0;
+  color: var(--c-peligro);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Listas: invitaciones y amigos. */
+.amigos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.amigos-fila {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px 12px;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  background: var(--c-hundido);
+}
+
+.amigos-fila--quieta .amigos-fila__titulo b {
+  color: var(--c-texto-2);
+}
+
+.amigos-fila__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.amigos-fila__titulo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  min-width: 0;
+  font-size: 14px;
+}
+
+.amigos-fila__titulo b {
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.amigos-fila__titulo small {
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  overflow-wrap: anywhere;
+}
+
+.amigos-fila__detalle {
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.amigos-pildora {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: 11px;
+  background: var(--c-hundido-2);
+  color: var(--c-texto-2);
+  font-size: 11.5px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.amigos-pildora--pendiente,
+.amigos-pildora--activa {
+  background: var(--e-verde);
+  color: var(--e-verde-t);
+}
+
+.amigos-pildora--suspendida,
+.amigos-pildora--revocada {
+  background: var(--e-rojo);
+  color: var(--e-rojo-t);
+}
+
+.amigos-pildora--vencida {
+  background: var(--e-amarillo);
+  color: var(--e-amarillo-t);
+}
+
+.amigos-confirmar {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--r-s);
+  background: var(--e-amarillo);
+  color: var(--e-amarillo-t);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.amigos-confirmar p {
+  margin: 0;
+  font-weight: 560;
+}
+
+.amigos-tope {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.amigos-tope__campo {
+  width: 76px;
+  text-align: center;
+}
+
+/* ───────── En el celular ───────── */
+
+html[data-movil] .amigos-seccion .boton,
+html[data-tactil] .amigos-seccion .boton {
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+html[data-movil] .amigos-seccion .campo {
+  min-height: 44px;
+  font-size: 16px;
+}
+
+html[data-movil] .amigos-seccion .segmentado__opcion,
+html[data-tactil] .amigos-seccion .segmentado__opcion {
+  min-height: 44px;
+  font-size: 13.5px;
+}
+
+html[data-movil] .amigos-fila {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+html[data-movil] .amigos-fila > .boton {
+  grid-column: 1 / -1;
+  justify-content: center;
+}
+
+html[data-movil] .amigos-tope__campo {
+  width: 84px;
+}
+
+html[data-movil] .amigos-seccion .config-fila {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+/* La hoja «Amigos» del teléfono: la misma sección, con el margen de las demás hojas. */
+html[data-movil] .hoja-amigos__cuerpo {
+  padding: 4px var(--m-margen, 16px) 0;
+}
+
+/* «Restablecer contraseña» de un amigo (PanelRestablecer.tsx): sin correo, un enlace de un solo uso que vence a las 24 horas. */
+
+.amigos-restablecer {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--r-s);
+  background: var(--c-hundido-2);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.amigos-restablecer > p {
+  margin: 0;
+}
+
+.amigos-restablecer > p:not([class]) {
+  color: var(--c-texto-2);
+}
+
+.amigos-restablecer .campo {
+  background: var(--c-superficie);
+}
+
+.amigos-restablecer__honesto {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  color: var(--c-texto);
+  font-weight: 560;
+}
+
+.amigos-restablecer__honesto svg {
+  margin-top: 2px;
+  color: var(--c-ok);
+}
+
+.amigos-fila__acciones {
+  grid-column: 1 / -1;
+}
+
+.amigos-fila__pendiente {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  color: var(--c-texto-2);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+html[data-movil] .amigos-restablecer .campo {
+  min-height: 44px;
+  font-size: 16px;
+}
+
+/* ───────── La marca con el número de solicitudes que esperan ───────── */
+
+.marca-solicitudes {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--c-acento-solido);
+  color: var(--c-sobre-acento);
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+/* Sobre un ícono (el botón ⋮ del celular): flotando en su esquina. */
+.marca-solicitudes--pegada {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  box-shadow: 0 0 0 2px var(--c-fondo);
+  pointer-events: none;
+}
+
+/* ───────── Solicitudes de cuenta (PanelSolicitudes.tsx) ───────── */
+
+.amigos-fila--solicitud {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.amigos-pildora--espera {
+  gap: 4px;
+  background: var(--e-amarillo);
+  color: var(--e-amarillo-t);
+}
+
+/* «Aprobar» y «Rechazar»: dos botones grandes, lado a lado, que se reparten el ancho. */
+.amigos-fila__decidir {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.amigos-decidir {
+  justify-content: center;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.amigos-fila__error {
+  grid-column: 1 / -1;
+}
+
+.amigos-rechazadas {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.amigos-rechazadas > summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 4px;
+  color: var(--c-texto-2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.amigos-rechazadas[open] > summary {
+  color: var(--c-texto);
+}
+
+.amigos-rechazadas > .amigos-lista {
+  margin-top: 4px;
+}
+
+.amigos-limpiar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.amigos-limpiar .amigos-confirmar {
+  flex: 1 1 100%;
+}
+
+html[data-movil] .amigos-fila--solicitud > .amigos-fila__decidir {
+  grid-column: 1 / -1;
+}

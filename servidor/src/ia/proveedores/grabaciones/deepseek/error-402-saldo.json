@@ -1,0 +1,22 @@
+{
+  "descripcion": "Sin saldo (402 de DeepSeek).",
+  "fuente": "https://api-docs.deepseek.com/quick_start/error_codes",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/chat/completions"
+  },
+  "respuesta": {
+    "estado": 402,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "cuerpo": {
+      "error": {
+        "message": "Insufficient Balance",
+        "type": "unknown_error",
+        "param": null,
+        "code": "invalid_request_error"
+      }
+    }
+  }
+}

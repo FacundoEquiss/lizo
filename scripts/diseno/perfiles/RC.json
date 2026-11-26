@@ -1,0 +1,60 @@
+{
+  "nombre": "Restaurant City",
+  "fuente": {
+    "clase": "repo"
+  },
+  "hojas": [
+    "juego3d/ui/*.css"
+  ],
+  "raizClase": "rcui",
+  "fuentes": [
+    {
+      "familia": "Fredoka",
+      "archivo": "assets/fonts/Fredoka.woff2",
+      "pesos": "300 700",
+      "licencia": "OFL"
+    },
+    {
+      "familia": "Nunito",
+      "archivo": "assets/fonts/Nunito.woff2",
+      "pesos": "200 1000",
+      "licencia": "OFL"
+    }
+  ],
+  "excluir": [
+    "assets/rc/**",
+    "assets/fonts/Huggable.*"
+  ],
+  "usos": [
+    "juego3d/ui/**/*.{js,css}",
+    "juego3d/src/**/*.js"
+  ],
+  "textos": [
+    {
+      "modulo": "juego3d/ui/textos.js",
+      "exporta": "T",
+      "patronUso": "\\bT\\.([A-Za-z_]\\w*)"
+    }
+  ],
+  "unidades": {
+    "--n": "px nativos de RC (escenario 760×600), HUD",
+    "--nv": "px nativos de RC dentro de una ventana",
+    "--hu": "px del celular (844×390), HUD nuevo",
+    "--tu": "px del celular, tienda",
+    "--u": "px del celular, Barrio"
+  },
+  "vistas": {
+    "celular": {
+      "ancho": 844,
+      "alto": 390,
+      "densidad": 2,
+      "tactil": true
+    },
+    "pc": {
+      "ancho": 1366,
+      "alto": 768,
+      "densidad": 1,
+      "tactil": false
+    }
+  }
+}

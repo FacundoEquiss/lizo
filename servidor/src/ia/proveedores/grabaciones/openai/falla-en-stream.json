@@ -1,0 +1,42 @@
+{
+  "descripcion": "response.failed con un error de servidor adentro del streaming.",
+  "fuente": "https://developers.openai.com/api/docs/guides/migrate-to-responses",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1/responses"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream; charset=utf-8",
+      "x-request-id": "req_grabado_0001"
+    },
+    "eventos": [
+      {
+        "event": "response.created",
+        "data": {
+          "type": "response.created",
+          "response": {
+            "id": "resp_x",
+            "status": "in_progress",
+            "output": []
+          }
+        }
+      },
+      {
+        "event": "response.failed",
+        "data": {
+          "type": "response.failed",
+          "response": {
+            "id": "resp_x",
+            "status": "failed",
+            "error": {
+              "code": "server_error",
+              "message": "The server had an error while processing your request."
+            }
+          }
+        }
+      }
+    ]
+  }
+}

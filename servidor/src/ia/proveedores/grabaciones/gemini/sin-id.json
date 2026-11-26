@@ -1,0 +1,50 @@
+{
+  "descripcion": "Una llamada sin id (algunos servicios no lo mandan): Telar le pone uno.",
+  "fuente": "https://aistudio.google.com/docs/openai",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1beta/openai/chat/completions"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream"
+    },
+    "eventos": [
+      {
+        "data": {
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "function": {
+                      "arguments": "{\"tarjeta\":\"RC-12\"}",
+                      "name": "leer_tarjeta"
+                    },
+                    "type": "function"
+                  }
+                ]
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "created": 1764000000,
+          "id": "gem-0001",
+          "model": "gemini-4-hydrogen",
+          "object": "chat.completion.chunk",
+          "usage": {
+            "completion_tokens": 15,
+            "prompt_tokens": 1900,
+            "total_tokens": 1915
+          }
+        }
+      },
+      {
+        "data": "[DONE]"
+      }
+    ]
+  }
+}

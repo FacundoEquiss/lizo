@@ -1,0 +1,186 @@
+{
+  "descripcion": "Dos llamadas en paralelo en el mismo paso (cada una con su call_id).",
+  "fuente": "https://developers.openai.com/api/docs/guides/function-calling",
+  "pedido": {
+    "metodo": "POST",
+    "ruta": "/v1/responses"
+  },
+  "respuesta": {
+    "estado": 200,
+    "headers": {
+      "content-type": "text/event-stream; charset=utf-8",
+      "x-request-id": "req_grabado_0001"
+    },
+    "eventos": [
+      {
+        "event": "response.created",
+        "data": {
+          "type": "response.created",
+          "response": {
+            "id": "resp_grabada_01",
+            "object": "response",
+            "status": "in_progress",
+            "output": []
+          }
+        }
+      },
+      {
+        "event": "response.output_item.added",
+        "data": {
+          "type": "response.output_item.added",
+          "output_index": 0,
+          "item": {
+            "id": "rs_03",
+            "type": "reasoning",
+            "summary": [],
+            "encrypted_content": "gAAAAABrazonamientoCifrado03==",
+            "status": "in_progress"
+          }
+        }
+      },
+      {
+        "event": "response.output_item.done",
+        "data": {
+          "type": "response.output_item.done",
+          "output_index": 0,
+          "item": {
+            "id": "rs_03",
+            "type": "reasoning",
+            "summary": [],
+            "encrypted_content": "gAAAAABrazonamientoCifrado03=="
+          }
+        }
+      },
+      {
+        "event": "response.output_item.added",
+        "data": {
+          "type": "response.output_item.added",
+          "output_index": 1,
+          "item": {
+            "id": "fc_03",
+            "type": "function_call",
+            "status": "in_progress",
+            "call_id": "call_leer_a",
+            "name": "leer_tarjeta",
+            "arguments": "{\"tarjeta\":\"RC-12\"}"
+          }
+        }
+      },
+      {
+        "event": "response.function_call_arguments.delta",
+        "data": {
+          "type": "response.function_call_arguments.delta",
+          "item_id": "fc_03",
+          "output_index": 1,
+          "delta": "{\"tarjet"
+        }
+      },
+      {
+        "event": "response.output_item.done",
+        "data": {
+          "type": "response.output_item.done",
+          "output_index": 1,
+          "item": {
+            "id": "fc_03",
+            "type": "function_call",
+            "status": "completed",
+            "call_id": "call_leer_a",
+            "name": "leer_tarjeta",
+            "arguments": "{\"tarjeta\":\"RC-12\"}"
+          }
+        }
+      },
+      {
+        "event": "response.output_item.added",
+        "data": {
+          "type": "response.output_item.added",
+          "output_index": 2,
+          "item": {
+            "id": "fc_04",
+            "type": "function_call",
+            "status": "in_progress",
+            "call_id": "call_leer_b",
+            "name": "leer_tablero",
+            "arguments": "{\"tablero\":\"Pendientes\"}"
+          }
+        }
+      },
+      {
+        "event": "response.function_call_arguments.delta",
+        "data": {
+          "type": "response.function_call_arguments.delta",
+          "item_id": "fc_04",
+          "output_index": 2,
+          "delta": "{\"tabler"
+        }
+      },
+      {
+        "event": "response.output_item.done",
+        "data": {
+          "type": "response.output_item.done",
+          "output_index": 2,
+          "item": {
+            "id": "fc_04",
+            "type": "function_call",
+            "status": "completed",
+            "call_id": "call_leer_b",
+            "name": "leer_tablero",
+            "arguments": "{\"tablero\":\"Pendientes\"}"
+          }
+        }
+      },
+      {
+        "event": "response.completed",
+        "data": {
+          "type": "response.completed",
+          "response": {
+            "id": "resp_grabada_01",
+            "object": "response",
+            "model": "gpt-6.2-sol",
+            "status": "completed",
+            "output": [
+              {
+                "id": "rs_03",
+                "type": "reasoning",
+                "summary": [],
+                "encrypted_content": "gAAAAABrazonamientoCifrado03=="
+              },
+              {
+                "id": "fc_03",
+                "type": "function_call",
+                "status": "completed",
+                "call_id": "call_leer_a",
+                "name": "leer_tarjeta",
+                "arguments": "{\"tarjeta\":\"RC-12\"}"
+              },
+              {
+                "id": "fc_04",
+                "type": "function_call",
+                "status": "completed",
+                "call_id": "call_leer_b",
+                "name": "leer_tablero",
+                "arguments": "{\"tablero\":\"Pendientes\"}"
+              }
+            ],
+            "usage": {
+              "input_tokens": 1500,
+              "input_tokens_details": {
+                "cached_tokens": 0,
+                "cache_write_tokens": 0,
+                "cache_write_tokens_details": {
+                  "ttl_30m_tokens": 0,
+                  "ttl_12h_tokens": 0
+                }
+              },
+              "output_tokens": 71,
+              "output_tokens_details": {
+                "reasoning_tokens": 0
+              },
+              "total_tokens": 1571
+            }
+          }
+        }
+      }
+    ]
+  }
+}
